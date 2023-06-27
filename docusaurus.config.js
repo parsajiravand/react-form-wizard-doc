@@ -64,9 +64,9 @@ const config = {
       // Replace with your project's social card
       image: "img/docusaurus-social-card.jpg",
       navbar: {
-        title: "My Site",
+        title: "React Form Wizard Component",
         logo: {
-          alt: "My Site Logo",
+          alt: "React For Wizard Component Logo",
           src: "img/react-form-wizard-icon.png",
         },
         items: [
@@ -78,7 +78,7 @@ const config = {
           },
           { to: "/blog", label: "Blog", position: "left" },
           {
-            href: "https://github.com/facebook/docusaurus",
+            href: "https://github.com/parsajiravand/react-form-wizard",
             label: "GitHub",
             position: "right",
           },
@@ -122,12 +122,12 @@ const config = {
               },
               {
                 label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
+                href: "https://github.com/parsajiravand/react-form-wizard",
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Parsa Jiravand.`,
       },
       prism: {
         theme: lightCodeTheme,

@@ -2,46 +2,115 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Quick Start
 
-Let's discover **Docusaurus in less than 5 minutes**.
+A react form wizard component with validation and progress bar with no external dependencies which simplifies tab wizard management.
 
-## Getting Started
+## Installation
 
-Get started by **creating a new site**.
-
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
-
-### What you'll need
-
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
+To install the package, you can use npm or yarn:
 
 ```bash
-npm init docusaurus@latest my-website classic
+npm install react-form-wizard-component
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
+or
 
 ```bash
-cd my-website
-npm run start
+yarn add react-form-wizard-component
 ```
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+## Usage
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+Import the `FormWizard` component and use it in your React application:
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+```tsx
+import FormWizard from "react-form-wizard-component";
+import 'react-form-wizard-component/dist/style.css';
+
+function App() {
+  const handleComplete = () => {
+    console.log("Form completed!");
+    // Handle form completion logic here
+  };
+  const tabChanged = ({
+    prevIndex,
+    nextIndex,
+  }: {
+    prevIndex: number;
+    nextIndex: number;
+  }) => {
+    console.log("prevIndex", prevIndex);
+    console.log("nextIndex", nextIndex);
+  };
+
+  return (
+    <>
+      <FormWizard
+        shape="circle"
+        color="#e74c3c"
+        onComplete={handleComplete}
+        onTabChange={tabChanged}
+      >
+        <FormWizard.TabContent title="Personal details" icon="ti-user">
+          {/* Add your form inputs and components for the frst step */}
+          <h1>First Tab</h1>
+          <p>Some content for the first tab</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Additional Info" icon="ti-settings">
+          <h1>Second Tab</h1>
+          <p>Some content for the second tab</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Last step" icon="ti-check">
+          <h1>Last Tab</h1>
+          <p>Some content for the last tab</p>
+        </FormWizard.TabContent>
+      </FormWizard>
+      {/* add style */}
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </>
+  );
+}
+
+export default App;
+
+```
+
+## Props
+
+The `FormWizard` component accepts the following props:
+
+- `title` (optional): The title of the form wizard. It can be a string or a ReactNode.
+- `subtitle` (optional): The subtitle or description of the form wizard.
+- `shape` (optional): The shape of the wizard tabs (e.g., "circle", "square").
+- `color` (optional): The color of the wizard tabs and progress bar.
+- `children` (required): The content of the form wizard, including the form tabs and their content.
+- `nextButtonText` (optional): The text for the "Next" button.
+- `backButtonText` (optional): The text for the "Back" button.
+- `finishButtonText` (optional): The text for the "Finish" button.
+- `stepSize` (optional): The size of the steps (e.g., "xs", "sm", "md", "lg").
+- `layout` (optional): The layout of the form wizard (e.g., "horizontal", "vertical").
+- `onComplete` (optional): A callback function to be called when the form wizard is completed.
+- `onTabChange` (optional): A callback function to be called when the active tab is changed.
+
+The `FormWizard.TabContent` component is used to define each tab's content and accepts the following props:
+
+- `title` (required): The title of the tab.
+- `icon` (required): The icon for the tab.
+- `children` (required): The content of the tab.
+
+Refer to the component's source code or documentation for additional props and details.
+
+## Examples
+
+You can find examples of using the `react-form-wizard-component` in the [examples](./examples) directory.
+
+## License
+
+This package is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more information.
+
+Please note that this is a basic README.md template, and you may need to modify it further to match your specific package and requirements.
+
+
