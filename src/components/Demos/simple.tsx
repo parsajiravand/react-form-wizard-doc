@@ -27,15 +27,15 @@ export default function simple() {
     >
       <FormWizard.TabContent title="Personal details" icon="ti-user">
 
-        <h1>First Tab</h1>
+        <h3>First Tab</h3>
         <p>Some content for the first tab</p>
       </FormWizard.TabContent>
       <FormWizard.TabContent title="Additional Info" icon="ti-settings">
-        <h1>Second Tab</h1>
+        <h3>Second Tab</h3>
         <p>Some content for the second tab</p>
       </FormWizard.TabContent>
       <FormWizard.TabContent title="Last step" icon="ti-check">
-        <h1>Last Tab</h1>
+        <h3>Last Tab</h3>
         <p>Some content for the last tab</p>
       </FormWizard.TabContent>
     </FormWizard>
