@@ -18,6 +18,7 @@ description: The props for the FormWizard component.
 | `finishButtonText` | The text for the "Finish" button.                                          |
 | `stepSize`         | The size of the steps (e.g., "xs", "sm", "md", "lg").                      |
 | `layout`           | The layout of the form wizard (e.g., "horizontal", "vertical").            |
+| `startIndex`       | The index started default is 0                                             |
 | `onComplete`       | A callback function to be called when the form wizard is completed.        |
 | `onTabChange`      | A callback function to be called when the active tab is changed.           |
 
