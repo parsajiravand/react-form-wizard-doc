@@ -11,7 +11,7 @@ const config = {
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: "https://your-docusaurus-test-site.com",
+  url: "https://react-form-wizard-component-document.netlify.app/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
@@ -94,23 +94,31 @@ const config = {
                 label: "Tutorial",
                 to: "/docs/intro",
               },
+              {
+                label:"Props",
+                to:"/docs/props"
+              },
+              {
+                label:"Event",
+                to:"/docs/event"
+              },
+              {
+                label:"Demos",
+                to:"/docs/category/demos"
+              },
+              {
+                label:"Playground",
+                to:"/docs/playground"
+              }
             ],
           },
           {
-            title: "Community",
+            title: "Antoher Packages", 
             items: [
               {
-                label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/docusaurus",
-              },
-              {
-                label: "Discord",
-                href: "https://discordapp.com/invite/docusaurus",
-              },
-              {
-                label: "Twitter",
-                href: "https://twitter.com/docusaurus",
-              },
+                label: "Vue3 Form Wizard",
+                href: "https://vue3-form-wizard-document.netlify.app/",
+              }
             ],
           },
           {

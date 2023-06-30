@@ -3,14 +3,15 @@ title: Event Handling
 description: The event handling options for the FormWizard component.
 sidebar_position: 3
 ---
+
 ## Event Handling
 
 The `FormWizard` component provides the following event handling options:
 
-| Event             | Description                                                           |
-| ----------------- | --------------------------------------------------------------------- |
-| `onComplete`      | A callback function that is called when the form wizard is completed.  |
-| `onTabChange`     | A callback function that is called when the active tab is changed.     |
+| Event         | Description                                                           |
+| ------------- | --------------------------------------------------------------------- |
+| `onComplete`  | A callback function that is called when the form wizard is completed. |
+| `onTabChange` | A callback function that is called when the active tab is changed.    |
 
 ### `onComplete`
 
@@ -19,9 +20,7 @@ The `onComplete` event is triggered when the form wizard is completed. You can a
 Example usage:
 
 ```jsx
-<FormWizard onComplete={handleFormWizardComplete}>
-  {/* ... */}
-</FormWizard>
+<FormWizard onComplete={handleFormWizardComplete}>{/* ... */}</FormWizard>
 ```
 
 In the above example, `handleFormWizardComplete` is a function that will be called when the form wizard is completed.
@@ -33,9 +32,11 @@ The `onTabChange` event is triggered when the active tab in the form wizard is c
 Example usage:
 
 ```jsx
-<FormWizard onTabChange={handleTabChange}>
-  {/* ... */}
-</FormWizard>
+const handleTabChange = ({ previousIndex, currentIndex }) => {
+  // Do something when the active tab changes
+  console.log(`Active tab changed to index ${(previousIndex, currentIndex)}`);
+};
+<FormWizard onTabChange={handleTabChange}>{/* ... */}</FormWizard>;
 ```
 
 In the above example, `handleTabChange` is a function that will be called when the active tab changes in the form wizard.
