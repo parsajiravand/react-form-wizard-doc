@@ -105,11 +105,11 @@ Refer to the component's source code or documentation for additional props and d
 
 ## Examples
 
-You can find examples of using the `react-form-wizard-component` in the [examples](./examples) directory.
+You can find examples of using the `react-form-wizard-component` in the [examples](./docs/category/demos) directory.
 
 ## License
 
-This package is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more information.
+This package is licensed under the MIT License. See the [LICENSE](https://github.com/parsajiravand/react-form-wizard/blob/master/LICENSE) file for more information.
 
 Please note that this is a basic README.md template, and you may need to modify it further to match your specific package and requirements.
 
