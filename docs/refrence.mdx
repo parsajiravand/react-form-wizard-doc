@@ -1,10 +1,10 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 title: Refrences
 hide_table_of_contents: true
 ---
 
-import Sample from "../src/components/Refrences/sample.jsx";
+import Sample from "../src/components/Refrences/sample";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
@@ -60,6 +60,10 @@ const Sample: React.FC = () => {
   const handelActiveAll = () => {
     console.log("activeAll");
     formWizardRef.current?.activeAll();
+  };
+  const handelChangeTab = () => {
+    console.log("changeTab");
+    formWizardRef.current?.changeTab(2);
   };
 
   return (

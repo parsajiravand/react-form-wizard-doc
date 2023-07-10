@@ -4,8 +4,8 @@ title: Props
 description: The props for the FormWizard component.
 ---
 
-
 ### FormWizard Component
+
 | Prop               | Description                                                                |
 | ------------------ | -------------------------------------------------------------------------- |
 | `title`            | The title of the form wizard. It can be a string or a ReactNode.           |
@@ -28,10 +28,11 @@ description: The props for the FormWizard component.
 
 The `FormWizard.TabContent` component is used to define each tab's content and accepts the following props:
 
-| Prop       | Description             |
-| ---------- | ----------------------- |
-| `title`    | The title of the tab.   |
-| `icon`     | The icon for the tab.   |
-| `children` | The content of the tab. |
+| Prop              | Description                                                             |
+| ----------------- | ----------------------------------------------------------------------- |
+| `title`           | The title of the tab.                                                   |
+| `icon`            | The icon for the tab.                                                   |
+| `isValid`         | A boolean value indicating whether the tab is valid or not.             |
+| `validationError` | The validation error message to be displayed when the tab is not valid. (Function) |
 
 Please refer to the component's source code or documentation for additional props and more detailed information.

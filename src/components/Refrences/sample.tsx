@@ -1,10 +1,12 @@
 import React from "react";
-import FormWizard from "react-form-wizard-component";
+import FormWizard, {
+  type test,
+  type FormWizardMethods,
+} from "react-form-wizard-component";
 import "react-form-wizard-component/dist/style.css";
 
-const Sample = () => {
-  const formWizardRef = React.createRef();
-  console.log("formWizardRef", formWizardRef);
+const Sample: React.FC = () => {
+  const formWizardRef = React.createRef< FormWizardMethods>();
   const handleComplete = () => {
     console.log("Form completed!");
     // Handle form completion logic here
@@ -27,11 +29,7 @@ const Sample = () => {
   };
   const handelChangeTab = () => {
     console.log("changeTab");
-    formWizardRef.current?.goToTab(2);
-  };
-  const tabChanged = ({ prevIndex, nextIndex }) => {
-    console.log("prevIndex", prevIndex);
-    console.log("nextIndex", nextIndex);
+    formWizardRef.current?.changeTab(2);
   };
 
   return (
@@ -79,7 +77,6 @@ const Sample = () => {
         shape="square"
         color="#2196f3"
         onComplete={handleComplete}
-        onTabChange={tabChanged}
       >
         <FormWizard.TabContent title="Personal details" icon="ti-user">
           <h3> Personal details</h3>
@@ -120,7 +117,7 @@ const Sample = () => {
           color: #2196f3;
           border: 1px solid #2196f3;
         }
-
+        
       `}</style>
     </>
   );
