@@ -1,0 +1,79 @@
+---
+sidebar_position: 9
+title: Custom Icon 
+hide_table_of_contents: true
+---
+
+import CustomIcon from "../../src/components/Demos/custom-icon.tsx";
+
+:::info
+You can pass custom icons to the tabs. You can pass any valid react component as icon. You can pass SVG, img, or any other react component as icon.
+
+:::
+
+<div class="demo">
+  <CustomIcon />
+</div>
+
+## Code
+
+```tsx
+import React, { SVGProps } from "react";
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+
+export default function customIcon() {
+  const handleComplete = () => {
+    console.log("Form completed!");
+    // Handle form completion logic here
+  };
+
+  function SolarUserLinear(props?: SVGProps<SVGSVGElement>) {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="1em"
+        height="1em"
+        viewBox="0 0 24 24"
+        {...props}
+      >
+        <g fill="none" stroke="black" strokeWidth="1.5">
+          <circle cx="12" cy="6" r="4"></circle>
+          <path d="M20 17.5c0 2.485 0 4.5-8 4.5s-8-2.015-8-4.5S7.582 13 12 13s8 2.015 8 4.5Z"></path>
+        </g>
+      </svg>
+    );
+  }
+  function vsCodeIcon() {
+    return (
+      <img
+        src="https://vitejs.dev/logo-with-shadow.png"
+        alt="vitejs"
+        width="24"
+        height="24"
+      />
+    );
+  }
+  return (
+    <>
+      <FormWizard onComplete={handleComplete}>
+        <FormWizard.TabContent
+          title="Personal details"
+          icon={SolarUserLinear()}
+        >
+          <h3>First Tab with custom SVG icon</h3>
+          <p>Some content for the first tab</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Additional Info">
+          <h3>Second Tab without icon</h3>
+          <p>Some content for the second tab</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Last step" icon={vsCodeIcon()}>
+          <h3>Last Tab with img tag</h3>
+          <p>Some content for the last tab</p>
+        </FormWizard.TabContent>
+      </FormWizard>
+    </>
+  );
+}
+```

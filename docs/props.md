@@ -34,7 +34,7 @@ The `FormWizard.TabContent` component is used to define each tab's content and a
 | Prop              | Description                                                                        | Samples                            |
 | ----------------- | ---------------------------------------------------------------------------------- | ---------------------------------- |
 | `title`           | The title of the tab.                                                              | In each demo                       |
-| `icon`            | The icon for the tab.                                                              | In each demo                       |
+| `icon`            | The icon for the tab. (string,HTML element)                                        | [sample](/docs/demos/custom-icon)  |
 | `isValid`         | A boolean value indicating whether the tab is valid or not.                        | [sample](/docs/demos/validate-tab) |
 | `validationError` | The validation error message to be displayed when the tab is not valid. (Function) | [sample](/docs/demos/validate-tab) |
 
