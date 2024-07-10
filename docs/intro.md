@@ -26,7 +26,7 @@ Import the `FormWizard` component and use it in your React application:
 
 ```tsx
 import FormWizard from "react-form-wizard-component";
-import 'react-form-wizard-component/dist/style.css';
+import "react-form-wizard-component/dist/style.css";
 
 function App() {
   const handleComplete = () => {
@@ -75,7 +75,55 @@ function App() {
 }
 
 export default App;
+```
 
+## Next.js Usage
+please note that you need to add `"use client";` at the top of your file to avoid SSR issues.
+
+```tsx
+"use client";
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+// import type FormWizard from "react-form-wizard-component/dist/types/FormWizard";
+export default function App() {
+  const handleComplete = () => {
+    console.log("Form completed!");
+    // Handle form completion logic here
+  };
+  const tabChanged = ({
+    prevIndex,
+    nextIndex,
+  }: {
+    prevIndex: number;
+    nextIndex: number;
+  }) => {
+    console.log("prevIndex", prevIndex);
+    console.log("nextIndex", nextIndex);
+  };
+
+  return (
+    <main className="">
+      <FormWizard onComplete={handleComplete} onTabChange={tabChanged}>
+        <FormWizard.TabContent title="Personal details" icon="ti-user">
+          <h3>First Tab</h3>
+          <p>Some content for the first tab</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Additional Info" icon="ti-settings">
+          <h3>Second Tab</h3>
+          <p>Some content for the second tab</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Last step" icon="ti-check">
+          <h3>Last Tab</h3>
+          <p>Some content for the last tab</p>
+        </FormWizard.TabContent>
+      </FormWizard>
+      {/* add style */}
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </main>
+  );
+}
 ```
 
 ## Props
@@ -114,5 +162,3 @@ You can find examples of using the `react-form-wizard-component` in the [example
 This package is licensed under the MIT License. See the [LICENSE](https://github.com/parsajiravand/react-form-wizard/blob/master/LICENSE) file for more information.
 
 Please note that this is a basic README.md template, and you may need to modify it further to match your specific package and requirements.
-
-

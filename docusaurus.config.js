@@ -82,6 +82,29 @@ const config = {
             label: "GitHub",
             position: "right",
           },
+          {
+            label: "Other Packages",
+            position: "right",
+
+            items: [
+              {
+                label: "Vue3 Form Wizard",
+                href: "https://github.com/parsajiravand/vue3-form-wizard",
+              },
+              {
+                label: "Vue Client Recaptcha",
+                href: "https://github.com/parsajiravand/vue-client-recaptcha",
+              },
+              {
+                label: "Helping Js",
+                href: "https://github.com/parsajiravand/helping-js",
+              },
+              {
+                label: "Simple Form Data",
+                href: "https://github.com/parsajiravand/simple-form-data",
+              },
+            ],
+          },
         ],
       },
       footer: {
@@ -95,30 +118,42 @@ const config = {
                 to: "/docs/intro",
               },
               {
-                label:"Props",
-                to:"/docs/props"
+                label: "Props",
+                to: "/docs/props",
               },
               {
-                label:"Event",
-                to:"/docs/event"
+                label: "Event",
+                to: "/docs/event",
               },
               {
-                label:"Demos",
-                to:"/docs/category/demos"
+                label: "Demos",
+                to: "/docs/category/demos",
               },
               {
-                label:"Playground",
-                to:"/docs/playground"
-              }
+                label: "Playground",
+                to: "/docs/playground",
+              },
             ],
           },
           {
-            title: "Antoher Packages", 
+            title: "Other Packages",
             items: [
               {
                 label: "Vue3 Form Wizard",
-                href: "https://vue3-form-wizard-document.netlify.app/",
-              }
+                href: "https://github.com/parsajiravand/vue3-form-wizard",
+              },
+              {
+                label: "Vue Client Recaptcha",
+                href: "https://github.com/parsajiravand/vue-client-recaptcha",
+              },
+              {
+                label: "Helping Js",
+                href: "https://github.com/parsajiravand/helping-js",
+              },
+              {
+                label: "Simple Form Data",
+                href: "https://github.com/parsajiravand/simple-form-data",
+              },
             ],
           },
           {
