@@ -1,0 +1,117 @@
+---
+sidebar_position: 10
+title: Dark mode 🆕
+hide_table_of_contents: true
+---
+
+import DarkMode from "../../src/components/Demos/dark-mode.tsx";
+
+:::info
+
+You can customize the dark mode of the form wizard by passing the `darkMode` prop to the `FormWizard` component.
+You can integrate the dark mode with the `customDarkModeColor` prop to customize the colors of the dark mode.
+**Note**: You can use with any dark mode library like `react-dark-mode-toggle` or `react-toggle-dark` to toggle the dark mode. Or check ``` window.matchMedia("(prefers-color-scheme: dark)").matches``` to check if the user prefers dark mode.
+
+:::
+
+
+```typescript
+interface CustomDarkModeColor {
+  title?: string;
+  subtitle?: string;
+  tab?: string;
+  tabIconColor?: string;
+  buttons?: string;
+  buttonsText?: string;
+  finishButton?: string;
+  finishButtonText?: string;
+}
+```
+
+<div class="demo">
+  <DarkMode />
+</div>
+
+## Code
+
+```tsx
+import React from "react";
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+
+export default function DarkMode() {
+  const [darkMode, setDarkMode] = React.useState(true);
+
+  const handleComplete = () => {
+    console.log("Form completed!");
+    // Handle form completion logic here
+  };
+  const tabChanged = ({
+    prevIndex,
+    nextIndex,
+  }: {
+    prevIndex: number;
+    nextIndex: number;
+  }) => {
+    console.log("prevIndex", prevIndex);
+    console.log("nextIndex", nextIndex);
+  };
+
+  return (
+    <>
+      <button
+        style={{
+          padding: "10px",
+          margin: "10px",
+          backgroundColor: darkMode ? "black" : "white",
+          color: darkMode ? "white" : "black",
+        }}
+        onClick={() => setDarkMode(!darkMode)}
+      >
+        {darkMode ? "Light mode" : "Dark mode"}
+      </button>
+
+      <FormWizard
+        key={darkMode ? "dark" : "light"}
+        title="Form Wizard"
+        subtitle="Step by step form wizard"
+        darkMode={darkMode}
+        color="darkblue"
+        customDarkModeColor={{
+          title: "white", //simple color
+          subtitle: "white",
+          tab: "#d9f3fc", //hex color
+          tabIconColor: "rgb(42, 74, 247)", //rgb color
+          buttons: "black",
+          buttonsText: "white",
+          finishButton: "green",
+          finishButtonText: "white",
+        }}
+        onComplete={handleComplete}
+        onTabChange={tabChanged}
+      >
+        <FormWizard.TabContent title="Personal details" icon="ti-user">
+          <h3>
+            First Tab
+            {darkMode ? " (dark mode)" : " (light mode)"}
+          </h3>
+          <p>Some content for the first tab</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Additional Info" icon="ti-settings">
+          <h3>Second Tab </h3>
+          <p>Some content for the second tab</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Last step" icon="ti-check">
+          <h3>Last Tab </h3>
+          <p>Some content for the last tab</p>
+        </FormWizard.TabContent>
+      </FormWizard>
+      {/* add style */}
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </>
+  );
+}
+
+```
