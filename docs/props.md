@@ -3,6 +3,7 @@ sidebar_position: 2
 title: Props
 description: The props for the FormWizard component.
 ---
+import Highlight from "../src/components/Highlight/index.js";
 
 ### FormWizard Component
 
@@ -22,6 +23,13 @@ description: The props for the FormWizard component.
 | `stepSize`             | The size of the steps (e.g., "xs", "sm", "md", "lg").                      | [sample](/docs/demos/small-step-size)       |
 | `layout`               | The layout of the form wizard (e.g., "horizontal", "vertical").            | -                                           |
 | `startIndex`           | The index started default is 0                                             | [sample](/docs/demos/step-index)            |
+| `disableBackOnClickStep` <Highlight>v.0.2.4 </Highlight>|  A boolean value  to disable back button when click on step (tab) `default:false` `(v)   |-                                  |
+| `showProggressBar` <Highlight>v.0.2.4 </Highlight>   |  A boolean value to show progress bar `default:true`                       |-                                            |
+| `inlineStep` <Highlight>v.0.2.4 </Highlight>       |   A boolean value to show step (tab) inline `default:false`                |-                                            |       
+| `darkMode` <Highlight>v.0.2.4 </Highlight>       |   A boolean value to show dark mode `default:false`                       |-                                            |    
+| `customDarkModeColor` <Highlight>v.0.2.4 </Highlight>       |   A object value to show custom dark mode color `default: {}`                       |-                                            | 
+| `removeTabBackground` <Highlight>v.0.2.4 </Highlight>       |   A boolean value to remove tab background `default:false`                       |-                                            |
+| `removeTabBackgroundTransparentColor` <Highlight>v.0.2.4 </Highlight>       | A string value to remove tab background transparent color `default: ''`                       |-                                            |
 | `onComplete`           | A callback function to be called when the form wizard is completed.        | In each demo                                |
 | `onTabChange`          | A callback function to be called when the active tab is changed.           | [sample](/docs/demos/simple)                |
 
@@ -31,11 +39,13 @@ description: The props for the FormWizard component.
 
 The `FormWizard.TabContent` component is used to define each tab's content and accepts the following props:
 
-| Prop              | Description                                                                        | Samples                            |
-| ----------------- | ---------------------------------------------------------------------------------- | ---------------------------------- |
-| `title`           | The title of the tab.                                                              | In each demo                       |
-| `icon`            | The icon for the tab. (string,HTML element)                                        | [sample](/docs/demos/custom-icon)  |
-| `isValid`         | A boolean value indicating whether the tab is valid or not.                        | [sample](/docs/demos/validate-tab) |
-| `validationError` | The validation error message to be displayed when the tab is not valid. (Function) | [sample](/docs/demos/validate-tab) |
+| Prop                                               | Description                                                                        | Samples                            |
+| -----------------                                  | ---------------------------------------------------------------------------------- | ---------------------------------- |
+| `title`                                            | The title of the tab.                                                              | In each demo                       |
+| `icon`                                             | The icon for the tab. (string,HTML element)                                        | [sample](/docs/demos/custom-icon)  |
+| `isValid`                                          | A boolean value indicating whether the tab is valid or not.                        | [sample](/docs/demos/validate-tab) |
+| `validationError`                                  | The validation error message to be displayed when the tab is not valid. (Function) | [sample](/docs/demos/validate-tab) |
+| `showErrorOnTab` <Highlight>v.0.2.4 </Highlight>   | A boolean value to show error message on tab `default:false`                       | - |
+| `showErrorOnTabColor` <Highlight>v.0.2.4 </Highlight>  | A string value to show error message color on tab `default:red`                | - |
 
 Please refer to the component's source code or documentation for additional props and more detailed information.
