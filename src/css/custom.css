@@ -38,3 +38,6 @@
   border-radius: 4px;
   overflow: hidden;
 }
+.markdown li + li{
+  margin-top: unset;
+}
