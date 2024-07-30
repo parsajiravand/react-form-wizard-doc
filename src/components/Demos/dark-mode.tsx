@@ -9,16 +9,6 @@ export default function DarkMode() {
     console.log("Form completed!");
     // Handle form completion logic here
   };
-  const tabChanged = ({
-    prevIndex,
-    nextIndex,
-  }: {
-    prevIndex: number;
-    nextIndex: number;
-  }) => {
-    console.log("prevIndex", prevIndex);
-    console.log("nextIndex", nextIndex);
-  };
 
   return (
     <>
@@ -53,7 +43,6 @@ export default function DarkMode() {
           finishButtonText: "white",
         }}
         onComplete={handleComplete}
-        onTabChange={tabChanged}
       >
         <FormWizard.TabContent title="Personal details" icon="ti-user">
           <h3>

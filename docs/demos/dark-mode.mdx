@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 11
 title: Dark mode 🆕
 hide_table_of_contents: true
 ---
@@ -39,22 +39,12 @@ import React from "react";
 import FormWizard from "react-form-wizard-component";
 import "react-form-wizard-component/dist/style.css";
 
-export default function DarkMode() {
+export default function FormWizardSample() {
   const [darkMode, setDarkMode] = React.useState(true);
 
   const handleComplete = () => {
     console.log("Form completed!");
     // Handle form completion logic here
-  };
-  const tabChanged = ({
-    prevIndex,
-    nextIndex,
-  }: {
-    prevIndex: number;
-    nextIndex: number;
-  }) => {
-    console.log("prevIndex", prevIndex);
-    console.log("nextIndex", nextIndex);
   };
 
   return (
@@ -88,7 +78,6 @@ export default function DarkMode() {
           finishButtonText: "white",
         }}
         onComplete={handleComplete}
-        onTabChange={tabChanged}
       >
         <FormWizard.TabContent title="Personal details" icon="ti-user">
           <h3>

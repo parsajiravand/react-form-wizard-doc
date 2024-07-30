@@ -28,8 +28,8 @@ import Highlight from "../src/components/Highlight/index.js";
 | `inlineStep` <Highlight>v.0.2.4 </Highlight>       |   A boolean value to show step (tab) inline `default:false`                |-                                            |       
 | `darkMode` <Highlight>v.0.2.4 </Highlight>       |   A boolean value to show dark mode `default:false`                       |-                                            |    
 | `customDarkModeColor` <Highlight>v.0.2.4 </Highlight>       |   A object value to show custom dark mode color `default: {}`                       |-                                            | 
-| `removeTabBackground` <Highlight>v.0.2.4 </Highlight>       |   A boolean value to remove tab background `default:false`                       |-                                            |
-| `removeTabBackgroundTransparentColor` <Highlight>v.0.2.4 </Highlight>       | A string value to remove tab background transparent color `default: ''`                       |-                                            |
+| `removeBackgroundTab` <Highlight>v.0.2.4 </Highlight>       |   A boolean value to remove tab background `default:false`                       |-                                            |
+| `removeBackgroundTabTransparentColor` <Highlight>v.0.2.4 </Highlight>       | A string value to remove tab background transparent color `default: ''`                       |-                                            |
 | `onComplete`           | A callback function to be called when the form wizard is completed.        | In each demo                                |
 | `onTabChange`          | A callback function to be called when the active tab is changed.           | [sample](/docs/demos/simple)                |
 
