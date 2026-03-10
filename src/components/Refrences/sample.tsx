@@ -1,35 +1,26 @@
 import React from "react";
-import FormWizard, {
-  type test,
-  type FormWizardMethods,
-} from "react-form-wizard-component";
+import FormWizard from "react-form-wizard-component";
 import "react-form-wizard-component/dist/style.css";
 
 const Sample: React.FC = () => {
-  const formWizardRef = React.createRef< FormWizardMethods>();
+  const formWizardRef = React.createRef<any>();
   const handleComplete = () => {
     console.log("Form completed!");
-    // Handle form completion logic here
   };
-  const handelNext = () => {
-    console.log("nextTab");
+  const handleNext = () => {
     formWizardRef.current?.nextTab();
   };
-  const handelPrev = () => {
-    console.log("prevTab");
+  const handlePrev = () => {
     formWizardRef.current?.prevTab();
   };
-  const handelReset = () => {
-    console.log("reset");
+  const handleReset = () => {
     formWizardRef.current?.reset();
   };
-  const handelActiveAll = () => {
-    console.log("activeAll");
+  const handleActiveAll = () => {
     formWizardRef.current?.activeAll();
   };
-  const handelChangeTab = () => {
-    console.log("changeTab");
-    formWizardRef.current?.changeTab(2);
+  const handleGoToTab = () => {
+    formWizardRef.current?.goToTab(2);
   };
 
   return (
@@ -49,26 +40,23 @@ const Sample: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
-          color: "#fff",
-          fontSize: "20px",
-          fontWeight: "bold",
+          flexWrap: "wrap",
         }}
       >
-        <button className="sample-refrence-button" onClick={handelNext}>
+        <button className="sample-reference-button" onClick={handleNext}>
           nextTab
         </button>
-        <button className="sample-refrence-button" onClick={handelPrev}>
+        <button className="sample-reference-button" onClick={handlePrev}>
           prevTab
         </button>
-        <button className="sample-refrence-button" onClick={handelReset}>
+        <button className="sample-reference-button" onClick={handleReset}>
           reset
         </button>
-        <button className="sample-refrence-button" onClick={handelActiveAll}>
+        <button className="sample-reference-button" onClick={handleActiveAll}>
           activeAll
         </button>
-        <button className="sample-refrence-button" onClick={handelChangeTab}>
-          changeTab
+        <button className="sample-reference-button" onClick={handleGoToTab}>
+          goToTab(2)
         </button>
       </div>
 
@@ -102,7 +90,7 @@ const Sample: React.FC = () => {
       {/* add style */}
       <style>{`
         @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
-        .sample-refrence-button{
+        .sample-reference-button{
           margin: 5px;
           padding: 8px 15px;
           border: 1px solid transparent;
@@ -110,14 +98,12 @@ const Sample: React.FC = () => {
           background-color: #2196f3;
           color: #fff;
           cursor: pointer;
-
         }
-        .sample-refrence-button:hover{
+        .sample-reference-button:hover{
           background-color: #fff;
           color: #2196f3;
           border: 1px solid #2196f3;
         }
-        
       `}</style>
     </>
   );

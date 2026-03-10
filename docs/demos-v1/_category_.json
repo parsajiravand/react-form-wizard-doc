@@ -1,0 +1,8 @@
+{
+  "label": "Demos v1",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Schema-first and enhanced feature demos for v1.0.0 while preserving legacy examples."
+  }
+}

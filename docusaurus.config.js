@@ -126,8 +126,8 @@ const config = {
                 to: "/docs/event",
               },
               {
-                label: "Demos",
-                to: "/docs/category/demos",
+                label: "Demos (old)",
+                to: "/docs/category/demos-old",
               },
               {
                 label: "Playground",
