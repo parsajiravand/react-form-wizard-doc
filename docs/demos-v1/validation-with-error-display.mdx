@@ -9,3 +9,69 @@ import Sample6ValidationWithErrorDisplay from "../../src/components/DemosV1/Samp
 <div class="demo">
   <Sample6ValidationWithErrorDisplay />
 </div>
+
+## Code
+
+```tsx
+import React from "react";
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+
+export default function Sample6ValidationWithErrorDisplay() {
+  const [userInput, setUserInput] = React.useState("");
+
+  return (
+    <>
+      <FormWizard
+        title="Sample 6: Validation"
+        subtitle="Error states and validation"
+        onComplete={(data?: any) => {
+          console.log("Wizard completed with data:", data);
+        }}
+      >
+        <FormWizard.TabContent
+          title="Required Input"
+          icon="ti-alert"
+          showErrorOnTab={!userInput.trim()}
+          showErrorOnTabColor="red"
+        >
+          <h4>Validation Required</h4>
+          <p>Please enter some text to proceed.</p>
+          <input
+            className="form-control"
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder="Required field..."
+          />
+          {!userInput.trim() && <p style={{ color: "red" }}>This field is required</p>}
+        </FormWizard.TabContent>
+        <FormWizard.TabContent
+          title="Length Check"
+          icon="ti-check-box"
+          isValid={userInput.length >= 3}
+          validationError={() => alert("Please enter at least 3 characters")}
+        >
+          <h4>Length Validation</h4>
+          <p>Input must be at least 3 characters: "{userInput}"</p>
+        </FormWizard.TabContent>
+      </FormWizard>
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+        .form-control {
+          height: 36px;
+          padding: 0.375rem 0.75rem;
+          font-size: 1rem;
+          font-weight: 400;
+          line-height: 1.5;
+          color: #495057;
+          border: 1px solid #ced4da;
+          border-radius: 0.25rem;
+          width: 100%;
+          max-width: 300px;
+        }
+      `}</style>
+    </>
+  );
+}
+```

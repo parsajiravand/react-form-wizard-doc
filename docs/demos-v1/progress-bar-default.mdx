@@ -9,3 +9,42 @@ import Sample14ProgressBarDefault from "../../src/components/DemosV1/Sample14Pro
 <div class="demo">
   <Sample14ProgressBarDefault />
 </div>
+
+## Code
+
+```tsx
+import React from "react";
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+
+export default function Sample14ProgressBarDefault() {
+  return (
+    <>
+      <FormWizard
+        title="Sample 14: Progress Bar"
+        subtitle="Visual progress indication"
+        showProgressBar={true}
+        onComplete={(data?: any) => {
+          console.log("Wizard completed with data:", data);
+        }}
+      >
+        <FormWizard.TabContent title="Progress 1" icon="ti-timer">
+          <h4>Progress Tracking</h4>
+          <p>Visual progress bar shows completion status.</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Progress 2" icon="ti-dashboard">
+          <h4>Step Indicators</h4>
+          <p>Completed steps are visually marked.</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Progress 3" icon="ti-check">
+          <h4>Complete</h4>
+          <p>All steps completed with progress shown.</p>
+        </FormWizard.TabContent>
+      </FormWizard>
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </>
+  );
+}
+```

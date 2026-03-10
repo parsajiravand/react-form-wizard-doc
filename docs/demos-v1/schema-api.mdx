@@ -9,3 +9,76 @@ import Sample2SchemaApi from "../../src/components/DemosV1/Sample2SchemaApi";
 <div class="demo">
   <Sample2SchemaApi />
 </div>
+
+## Code
+
+```tsx
+import React from "react";
+import FormWizard, {
+  type FormWizardSchema,
+  type WizardData,
+} from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+
+export default function Sample2SchemaApi() {
+  const [schemaData, setSchemaData] = React.useState<WizardData>({
+    plan: "basic",
+    accepted: false,
+  });
+
+  const schema: FormWizardSchema = {
+    initialData: schemaData,
+    steps: [
+      {
+        id: "intro",
+        title: "Introduction",
+        content: (
+          <div>
+            <h4>Schema Mode</h4>
+            <p>This wizard uses the schema API.</p>
+          </div>
+        ),
+      },
+      {
+        id: "premium",
+        title: "Premium Features",
+        condition: ({ data }) => data.plan === "premium",
+        content: (
+          <div>
+            <h4>Premium Only</h4>
+            <p>This step only shows for premium plans.</p>
+          </div>
+        ),
+      },
+      {
+        id: "finish",
+        title: "Complete",
+        content: (
+          <div>
+            <h4>Done</h4>
+            <p>Schema wizard complete.</p>
+          </div>
+        ),
+      },
+    ],
+  };
+
+  return (
+    <>
+      <FormWizard
+        title="Sample 2: Schema Wizard"
+        subtitle="Data-driven with conditions"
+        schema={schema}
+        data={schemaData}
+        onDataChange={setSchemaData}
+        onComplete={(data?: WizardData) => {
+          console.log("Wizard completed with data:", data);
+        }}
+      />
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </>
+  );
+}
+```
