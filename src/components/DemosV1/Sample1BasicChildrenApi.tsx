@@ -1,0 +1,47 @@
+import React from "react";
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+
+export default function Sample1BasicChildrenApi() {
+  const handleComplete = () => {
+    console.log("Form completed!");
+  };
+  const tabChanged = ({
+    prevIndex,
+    nextIndex,
+  }: {
+    prevIndex: number;
+    nextIndex: number;
+  }) => {
+    console.log("prevIndex", prevIndex);
+    console.log("nextIndex", nextIndex);
+  };
+
+  return (
+    <>
+      <FormWizard
+        title="Sample 1: Basic Wizard"
+        subtitle="Simple children API"
+        onComplete={handleComplete}
+        onTabChange={tabChanged}
+      >
+        <FormWizard.TabContent title="Step 1" icon="ti-user">
+          <h4>Welcome</h4>
+          <p>This is a basic wizard using the children API.</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Step 2" icon="ti-settings">
+          <h4>Settings</h4>
+          <p>Configure your preferences.</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Step 3" icon="ti-check">
+          <h4>Complete</h4>
+          <p>Wizard finished.</p>
+        </FormWizard.TabContent>
+      </FormWizard>
+      {/* add style */}
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </>
+  );
+}

@@ -1,0 +1,56 @@
+---
+sidebar_position: 3
+title: Dark Mode
+hide_table_of_contents: true
+---
+
+import Sample3DarkMode from "../../src/components/DemosV1/Sample3DarkMode";
+
+<div class="demo">
+  <Sample3DarkMode />
+</div>
+
+## Code
+
+```tsx
+import React from "react";
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+
+export default function Sample3DarkMode() {
+  return (
+    <>
+      <FormWizard
+        title="Sample 3: Dark Mode"
+        subtitle="Dark theme with custom colors"
+        darkMode={true}
+        customDarkModeColor={{
+          title: "#ffffff",
+          subtitle: "#cccccc",
+          tab: "#ffffff",
+          tabIconColor: "#3b82f6",
+          buttons: "#1f1f1f",
+          buttonsText: "#ffffff",
+          finishButton: "#10b981",
+          finishButtonText: "#ffffff",
+        }}
+        onComplete={(data?: any) => {
+          console.log("Wizard completed with data:", data);
+        }}
+      >
+        <FormWizard.TabContent title="Dark Step 1" icon="ti-moon">
+          <h4>Dark Theme</h4>
+          <p>This wizard uses dark mode styling.</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Dark Step 2" icon="ti-star">
+          <h4>Dark Features</h4>
+          <p>Custom dark colors applied.</p>
+        </FormWizard.TabContent>
+      </FormWizard>
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </>
+  );
+}
+```

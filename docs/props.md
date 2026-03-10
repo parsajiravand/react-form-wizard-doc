@@ -3,35 +3,37 @@ sidebar_position: 2
 title: Props
 description: The props for the FormWizard component.
 ---
-import Highlight from "../src/components/Highlight/index.js";
 
 ### FormWizard Component
 
-| Prop                   | Description                                                                | Samples                                     |
-| ---------------------- | -------------------------------------------------------------------------- | ------------------------------------------- |
-| `title`                | The title of the form wizard. It can be a string or a ReactNode.           | [sample](/docs/demos/custom-title)          |
-| `subtitle`             | The subtitle or description of the form wizard.                            | [sample](/docs/demos/custom-title-template) |
-| `shape`                | The shape of the wizard tabs (e.g., "circle", "square").                   | [sample](/docs/demos/square-steps)          |
-| `color`                | The color of the wizard tabs and progress bar.                             | [sample](/docs/demos/simple)                |
-| `children`             | The content of the form wizard, including the form tabs and their content. | In each demo                                |
-| `nextButtonText`       | The text for the "Next" button.                                            | -                                           |
-| `nextButtonTemplate`   | A function with one argument for customize footer next button              | [sample](/docs/demos/custom-footer-buttons) |
-| `backButtonText`       | The text for the "Back" button.                                            | -                                           |
-| `backButtonTemplate`   | A function with one argument for customize footer back button              | [sample](/docs/demos/custom-footer-buttons) |
-| `finishButtonText`     | The text for the "Finish" button.                                          |
-| `finishButtonTemplate` | A function with one argument for customize footer finish button            | [sample](/docs/demos/custom-footer-buttons) |
-| `stepSize`             | The size of the steps (e.g., "xs", "sm", "md", "lg").                      | [sample](/docs/demos/small-step-size)       |
-| `layout`               | The layout of the form wizard (e.g., "horizontal", "vertical").            | -                                           |
-| `startIndex`           | The index started default is 0                                             | [sample](/docs/demos/step-index)            |
-| `disableBackOnClickStep` <Highlight>v.0.2.4 </Highlight>|  A boolean value  to disable back button when click on step (tab) `default:false` `(v)   |-                                  |
-| `showProggressBar` <Highlight>v.0.2.4 </Highlight>   |  A boolean value to show progress bar `default:true`  |-                                            |
-| `inlineStep` <Highlight>v.0.2.4 </Highlight>       |   A boolean value to show step (tab) inline `default:false` |[sample](/docs/demos/inline-step)  |       
-| `darkMode` <Highlight>v.0.2.4 </Highlight>       |   A boolean value to show dark mode `default:false`       |[sample](/docs/demos/dark-mode)      |    
-| `customDarkModeColor` <Highlight>v.0.2.4 </Highlight>       |   A object value to show custom dark mode color `default: {}`                       |[sample](/docs/demos/dark-mode)    | 
-| `removeBackgroundTab` <Highlight>v.0.2.4 </Highlight>       |   A boolean value to remove tab background `default:false`                       |[sample](/docs/demos/without-background-tab)   |
-| `removeBackgroundTabTransparentColor` <Highlight>v.0.2.4 </Highlight>       | A string value to remove tab background transparent color `default: ''`  |[sample](/docs/demos/without-background-tab)|
-| `onComplete`           | A callback function to be called when the form wizard is completed.        | In each demo                                |
-| `onTabChange`          | A callback function to be called when the active tab is changed.           | [sample](/docs/demos/simple)                |
+| Prop | Description | Sample |
+| --- | --- | --- |
+| `title` | Wizard title (string or React node). | [v1 basic](/docs/demos-v1/basic-children-api) |
+| `subtitle` | Optional wizard subtitle text. | [v1 basic](/docs/demos-v1/basic-children-api) |
+| `shape` | Tab shape (`circle` or `square`). | [v1 square shape](/docs/demos-v1/square-shape) |
+| `color` | Main accent color for tabs and progress visuals. | [v1 custom colors](/docs/demos-v1/custom-colors) |
+| `children` | Legacy/children API content using `FormWizard.TabContent`. | [v1 basic](/docs/demos-v1/basic-children-api) |
+| `schema` | Schema API definition (`FormWizardSchema`). If both `schema` and `children` are passed, `schema` is used. | [v1 schema api](/docs/demos-v1/schema-api) |
+| `data` | Controlled wizard data object for schema mode. | [v1 conditional steps](/docs/demos-v1/conditional-steps-schema) |
+| `onDataChange` | Callback fired when wizard data changes in schema mode. | [v1 schema api](/docs/demos-v1/schema-api) |
+| `nextButtonText` | Text label for next button. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
+| `nextButtonTemplate` | Custom renderer for next button. Receives a `next` callback. | [v1 custom button templates](/docs/demos-v1/custom-button-templates) |
+| `backButtonText` | Text label for back button. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
+| `backButtonTemplate` | Custom renderer for back button. Receives a `back` callback. | [v1 custom button templates](/docs/demos-v1/custom-button-templates) |
+| `finishButtonText` | Text label for finish button. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
+| `finishButtonTemplate` | Custom renderer for finish button. Receives a `finish` callback. | [v1 custom button templates](/docs/demos-v1/custom-button-templates) |
+| `stepSize` | Step size: `xs`, `sm`, `md`, `lg`. | [v1 step sizes](/docs/demos-v1/different-step-sizes) |
+| `layout` | Layout direction: `horizontal` or `vertical`. | [v1 vertical layout](/docs/demos-v1/vertical-layout) |
+| `startIndex` | Initial active step index. | [legacy step index](/docs/demos/step-index) |
+| `disableBackOnClickStep` | Prevents clicking ahead/back by tab selection when enabled. | [v1 complete showcase](/docs/demos-v1/complete-feature-showcase) |
+| `showProgressBar` | Toggle progress bar between completed steps. Default: `true`. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
+| `inlineStep` | Compact inline step layout. Default: `false`. | [v1 inline steps](/docs/demos-v1/inline-steps) |
+| `darkMode` | Enables dark mode visuals. Default: `false`. | [v1 dark mode](/docs/demos-v1/dark-mode) |
+| `customDarkModeColor` | Custom dark mode color tokens object. | [v1 dark mode](/docs/demos-v1/dark-mode) |
+| `removeBackgroundTab` | Removes default tab background fill. | [legacy remove tab bg](/docs/demos/without-background-tab) |
+| `removeBackgroundTabTransparentColor` | Background color to apply under transparent tab icons. | [legacy remove tab bg](/docs/demos/without-background-tab) |
+| `onComplete` | Called on finish. In v1, can receive optional wizard data payload: `(data?: WizardData) => void`. | [v1 schema api](/docs/demos-v1/schema-api) |
+| `onTabChange` | Called when active step changes with `{ prevIndex, nextIndex, stepId? }`. | [v1 basic](/docs/demos-v1/basic-children-api) |
 
 <br />
 
@@ -39,13 +41,28 @@ import Highlight from "../src/components/Highlight/index.js";
 
 The `FormWizard.TabContent` component is used to define each tab's content and accepts the following props:
 
-| Prop                                               | Description                                                                        | Samples                            |
-| -----------------                                  | ---------------------------------------------------------------------------------- | ---------------------------------- |
-| `title`                                            | The title of the tab.                                                              | In each demo                       |
-| `icon`                                             | The icon for the tab. (string,HTML element)                                        | [sample](/docs/demos/custom-icon)  |
-| `isValid`                                          | A boolean value indicating whether the tab is valid or not.                        | [sample](/docs/demos/validate-tab) |
-| `validationError`                                  | The validation error message to be displayed when the tab is not valid. (Function) | [sample](/docs/demos/validate-tab) |
-| `showErrorOnTab` <Highlight>v.0.2.4 </Highlight>   | A boolean value to show error message on tab `default:false`                       | [sample](/docs/demos/show-error-tab) |
-| `showErrorOnTabColor` <Highlight>v.0.2.4 </Highlight>  | A string value to show error message color on tab `default:red`                | [sample](/docs/demos/show-error-tab) |
+| Prop | Description | Sample |
+| --- | --- | --- |
+| `id` | Optional stable step id for imperative navigation and accessibility mapping. | [v1 complete showcase](/docs/demos-v1/complete-feature-showcase) |
+| `title` | Tab title text. | [v1 basic](/docs/demos-v1/basic-children-api) |
+| `icon` | Tab icon (`string` class name or React node). | [v1 custom react icons](/docs/demos-v1/custom-icons-react-elements) |
+| `condition` | Optional condition function to decide if a step is visible. | [v1 conditional steps](/docs/demos-v1/conditional-steps-schema) |
+| `validate` | Optional validation function returning `true` or an error message. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
+| `isValid` | Legacy boolean validity flag for tab content. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
+| `validationError` | Function called when invalid step blocks navigation. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
+| `showErrorOnTab` | Shows visual error style on the tab when invalid. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
+| `showErrorOnTabColor` | Error color for tab icon/title/progress border. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
 
-Please refer to the component's source code or documentation for additional props and more detailed information.
+### v1 Schema Types
+
+Schema mode introduces these exported helpers:
+
+- `WizardData`
+- `WizardConditionContext`
+- `WizardValidationContext`
+- `WizardCondition`
+- `WizardValidation`
+- `WizardStepSchema`
+- `FormWizardSchema`
+
+For callback details, see [Events](/docs/event). For imperative methods, see [References](/docs/refrence).

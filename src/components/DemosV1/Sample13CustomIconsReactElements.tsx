@@ -1,0 +1,28 @@
+import React from "react";
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+
+export default function Sample13CustomIconsReactElements() {
+  const starIcon = <span style={{ color: "#fbbf24", fontSize: 16 }}>⭐</span>;
+  const heartIcon = <span style={{ color: "#ef4444", fontSize: 16 }}>❤️</span>;
+
+  return (
+    <>
+      <FormWizard title="Sample 13: Custom Icons" subtitle="React element icons" onComplete={(data?: any) => {
+        console.log("Wizard completed with data:", data);
+      }}>
+        <FormWizard.TabContent title="Star Step" icon={starIcon}>
+          <h4>Custom Icons</h4>
+          <p>Icons can be React elements, not just strings.</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Heart Step" icon={heartIcon}>
+          <h4>Rich Icons</h4>
+          <p>Use any React component as an icon.</p>
+        </FormWizard.TabContent>
+      </FormWizard>
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </>
+  );
+}

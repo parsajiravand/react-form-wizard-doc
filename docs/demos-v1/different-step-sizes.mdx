@@ -1,0 +1,57 @@
+---
+sidebar_position: 10
+title: Different Step Sizes
+hide_table_of_contents: true
+---
+
+import Sample10DifferentStepSizes from "../../src/components/DemosV1/Sample10DifferentStepSizes";
+
+<div class="demo">
+  <Sample10DifferentStepSizes />
+</div>
+
+## Code
+
+```tsx
+import React from "react";
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+
+export default function Sample10DifferentStepSizes() {
+  return (
+    <>
+      <div style={{ border: "1px solid #e5e7eb", borderRadius: 8, padding: 16 }}>
+        <h4>Extra Small (xs)</h4>
+        <FormWizard stepSize="xs" title="XS Size" onComplete={(data?: any) => {
+          console.log("Wizard completed with data:", data);
+        }}>
+          <FormWizard.TabContent title="XS Step" icon="ti-minus">
+            <p>Extra small step size</p>
+          </FormWizard.TabContent>
+        </FormWizard>
+
+        <h4>Small (sm)</h4>
+        <FormWizard stepSize="sm" title="SM Size" onComplete={(data?: any) => {
+          console.log("Wizard completed with data:", data);
+        }}>
+          <FormWizard.TabContent title="SM Step" icon="ti-plus">
+            <p>Small step size</p>
+          </FormWizard.TabContent>
+        </FormWizard>
+
+        <h4>Large (lg)</h4>
+        <FormWizard stepSize="lg" title="LG Size" onComplete={(data?: any) => {
+          console.log("Wizard completed with data:", data);
+        }}>
+          <FormWizard.TabContent title="LG Step" icon="ti-plus">
+            <p>Large step size</p>
+          </FormWizard.TabContent>
+        </FormWizard>
+      </div>
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </>
+  );
+}
+```

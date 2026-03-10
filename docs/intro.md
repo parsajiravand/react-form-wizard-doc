@@ -19,6 +19,27 @@ or
 ```bash
 yarn add react-form-wizard-component
 ```
+## 🚨 IMPORTANT: React Version Compatibility
+
+### ⚠️ **DANGER: React Version Requirements**
+
+**If you are using React v18 or lower, you CANNOT use this version (v1.0.0+).**
+
+**You must use version 0.2.7 instead:**
+```bash
+npm install react-form-wizard-component@0.2.7
+```
+
+**React v19 is REQUIRED** for this version. The new features and optimizations are only compatible with React 19+.
+
+**Check your React version:**
+```bash
+npm list react
+```
+
+If you see `react@18.x.x` or lower, **do not upgrade** to v1.0.0+.
+
+---
 
 ## Usage
 
@@ -141,7 +162,11 @@ Refer to the component's source code or documentation for additional props and d
 
 ## Examples
 
-You can find examples of using the `react-form-wizard-component` in the [examples](/docs/category/demos) directory.
+You can find examples of using the `react-form-wizard-component`:
+
+- **Legacy demos**: [Demos (old)](/docs/category/demos-old)
+- **New schema-first demos**: [Demos v1](/docs/category/demos-v1)
+- **Try live**: [Playground](/docs/playground)
 
 ## License
 

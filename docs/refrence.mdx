@@ -1,6 +1,6 @@
 ---
 sidebar_position: 3
-title: Refrences
+title: References
 hide_table_of_contents: true
 ---
 
@@ -12,17 +12,20 @@ import TabItem from "@theme/TabItem";
 
 You can use the ref to access the methods of the form wizard component.
 
-React Refrence documention : [https://react.dev/reference/react/useRef](https://react.dev/reference/react/useRef#manipulating-the-dom-with-a-ref)
+React reference documentation: [https://react.dev/reference/react/useRef](https://react.dev/reference/react/useRef#manipulating-the-dom-with-a-ref)
 
 :::
 
-| Refs      | Description                                                     |
-| --------- | --------------------------------------------------------------- |
-| nextTab   | Go to the next tab                                              |
-| prevTab   | Go to the previous tab                                          |
-| goToTab   | Go to the tab by index (send index you want as **number** type) |
-| activeAll | Active all tabs                                                 |
-| reset     | Reset the form                                                  |
+| Ref Method | Description |
+| --- | --- |
+| `nextTab()` | Move to the next step (respects step validation). |
+| `prevTab()` | Move to the previous step. |
+| `goToTab(index)` | Navigate to a step by index. |
+| `goToTabById(id)` | Navigate to a step by id. |
+| `activeAll()` | Mark all tabs as visited/active. |
+| `reset()` | Reset to the configured start index. |
+| `setData(data)` | Update schema data programmatically. |
+| `getData()` | Read current schema data from wizard runtime. |
 
 <div class="demo">
   <Sample />
@@ -34,36 +37,32 @@ React Refrence documention : [https://react.dev/reference/react/useRef](https://
 ```tsx
 import React from "react";
 import FormWizard, {
-  type FormWizardProps,
   type FormWizardMethods,
 } from "react-form-wizard-component";
 import "react-form-wizard-component/dist/style.css";
 
 const Sample: React.FC = () => {
-  const formWizardRef = React.createRef<FormWizardProps & FormWizardMethods>();
+  const formWizardRef = React.createRef<FormWizardMethods>();
   const handleComplete = () => {
     console.log("Form completed!");
-    // Handle form completion logic here
   };
-  const handelNext = () => {
-    console.log("nextTab");
+  const handleNext = () => {
     formWizardRef.current?.nextTab();
   };
-  const handelPrev = () => {
-    console.log("prevTab");
+  const handlePrev = () => {
     formWizardRef.current?.prevTab();
   };
-  const handelReset = () => {
-    console.log("reset");
+  const handleReset = () => {
     formWizardRef.current?.reset();
   };
-  const handelActiveAll = () => {
-    console.log("activeAll");
+  const handleActiveAll = () => {
     formWizardRef.current?.activeAll();
   };
-  const handelChangeTab = () => {
-    console.log("changeTab");
-    formWizardRef.current?.changeTab(2);
+  const handleGoToTab = () => {
+    formWizardRef.current?.goToTab(2);
+  };
+  const handleGoToTabById = () => {
+    formWizardRef.current?.goToTabById("address");
   };
 
   return (
@@ -83,26 +82,26 @@ const Sample: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
-          color: "#fff",
-          fontSize: "20px",
-          fontWeight: "bold",
+          flexWrap: "wrap",
         }}
       >
-        <button className="sample-refrence-button" onClick={handelNext}>
+        <button className="sample-reference-button" onClick={handleNext}>
           nextTab
         </button>
-        <button className="sample-refrence-button" onClick={handelPrev}>
+        <button className="sample-reference-button" onClick={handlePrev}>
           prevTab
         </button>
-        <button className="sample-refrence-button" onClick={handelReset}>
+        <button className="sample-reference-button" onClick={handleReset}>
           reset
         </button>
-        <button className="sample-refrence-button" onClick={handelActiveAll}>
+        <button className="sample-reference-button" onClick={handleActiveAll}>
           activeAll
         </button>
-        <button className="sample-refrence-button" onClick={handelChangeTab}>
-          changeTab
+        <button className="sample-reference-button" onClick={handleGoToTab}>
+          goToTab(2)
+        </button>
+        <button className="sample-reference-button" onClick={handleGoToTabById}>
+          goToTabById("address")
         </button>
       </div>
 
@@ -124,7 +123,7 @@ const Sample: React.FC = () => {
           <h3> Identify Tab</h3>
           <p> Add your form inputs and components for the third step </p>
         </FormWizard.TabContent>
-        <FormWizard.TabContent title="Address" icon="ti-map">
+        <FormWizard.TabContent id="address" title="Address" icon="ti-map">
           <h3> Address</h3>
           <p> Add your form inputs and components for the last step </p>
         </FormWizard.TabContent>
@@ -136,7 +135,7 @@ const Sample: React.FC = () => {
       {/* add style */}
       <style>{`
         @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
-        .sample-refrence-button{
+        .sample-reference-button{
           margin: 5px;
           padding: 8px 15px;
           border: 1px solid transparent;
@@ -144,14 +143,12 @@ const Sample: React.FC = () => {
           background-color: #2196f3;
           color: #fff;
           cursor: pointer;
-
         }
-        .sample-refrence-button:hover{
+        .sample-reference-button:hover{
           background-color: #fff;
           color: #2196f3;
           border: 1px solid #2196f3;
         }
-        
       `}</style>
     </>
   );
@@ -170,29 +167,22 @@ import "react-form-wizard-component/dist/style.css";
 
 const Sample = () => {
   const formWizardRef = React.createRef();
-  console.log("formWizardRef", formWizardRef);
   const handleComplete = () => {
     console.log("Form completed!");
-    // Handle form completion logic here
   };
-  const handelNext = () => {
-    console.log("nextTab");
+  const handleNext = () => {
     formWizardRef.current?.nextTab();
   };
-  const handelPrev = () => {
-    console.log("prevTab");
+  const handlePrev = () => {
     formWizardRef.current?.prevTab();
   };
-  const handelReset = () => {
-    console.log("reset");
+  const handleReset = () => {
     formWizardRef.current?.reset();
   };
-  const handelActiveAll = () => {
-    console.log("activeAll");
+  const handleActiveAll = () => {
     formWizardRef.current?.activeAll();
   };
-  const handelChangeTab = () => {
-    console.log("changeTab");
+  const handleGoToTab = () => {
     formWizardRef.current?.goToTab(2);
   };
 
@@ -213,26 +203,23 @@ const Sample = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
-          color: "#fff",
-          fontSize: "20px",
-          fontWeight: "bold",
+          flexWrap: "wrap",
         }}
       >
-        <button className="sample-refrence-button" onClick={handelNext}>
+        <button className="sample-reference-button" onClick={handleNext}>
           nextTab
         </button>
-        <button className="sample-refrence-button" onClick={handelPrev}>
+        <button className="sample-reference-button" onClick={handlePrev}>
           prevTab
         </button>
-        <button className="sample-refrence-button" onClick={handelReset}>
+        <button className="sample-reference-button" onClick={handleReset}>
           reset
         </button>
-        <button className="sample-refrence-button" onClick={handelActiveAll}>
+        <button className="sample-reference-button" onClick={handleActiveAll}>
           activeAll
         </button>
-        <button className="sample-refrence-button" onClick={handelChangeTab}>
-          changeTab
+        <button className="sample-reference-button" onClick={handleGoToTab}>
+          goToTab(2)
         </button>
       </div>
 
@@ -266,7 +253,7 @@ const Sample = () => {
       {/* add style */}
       <style>{`
         @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
-        .sample-refrence-button{
+        .sample-reference-button{
           margin: 5px;
           padding: 8px 15px;
           border: 1px solid transparent;
@@ -274,14 +261,12 @@ const Sample = () => {
           background-color: #2196f3;
           color: #fff;
           cursor: pointer;
-
         }
-        .sample-refrence-button:hover{
+        .sample-reference-button:hover{
           background-color: #fff;
           color: #2196f3;
           border: 1px solid #2196f3;
         }
-
       `}</style>
     </>
   );
@@ -293,3 +278,5 @@ export default Sample;
 </TabItem>
 
 </Tabs>
+
+See also: [Props](/docs/props) and [Event Handling](/docs/event).

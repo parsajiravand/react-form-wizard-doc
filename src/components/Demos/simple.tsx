@@ -2,6 +2,7 @@ import React from "react";
 import FormWizard from "react-form-wizard-component";
 import "react-form-wizard-component/dist/style.css";
 
+
 export default function simple() {
   const handleComplete = () => {
     console.log("Form completed!");

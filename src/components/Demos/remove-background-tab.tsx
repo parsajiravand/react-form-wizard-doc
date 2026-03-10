@@ -12,7 +12,7 @@ export default function removeBackgroudTab() {
     <>
       <FormWizard
         removeBackgroundTab={true}
-        removeBackgroundTabColor="white"
+        removeBackgroundTabTransparentColor="white"
         onComplete={handleComplete}
       >
         <FormWizard.TabContent title="Personal details" icon="">

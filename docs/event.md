@@ -8,39 +8,47 @@ sidebar_position: 3
 
 The `FormWizard` component provides the following event handling options:
 
-| Event         | Description                                                           |
-| ------------- | --------------------------------------------------------------------- |
-| `onComplete`  | A callback function that is called when the form wizard is completed. |
-| `onTabChange` | A callback function that is called when the active tab is changed.    |
+| Event | Description |
+| --- | --- |
+| `onComplete` | Called when the finish action succeeds. In v1, this callback can receive optional wizard data: `(data?: WizardData) => void`. |
+| `onTabChange` | Called when the active tab changes with payload `{ prevIndex, nextIndex, stepId? }`. |
 
 ### `onComplete`
 
-The `onComplete` event is triggered when the form wizard is completed. You can assign a callback function to this event prop to perform any desired actions upon completion.
+`onComplete` fires after finish is triggered on a valid final step.
 
 Example usage:
 
-```jsx
-<FormWizard onComplete={handleFormWizardComplete}>{/* ... */}</FormWizard>
-```
+```tsx
+import type { WizardData } from "react-form-wizard-component";
 
-In the above example, `handleFormWizardComplete` is a function that will be called when the form wizard is completed.
+const handleComplete = (data?: WizardData) => {
+  console.log("Wizard completed with data:", data);
+};
+
+<FormWizard onComplete={handleComplete}>{/* ... */}</FormWizard>;
+```
 
 ### `onTabChange`
 
-The `onTabChange` event is triggered when the active tab in the form wizard is changed. You can assign a callback function to this event prop to perform any desired actions when the active tab changes.
+`onTabChange` fires whenever navigation changes the active step.
 
 Example usage:
 
-```jsx
-const handleTabChange = ({ previousIndex, currentIndex }) => {
-  // Do something when the active tab changes
-  console.log(`Active tab changed to index ${(previousIndex, currentIndex)}`);
+```tsx
+const handleTabChange = ({
+  prevIndex,
+  nextIndex,
+  stepId,
+}: {
+  prevIndex: number;
+  nextIndex: number;
+  stepId?: string;
+}) => {
+  console.log("Tab changed:", { prevIndex, nextIndex, stepId });
 };
+
 <FormWizard onTabChange={handleTabChange}>{/* ... */}</FormWizard>;
 ```
 
-In the above example, `handleTabChange` is a function that will be called when the active tab changes in the form wizard.
-
-You can define these event handling functions in your component and implement any logic or functionality according to your requirements.
-
-Make sure to check the documentation or source code of the `FormWizard` component for additional details and available parameters for these event handling options.
+See [Props](/docs/props) for full callback signatures and related schema data props.

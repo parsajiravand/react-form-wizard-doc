@@ -1,0 +1,95 @@
+---
+sidebar_position: 7
+title: Conditional Steps (Schema)
+hide_table_of_contents: true
+---
+
+import Sample7ConditionalStepsSchema from "../../src/components/DemosV1/Sample7ConditionalStepsSchema";
+
+<div class="demo">
+  <Sample7ConditionalStepsSchema />
+</div>
+
+## Code
+
+```tsx
+import React from "react";
+import FormWizard, {
+  type FormWizardSchema,
+} from "react-form-wizard-component";
+import "react-form-wizard-component/dist/style.css";
+
+export default function Sample7ConditionalStepsSchema() {
+  const [plan, setPlan] = React.useState<"basic" | "premium">("basic");
+  const [accepted, setAccepted] = React.useState(false);
+
+  const schema: FormWizardSchema = {
+    initialData: { plan, accepted },
+    steps: [
+      {
+        id: "plan-selection",
+        title: "Choose Plan",
+        content: (
+          <div>
+            <h4>Select Your Plan</h4>
+            <select value={plan} onChange={(e) => setPlan(e.target.value as "basic" | "premium")}>
+              <option value="basic">Basic</option>
+              <option value="premium">Premium</option>
+            </select>
+          </div>
+        ),
+      },
+      {
+        id: "premium-features",
+        title: "Premium Only",
+        condition: ({ data }) => data.plan === "premium",
+        content: (
+          <div>
+            <h4>Premium Features</h4>
+            <p>Only visible for premium plans.</p>
+          </div>
+        ),
+      },
+      {
+        id: "terms",
+        title: "Terms & Conditions",
+        validate: ({ data }) => (data.accepted === true ? true : "Please accept terms"),
+        content: (
+          <div>
+            <h4>Terms Acceptance</h4>
+            <label>
+              <input
+                type="checkbox"
+                checked={accepted}
+                onChange={(e) => setAccepted(e.target.checked)}
+              />
+              I accept the terms and conditions
+            </label>
+          </div>
+        ),
+      },
+    ],
+  };
+
+  return (
+    <>
+      <FormWizard
+        title="Sample 7: Conditional Steps"
+        subtitle="Dynamic steps based on data"
+        schema={schema}
+        data={{ plan, accepted }}
+        onDataChange={(data) => {
+          setPlan(data.plan as "basic" | "premium");
+          setAccepted(Boolean(data.accepted));
+        }}
+        onComplete={(data?: any) => {
+          console.log("Wizard completed with data:", data);
+        }}
+      />
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </>
+  );
+}
+```
