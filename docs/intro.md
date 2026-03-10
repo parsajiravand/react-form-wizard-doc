@@ -162,7 +162,11 @@ Refer to the component's source code or documentation for additional props and d
 
 ## Examples
 
-You can find examples of using the `react-form-wizard-component` in the [examples](/docs/category/demos) directory.
+You can find examples of using the `react-form-wizard-component`:
+
+- **Legacy demos**: [Demos (old)](/docs/category/demos-old)
+- **New schema-first demos**: [Demos v1](/docs/category/demos-v1)
+- **Try live**: [Playground](/docs/playground)
 
 ## License
 
