@@ -1,23 +1,22 @@
 ---
 title: Event Handling
-description: The event handling options for the FormWizard component.
+description: Callbacks fired by the FormWizard component.
 sidebar_position: 3
 ---
 
-## Event Handling
+# Event Handling
 
-The `FormWizard` component provides the following event handling options:
-
-| Event | Description |
+| Event | Signature |
 | --- | --- |
-| `onComplete` | Called when the finish action succeeds. In v1, this callback can receive optional wizard data: `(data?: WizardData) => void`. |
-| `onTabChange` | Called when the active tab changes with payload `{ prevIndex, nextIndex, stepId? }`. |
+| `onComplete` | `(data?: WizardData) => void` — fires when finish is pressed on a valid last step. |
+| `onTabChange` | `(e: WizardStepChangeEvent) => void` — fires when the active step changes. |
+| `onDataChange` | `(data: WizardData) => void` — fires whenever wizard data changes. |
 
-### `onComplete`
+## `onComplete`
 
-`onComplete` fires after finish is triggered on a valid final step.
-
-Example usage:
+Fires after finish is triggered **and** the final step validates. If the last
+step is invalid, navigation is blocked and this never runs — so you do not need
+to re-check validity inside it.
 
 ```tsx
 import type { WizardData } from "react-form-wizard-component";
@@ -29,26 +28,71 @@ const handleComplete = (data?: WizardData) => {
 <FormWizard onComplete={handleComplete}>{/* ... */}</FormWizard>;
 ```
 
-### `onTabChange`
-
-`onTabChange` fires whenever navigation changes the active step.
-
-Example usage:
+With react-hook-form, remember `handleSubmit` returns an *event handler*, so
+invoke it rather than passing it straight through:
 
 ```tsx
+<FormWizard onComplete={() => void form.handleSubmit(submit)()} />
+```
+
+## `onTabChange`
+
+Fires whenever navigation changes the active step.
+
+```tsx
+import type { WizardStepChangeEvent } from "react-form-wizard-component";
+
 const handleTabChange = ({
   prevIndex,
   nextIndex,
   stepId,
-}: {
-  prevIndex: number;
-  nextIndex: number;
-  stepId?: string;
-}) => {
+}: WizardStepChangeEvent) => {
   console.log("Tab changed:", { prevIndex, nextIndex, stepId });
 };
 
 <FormWizard onTabChange={handleTabChange}>{/* ... */}</FormWizard>;
 ```
 
-See [Props](/docs/props) for full callback signatures and related schema data props.
+| Field | Type | Description |
+| --- | --- | --- |
+| `prevIndex` | `number` | Index the wizard moved away from. |
+| `nextIndex` | `number` | Index the wizard moved to. |
+| `stepId` | `string \| undefined` | `id` of the now-active step, when it declares one. |
+
+:::caution Changed in v1.2.0
+
+`onTabChange` **no longer fires on mount**. Earlier releases reported a
+spurious `0 → 0` transition on the first render. If you used that to
+initialise something, do it directly instead.
+
+:::
+
+## `onDataChange`
+
+Fires whenever wizard data changes — from `updateData`, `setData`, or a
+controlled `data` prop being written back.
+
+```tsx
+const [data, setData] = React.useState<WizardData>({ plan: "basic" });
+
+<FormWizard data={data} onDataChange={setData} schema={schema} />;
+```
+
+Passing `data` makes the wizard **controlled**: it renders what you give it and
+reports intended changes through `onDataChange`, exactly like a controlled
+input. Omit `data` to let the wizard own its state.
+
+## Headless equivalent
+
+`useWizard` exposes the same callbacks as `onStepChange` and `onDataChange`:
+
+```tsx
+const wizard = useWizard({
+  stepIds: ["a", "b"],
+  onStepChange: (e) => console.log(e),
+  onDataChange: (d) => console.log(d),
+});
+```
+
+See [Props](/docs/props) for full signatures, and
+[References](/docs/refrence) for the imperative methods.

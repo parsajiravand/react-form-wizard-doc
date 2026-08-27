@@ -1,6 +1,6 @@
 import React from "react";
 import FormWizard from "react-form-wizard-component";
-import "react-form-wizard-component/dist/style.css";
+import "react-form-wizard-component/styles.css";
 
 export default function Sample1BasicChildrenApi() {
   const handleComplete = () => {

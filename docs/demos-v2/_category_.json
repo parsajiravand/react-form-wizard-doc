@@ -1,0 +1,8 @@
+{
+  "label": "Demos v2",
+  "position": 11,
+  "link": {
+    "type": "generated-index",
+    "description": "Everything new in v1.2.0 — theming, unstyled mode, the headless hook, validation adapters, persistence and accessibility."
+  }
+}

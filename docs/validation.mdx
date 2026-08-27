@@ -1,0 +1,176 @@
+---
+sidebar_position: 5
+title: Validation
+description: Per-step validation, including Zod and react-hook-form adapters.
+---
+
+import ValidationAdapters from "../src/components/DemosV2/ValidationAdapters";
+
+# Validation
+
+A step validator returns `true` to allow navigation, or a **string** to block it
+and supply the message. That is the whole contract — the adapters below just
+produce one for you.
+
+```tsx
+validate: ({ data }) => (data.accepted ? true : "Please accept the terms");
+```
+
+Returning `false` blocks navigation without a message.
+
+<div class="demo">
+  <ValidationAdapters />
+</div>
+
+## Zod
+
+<span class="badge badge--success">v1.2</span>
+
+```tsx
+import { z } from "zod";
+import FormWizard, { zodValidator } from "react-form-wizard-component";
+
+const account = z.object({
+  email: z.string().email("Enter a valid email"),
+  password: z.string().min(8, "At least 8 characters"),
+});
+
+const schema = {
+  steps: [
+    {
+      id: "account",
+      title: "Account",
+      content: <AccountFields />,
+      // `pick` validates only this step's slice of the wizard data.
+      validate: zodValidator(account, { pick: ["email", "password"] }),
+    },
+  ],
+};
+```
+
+`zod` never becomes a dependency of this package. The adapter is typed
+**structurally**, so anything exposing `safeParse` works — Zod, Valibot,
+ArkType, or a hand-rolled object:
+
+```tsx
+const emailSchema = {
+  safeParse: (value: unknown) =>
+    typeof (value as any)?.email === "string"
+      ? { success: true as const }
+      : {
+          success: false as const,
+          error: { issues: [{ message: "Enter a valid email address" }] },
+        },
+};
+```
+
+### Options
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `pick` | `string[]` | Validate only these keys of the wizard data. Omit to parse the whole object. |
+| `fallbackMessage` | `string` | Used when the schema fails but reports no message. |
+| `separator` | `string` | Joins multiple issue messages. Default: a single space. |
+
+## react-hook-form
+
+<span class="badge badge--success">v1.2</span>
+
+Per-step validation without splitting your form into several forms:
+
+```tsx
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FormWizard, { hookFormValidator } from "react-form-wizard-component";
+
+function Checkout() {
+  const form = useForm({ resolver: zodResolver(schema), mode: "onChange" });
+
+  return (
+    <FormWizard
+      schema={{
+        steps: [
+          {
+            id: "contact",
+            title: "Contact",
+            content: <ContactFields form={form} />,
+            // The step blocks only on its own fields.
+            validate: hookFormValidator(form, { fields: ["email", "phone"] }),
+          },
+          {
+            id: "address",
+            title: "Address",
+            content: <AddressFields form={form} />,
+            validate: hookFormValidator(form, { fields: ["street", "city"] }),
+          },
+        ],
+      }}
+      // handleSubmit returns an event handler, so invoke it rather than
+      // passing it straight to onComplete.
+      onComplete={() => void form.handleSubmit(submit)()}
+    />
+  );
+}
+```
+
+:::tip Use `mode: "onChange"`
+
+`hookFormValidator` **reads** `formState.errors` rather than triggering
+validation itself — it never mutates form state, so it is safe to run on every
+render. That means the errors need to already be there. `mode: "onChange"` or
+`mode: "onBlur"` both work; the default `onSubmit` does not.
+
+:::
+
+### Options
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `fields` | `string[]` | Field names this step owns. Omit to consider every current error. |
+| `fallbackMessage` | `string` | Used when the error carries no message. |
+
+## Combining rules
+
+`composeValidators` chains validators; the first failure wins.
+
+```tsx
+import { composeValidators, zodValidator } from "react-form-wizard-component";
+
+validate: composeValidators(
+  zodValidator(account),
+  ({ data }) => data.terms === true || "You must accept the terms"
+);
+```
+
+## Asynchronous checks
+
+Validators run on **every render**, so they must be synchronous and pure —
+never `await`, never set state. For an async check, do the work in your own
+handler, write the result into wizard data, and have the validator read it:
+
+```tsx
+async function upload(file: File) {
+  setStatus("uploading");
+  const { ok, reason } = await verify(file);
+  setStatus(ok ? "verified" : "rejected");
+  // The validator reads these, so the step unlocks itself.
+  wizardRef.current?.updateData({ documentVerified: ok, rejectionReason: reason });
+}
+
+// …and in the step:
+validate: ({ data }) =>
+  data.documentVerified === true
+    ? true
+    : status === "uploading"
+    ? "Still checking your document…"
+    : "Upload a document to continue",
+```
+
+## Showing the error
+
+When a validator returns a string the step marker is highlighted, and the
+message is passed to `validationError` if the step defines one. Control the
+colour with `showErrorOnTabColor`, or the `errorColor` theme token.
+
+See also: [Props](/docs/props), [Events](/docs/event),
+[validation demo](/docs/demos-v1/validation-with-error-display).

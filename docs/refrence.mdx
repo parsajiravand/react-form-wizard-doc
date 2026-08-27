@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 title: References
 hide_table_of_contents: true
 ---
@@ -23,9 +23,11 @@ React reference documentation: [https://react.dev/reference/react/useRef](https:
 | `goToTab(index)` | Navigate to a step by index. |
 | `goToTabById(id)` | Navigate to a step by id. |
 | `activeAll()` | Mark all tabs as visited/active. |
-| `reset()` | Reset to the configured start index. |
-| `setData(data)` | Update schema data programmatically. |
-| `getData()` | Read current schema data from wizard runtime. |
+| `reset()` | Reset to the configured start index, and clear any [persisted](/docs/persistence) data. |
+| `setData(data)` | Replace wizard data programmatically. |
+| `getData()` | Read the current wizard data. |
+| `updateData(patch)` <span class="badge badge--success">v1.2</span> | Merge a patch into wizard data, leaving other keys untouched. |
+| `getCurrentStep()` <span class="badge badge--success">v1.2</span> | Read the current zero-based step index. |
 
 <div class="demo">
   <Sample />
@@ -39,7 +41,7 @@ import React from "react";
 import FormWizard, {
   type FormWizardMethods,
 } from "react-form-wizard-component";
-import "react-form-wizard-component/dist/style.css";
+import "react-form-wizard-component/styles.css";
 
 const Sample: React.FC = () => {
   const formWizardRef = React.createRef<FormWizardMethods>();
@@ -163,7 +165,7 @@ export default Sample;
 ```jsx
 import React from "react";
 import FormWizard from "react-form-wizard-component";
-import "react-form-wizard-component/dist/style.css";
+import "react-form-wizard-component/styles.css";
 
 const Sample = () => {
   const formWizardRef = React.createRef();
@@ -279,4 +281,20 @@ export default Sample;
 
 </Tabs>
 
-See also: [Props](/docs/props) and [Event Handling](/docs/event).
+## Headless alternative
+
+If you want programmatic control *and* your own markup, use
+[`useWizard()`](/docs/headless) instead of a ref — it returns the same
+operations as plain functions:
+
+```tsx
+const wizard = useWizard({ stepIds: ["personal", "address", "review"] });
+
+wizard.next();
+wizard.goToId("address");
+wizard.updateData({ email: "a@b.com" });
+wizard.reset();
+```
+
+See also: [Props](/docs/props), [Event Handling](/docs/event) and
+[Headless](/docs/headless).

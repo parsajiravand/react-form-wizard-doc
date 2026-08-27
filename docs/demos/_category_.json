@@ -1,8 +1,7 @@
 {
-    "label": "Demos (old)",
-    "position": 7,
-    "link": {
-      "type": "generated-index"
-    }
+  "label": "Demos (old)",
+  "position": 13,
+  "link": {
+    "type": "generated-index"
   }
-  
+}

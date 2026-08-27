@@ -1,0 +1,88 @@
+---
+sidebar_position: 5
+title: Persistence & URL Sync
+hide_table_of_contents: true
+---
+
+import PersistedWizard from "../../src/components/DemosV2/PersistedWizard";
+
+Type a note and reload this page — both the answer and the step come back.
+
+<div class="demo">
+  <PersistedWizard />
+</div>
+
+## Code
+
+```tsx
+import React from "react";
+import FormWizard, {
+  type FormWizardMethods,
+  type FormWizardSchema,
+} from "react-form-wizard-component";
+import "react-form-wizard-component/styles.css";
+
+export default function PersistedWizard() {
+  const wizardRef = React.useRef<FormWizardMethods>(null);
+
+  const schema: FormWizardSchema = {
+    initialData: { note: "" },
+    steps: [
+      {
+        id: "write",
+        title: "Write",
+        content: ({ data }) => (
+          <label className="pw-field">
+            Note
+            <input
+              value={String(data.note ?? "")}
+              onChange={(e) =>
+                wizardRef.current?.updateData({ note: e.target.value })
+              }
+              placeholder="Type, then reload the page"
+            />
+          </label>
+        ),
+      },
+      {
+        id: "confirm",
+        title: "Confirm",
+        content: ({ data }) => <p>Saved note: “{String(data.note ?? "")}”</p>,
+      },
+      {
+        id: "done",
+        title: "Done",
+        content: <p>Still here after a refresh.</p>,
+      },
+    ],
+  };
+
+  return (
+    <>
+      <p className="pw-note">
+        Data goes to <code>sessionStorage["docs-persist"]</code>, and the active
+        step is mirrored into <code>?docs-step=</code>.{" "}
+        <strong>Reload this page to see both restored.</strong>
+      </p>
+
+      <FormWizard
+        ref={wizardRef}
+        title="Resumable wizard"
+        schema={schema}
+        persist={{ key: "docs-persist", storage: "session" }}
+        syncToUrl={{ param: "docs-step" }}
+        color="#0e6f70"
+        onComplete={() => {
+          // reset() returns to the start and clears the persisted payload.
+          wizardRef.current?.reset();
+        }}
+      />
+
+      <style>{`
+        .pw-note { color: #5c6968; font-size: 14px; }
+        .pw-field { display: flex; flex-direction: column; gap: 4px; max-width: 320px; }
+      `}</style>
+    </>
+  );
+}
+```

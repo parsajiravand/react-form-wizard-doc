@@ -76,7 +76,13 @@ const config = {
             position: "left",
             label: "Tutorial",
           },
+          { to: "/docs/category/demos-v2", label: "Demos", position: "left" },
           { to: "/blog", label: "Blog", position: "left" },
+          {
+            href: "https://www.npmjs.com/package/react-form-wizard-component",
+            label: "npm",
+            position: "right",
+          },
           {
             href: "https://github.com/parsajiravand/react-form-wizard",
             label: "GitHub",
@@ -126,8 +132,28 @@ const config = {
                 to: "/docs/event",
               },
               {
-                label: "Demos (old)",
-                to: "/docs/category/demos-old",
+                label: "Validation",
+                to: "/docs/validation",
+              },
+              {
+                label: "Headless",
+                to: "/docs/headless",
+              },
+              {
+                label: "Theming",
+                to: "/docs/theming",
+              },
+              {
+                label: "Accessibility",
+                to: "/docs/accessibility",
+              },
+              {
+                label: "Migration",
+                to: "/docs/migration",
+              },
+              {
+                label: "Demos v2",
+                to: "/docs/category/demos-v2",
               },
               {
                 label: "Playground",

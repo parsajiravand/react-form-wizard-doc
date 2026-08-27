@@ -1,59 +1,47 @@
 ---
 sidebar_position: 1
+title: Quick Start
+description: Accessible multi-step form wizard for React 17, 18 and 19 — zero dependencies, styled or headless.
 ---
 
 # Quick Start
 
-A react form wizard component with validation and progress bar with no external dependencies which simplifies tab wizard management.
+An accessible multi-step form wizard for React, with validation, a progress bar
+and **no runtime dependencies**. It ships a styled component and a headless
+hook from the same package.
 
-## Installation
-
-To install the package, you can use npm or yarn:
+## Install
 
 ```bash
 npm install react-form-wizard-component
 ```
 
-or
-
 ```bash
 yarn add react-form-wizard-component
 ```
-## 🚨 IMPORTANT: React Version Compatibility
 
-### ⚠️ **DANGER: React Version Requirements**
+Works with **React 17, 18 and 19**.
 
-**If you are using React v18 or lower, you CANNOT use this version (v1.0.0+).**
+:::tip Pinned to 0.2.7 because v1 needed React 19?
 
-**You must use version 0.2.7 instead:**
-```bash
-npm install react-form-wizard-component@0.2.7
-```
+You can upgrade now. React 18 support was restored in **v1.2.0** — the
+incompatibility was a build-configuration bug (React's JSX runtime was being
+compiled into the bundle), not a limitation of the component. See
+[Migration](/docs/migration).
 
-**React v19 is REQUIRED** for this version. The new features and optimizations are only compatible with React 19+.
-
-**Check your React version:**
-```bash
-npm list react
-```
-
-If you see `react@18.x.x` or lower, **do not upgrade** to v1.0.0+.
-
----
+:::
 
 ## Usage
 
-Import the `FormWizard` component and use it in your React application:
-
 ```tsx
 import FormWizard from "react-form-wizard-component";
-import "react-form-wizard-component/dist/style.css";
+import "react-form-wizard-component/styles.css";
 
 function App() {
   const handleComplete = () => {
     console.log("Form completed!");
-    // Handle form completion logic here
   };
+
   const tabChanged = ({
     prevIndex,
     nextIndex,
@@ -74,7 +62,7 @@ function App() {
         onTabChange={tabChanged}
       >
         <FormWizard.TabContent title="Personal details" icon="ti-user">
-          {/* Add your form inputs and components for the frst step */}
+          {/* Add your form inputs and components for the first step */}
           <h1>First Tab</h1>
           <p>Some content for the first tab</p>
         </FormWizard.TabContent>
@@ -87,7 +75,7 @@ function App() {
           <p>Some content for the last tab</p>
         </FormWizard.TabContent>
       </FormWizard>
-      {/* add style */}
+      {/* the icons above come from Themify */}
       <style>{`
         @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
       `}</style>
@@ -98,78 +86,82 @@ function App() {
 export default App;
 ```
 
-## Next.js Usage
-please note that you need to add `"use client";` at the top of your file to avoid SSR issues.
+That is a working three-step wizard with a progress bar, keyboard navigation,
+swipe support and screen-reader announcements.
+
+:::note Stylesheet path
+
+`react-form-wizard-component/styles.css` was added in v1.2.0. The older
+`react-form-wizard-component/dist/style.css` still resolves, so existing
+imports keep working.
+
+:::
+
+## Next.js
+
+The published bundles carry a `"use client"` directive, so importing the
+component from a **server component** works with no wrapper. You no longer need
+to add `"use client"` yourself.
 
 ```tsx
-"use client";
+// app/signup/page.tsx — a server component
 import FormWizard from "react-form-wizard-component";
-import "react-form-wizard-component/dist/style.css";
-// import type FormWizard from "react-form-wizard-component/dist/types/FormWizard";
-export default function App() {
-  const handleComplete = () => {
-    console.log("Form completed!");
-    // Handle form completion logic here
-  };
-  const tabChanged = ({
-    prevIndex,
-    nextIndex,
-  }: {
-    prevIndex: number;
-    nextIndex: number;
-  }) => {
-    console.log("prevIndex", prevIndex);
-    console.log("nextIndex", nextIndex);
-  };
+import "react-form-wizard-component/styles.css";
 
+export default function Page() {
   return (
-    <main className="">
-      <FormWizard onComplete={handleComplete} onTabChange={tabChanged}>
-        <FormWizard.TabContent title="Personal details" icon="ti-user">
-          <h3>First Tab</h3>
-          <p>Some content for the first tab</p>
-        </FormWizard.TabContent>
-        <FormWizard.TabContent title="Additional Info" icon="ti-settings">
-          <h3>Second Tab</h3>
-          <p>Some content for the second tab</p>
-        </FormWizard.TabContent>
-        <FormWizard.TabContent title="Last step" icon="ti-check">
-          <h3>Last Tab</h3>
-          <p>Some content for the last tab</p>
-        </FormWizard.TabContent>
-      </FormWizard>
-      {/* add style */}
-      <style>{`
-        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
-      `}</style>
-    </main>
+    <FormWizard title="Signup">
+      <FormWizard.TabContent title="Account">…</FormWizard.TabContent>
+      <FormWizard.TabContent title="Review">…</FormWizard.TabContent>
+    </FormWizard>
   );
 }
 ```
 
+Import the stylesheet once, anywhere in the tree — commonly `app/layout.tsx`.
+
+## What else is in the box
+
+|  |  |
+| --- | --- |
+| [Schema API](/docs/demos-v1/schema-api) | Declarative steps with conditional visibility and per-step validation. |
+| [Validation adapters](/docs/validation) | Zod and react-hook-form integration, still zero dependencies. |
+| [Headless `useWizard()`](/docs/headless) | The same state machine with none of the markup. |
+| [Theming](/docs/theming) | CSS custom properties, or go fully unstyled with your own classes. |
+| [Persistence](/docs/persistence) | Survive a reload; mirror the active step into the URL. |
+| [Accessibility](/docs/accessibility) | ARIA roles, live-region announcements, focus management, full keyboard operation. |
+
+## Compatibility
+
+| React | Supported | Notes |
+| --- | --- | --- |
+| 19.x | ✅ | |
+| 18.x | ✅ | |
+| 17.x | ✅ | Through any bundler (Vite, webpack, Next.js, CRA). Not loadable under **native Node ESM** — React 17 ships no `exports` field, so Node cannot resolve `react/jsx-runtime`. That is a React 17 limitation, not this package's. |
+| 16.x | ⚠️ | Untested. Requires `react/jsx-runtime`, so React 16.14+. |
+
+| Environment | Supported |
+| --- | --- |
+| ESM `import` | ✅ |
+| CommonJS `require()` | ✅ |
+| TypeScript — `bundler`, `node16`, `node10` | ✅ verified with [attw](https://github.com/arethetypeswrong/arethetypeswrong.github.io) |
+| Next.js App Router / RSC | ✅ `"use client"` included |
+| Server-side rendering | ✅ |
+| UMD via CDN | ✅ unpkg / jsDelivr |
+
 ## Props
 
-The `FormWizard` component accepts the following props:
-
-[sample](/docs/props)
-
-The `FormWizard.TabContent` component is used to define each tab's content and accepts the following props:
-
-[sample](/docs/props#formwizardtabcontent-component)
-
-
-Refer to the component's source code or documentation for additional props and details.
+See [Props](/docs/props) for the full `FormWizard` reference, and
+[`FormWizard.TabContent`](/docs/props#formwizardtabcontent-component) for step
+props.
 
 ## Examples
 
-You can find examples of using the `react-form-wizard-component`:
-
-- **Legacy demos**: [Demos (old)](/docs/category/demos-old)
-- **New schema-first demos**: [Demos v1](/docs/category/demos-v1)
-- **Try live**: [Playground](/docs/playground)
+- [Demos v2](/docs/category/demos-v2) — everything new in v1.2.0
+- [Demos v1](/docs/category/demos-v1) — the schema-first API
+- [Demos (old)](/docs/category/demos-old) — the 0.2.x children API
+- [Playground](/docs/playground) — try it live
 
 ## License
 
-This package is licensed under the MIT License. See the [LICENSE](https://github.com/parsajiravand/react-form-wizard/blob/master/LICENSE) file for more information.
-
-Please note that this is a basic README.md template, and you may need to modify it further to match your specific package and requirements.
+MIT. See [LICENSE](https://github.com/parsajiravand/react-form-wizard/blob/master/LICENSE).

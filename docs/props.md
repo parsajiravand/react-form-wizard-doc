@@ -1,68 +1,183 @@
 ---
 sidebar_position: 2
 title: Props
-description: The props for the FormWizard component.
+description: Full prop reference for the FormWizard component and FormWizard.TabContent.
 ---
 
-### FormWizard Component
+# Props
+
+## FormWizard Component
+
+### Content
 
 | Prop | Description | Sample |
 | --- | --- | --- |
-| `title` | Wizard title (string or React node). | [v1 basic](/docs/demos-v1/basic-children-api) |
+| `title` | Wizard title (string or React node). A node replaces the whole header. | [v1 basic](/docs/demos-v1/basic-children-api) |
 | `subtitle` | Optional wizard subtitle text. | [v1 basic](/docs/demos-v1/basic-children-api) |
-| `shape` | Tab shape (`circle` or `square`). | [v1 square shape](/docs/demos-v1/square-shape) |
-| `color` | Main accent color for tabs and progress visuals. | [v1 custom colors](/docs/demos-v1/custom-colors) |
-| `children` | Legacy/children API content using `FormWizard.TabContent`. | [v1 basic](/docs/demos-v1/basic-children-api) |
-| `schema` | Schema API definition (`FormWizardSchema`). If both `schema` and `children` are passed, `schema` is used. | [v1 schema api](/docs/demos-v1/schema-api) |
-| `data` | Controlled wizard data object for schema mode. | [v1 conditional steps](/docs/demos-v1/conditional-steps-schema) |
-| `onDataChange` | Callback fired when wizard data changes in schema mode. | [v1 schema api](/docs/demos-v1/schema-api) |
-| `nextButtonText` | Text label for next button. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
-| `nextButtonTemplate` | Custom renderer for next button. Receives a `next` callback. | [v1 custom button templates](/docs/demos-v1/custom-button-templates) |
-| `backButtonText` | Text label for back button. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
-| `backButtonTemplate` | Custom renderer for back button. Receives a `back` callback. | [v1 custom button templates](/docs/demos-v1/custom-button-templates) |
-| `finishButtonText` | Text label for finish button. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
-| `finishButtonTemplate` | Custom renderer for finish button. Receives a `finish` callback. | [v1 custom button templates](/docs/demos-v1/custom-button-templates) |
-| `stepSize` | Step size: `xs`, `sm`, `md`, `lg`. | [v1 step sizes](/docs/demos-v1/different-step-sizes) |
-| `layout` | Layout direction: `horizontal` or `vertical`. | [v1 vertical layout](/docs/demos-v1/vertical-layout) |
-| `startIndex` | Initial active step index. | [legacy step index](/docs/demos/step-index) |
-| `disableBackOnClickStep` | Prevents clicking ahead/back by tab selection when enabled. | [v1 complete showcase](/docs/demos-v1/complete-feature-showcase) |
-| `showProgressBar` | Toggle progress bar between completed steps. Default: `true`. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
+| `children` | Children API content using `FormWizard.TabContent`. | [v1 basic](/docs/demos-v1/basic-children-api) |
+| `schema` | Schema API definition (`FormWizardSchema`). If both `schema` and `children` are passed, `schema` wins. | [v1 schema api](/docs/demos-v1/schema-api) |
+| `data` | Controlled wizard data object. | [v1 conditional steps](/docs/demos-v1/conditional-steps-schema) |
+| `onDataChange` | Callback fired when wizard data changes. | [v1 schema api](/docs/demos-v1/schema-api) |
+
+### Appearance
+
+| Prop | Description | Sample |
+| --- | --- | --- |
+| `color` | Main accent colour for tabs and progress visuals. | [v1 custom colors](/docs/demos-v1/custom-colors) |
+| `theme` <span class="badge badge--success">v1.2</span> | Theme tokens written as `--rfw-*` CSS custom properties on the root. Overrides one value without restating a palette. | [theming](/docs/theming) |
+| `unstyled` <span class="badge badge--success">v1.2</span> | Drops every bundled class and inline colour so only your own styles apply. Default: `false`. | [unstyled](/docs/theming#unstyled-mode) |
+| `classNames` <span class="badge badge--success">v1.2</span> | Per-element class overrides (`WizardClassNames`). Merged with the defaults, or replacing them when `unstyled`. | [unstyled](/docs/theming#unstyled-mode) |
+| `shape` | Tab shape (`circle`, `square` or `tab`). | [v1 square shape](/docs/demos-v1/square-shape) |
+| `stepSize` | Step size: `xs`, `sm`, `md`, `lg`. Default: `md`. | [v1 step sizes](/docs/demos-v1/different-step-sizes) |
+| `layout` | Layout direction: `horizontal` or `vertical`. Default: `horizontal`. | [v1 vertical layout](/docs/demos-v1/vertical-layout) |
+| `showProgressBar` | Toggle the progress bar between completed steps. Default: `true`. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
 | `inlineStep` | Compact inline step layout. Default: `false`. | [v1 inline steps](/docs/demos-v1/inline-steps) |
 | `darkMode` | Enables dark mode visuals. Default: `false`. | [v1 dark mode](/docs/demos-v1/dark-mode) |
-| `customDarkModeColor` | Custom dark mode color tokens object. | [v1 dark mode](/docs/demos-v1/dark-mode) |
-| `removeBackgroundTab` | Removes default tab background fill. | [legacy remove tab bg](/docs/demos/without-background-tab) |
-| `removeBackgroundTabTransparentColor` | Background color to apply under transparent tab icons. | [legacy remove tab bg](/docs/demos/without-background-tab) |
-| `onComplete` | Called on finish. In v1, can receive optional wizard data payload: `(data?: WizardData) => void`. | [v1 schema api](/docs/demos-v1/schema-api) |
-| `onTabChange` | Called when active step changes with `{ prevIndex, nextIndex, stepId? }`. | [v1 basic](/docs/demos-v1/basic-children-api) |
+| `customDarkModeColor` | Custom dark-mode colour tokens object. Prefer `theme`, which works in both light and dark. | [v1 dark mode](/docs/demos-v1/dark-mode) |
+| `removeBackgroundTab` | Removes the default tab background fill. | [legacy remove tab bg](/docs/demos/without-background-tab) |
+| `removeBackgroundTabTransparentColor` | Background colour to apply under transparent tab icons. | [legacy remove tab bg](/docs/demos/without-background-tab) |
+| `style` <span class="badge badge--success">v1.2</span> | Extra inline styles for the root element. | — |
+
+### Buttons
+
+| Prop | Description | Sample |
+| --- | --- | --- |
+| `nextButtonText` | Text label for the next button. Default: `Next`. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
+| `backButtonText` | Text label for the back button. Default: `Back`. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
+| `finishButtonText` | Text label for the finish button. Default: `Finish`. | [v1 progress bar](/docs/demos-v1/progress-bar-default) |
+| `nextButtonTemplate` | Custom renderer for the next button. Receives the advance callback. | [v1 custom button templates](/docs/demos-v1/custom-button-templates) |
+| `backButtonTemplate` | Custom renderer for the back button. Receives the go-back callback. | [v1 custom button templates](/docs/demos-v1/custom-button-templates) |
+| `finishButtonTemplate` | Custom renderer for the finish button. Receives the submit callback. | [v1 custom button templates](/docs/demos-v1/custom-button-templates) |
+
+### Navigation and state
+
+| Prop | Description | Sample |
+| --- | --- | --- |
+| `startIndex` | Initial active step index. Clamped into range on the first render. | [legacy step index](/docs/demos/step-index) |
+| `disableBackOnClickStep` | Prevents navigating by clicking step markers. | [v1 complete showcase](/docs/demos-v1/complete-feature-showcase) |
+| `persist` <span class="badge badge--success">v1.2</span> | `{ key, storage }` — keeps wizard data across reloads. `storage` is `"session"` (default) or `"local"`. | [persistence](/docs/persistence) |
+| `syncToUrl` <span class="badge badge--success">v1.2</span> | `true` or `{ param }` — mirrors the active step into a query parameter (1-based). Default param: `step`. | [persistence](/docs/persistence#url-sync) |
+| `keyboardNavigation` <span class="badge badge--success">v1.2</span> | Enable `←` `→` `Home` `End` navigation. Default: `true`. | [accessibility](/docs/accessibility) |
+| `swipeNavigation` <span class="badge badge--success">v1.2</span> | Enable horizontal swipe on touch devices. Default: `true`. | [accessibility](/docs/accessibility) |
+
+### Accessibility
+
+| Prop | Description | Sample |
+| --- | --- | --- |
+| `announceStepChanges` <span class="badge badge--success">v1.2</span> | Announce step changes through an `aria-live` region and move focus to the revealed panel. Default: `true`. | [accessibility](/docs/accessibility) |
+| `ariaLabel` <span class="badge badge--success">v1.2</span> | Accessible name for the wizard region. Default: `"Form Wizard"`. Give each wizard its own when a page has several. | [accessibility](/docs/accessibility) |
+
+### Events
+
+| Prop | Description | Sample |
+| --- | --- | --- |
+| `onComplete` | Called on finish, with the wizard data: `(data?: WizardData) => void`. | [v1 schema api](/docs/demos-v1/schema-api) |
+| `onTabChange` | Called when the active step changes with `{ prevIndex, nextIndex, stepId? }`. Does **not** fire on mount as of v1.2. | [events](/docs/event) |
 
 <br />
 
-### FormWizard.TabContent Component
+## FormWizard.TabContent Component
 
-The `FormWizard.TabContent` component is used to define each tab's content and accepts the following props:
+Used to define each step in the children API:
 
 | Prop | Description | Sample |
 | --- | --- | --- |
-| `id` | Optional stable step id for imperative navigation and accessibility mapping. | [v1 complete showcase](/docs/demos-v1/complete-feature-showcase) |
+| `id` | Stable step id, used by `goToTabById` and reported as `stepId`. | [v1 complete showcase](/docs/demos-v1/complete-feature-showcase) |
 | `title` | Tab title text. | [v1 basic](/docs/demos-v1/basic-children-api) |
-| `icon` | Tab icon (`string` class name or React node). | [v1 custom react icons](/docs/demos-v1/custom-icons-react-elements) |
-| `condition` | Optional condition function to decide if a step is visible. | [v1 conditional steps](/docs/demos-v1/conditional-steps-schema) |
-| `validate` | Optional validation function returning `true` or an error message. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
-| `isValid` | Legacy boolean validity flag for tab content. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
-| `validationError` | Function called when invalid step blocks navigation. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
-| `showErrorOnTab` | Shows visual error style on the tab when invalid. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
-| `showErrorOnTabColor` | Error color for tab icon/title/progress border. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
+| `icon` | Tab icon (class-name string or React node). | [v1 custom react icons](/docs/demos-v1/custom-icons-react-elements) |
+| `condition` | Condition function deciding whether the step is visible. | [v1 conditional steps](/docs/demos-v1/conditional-steps-schema) |
+| `validate` | Validation function returning `true`, `false`, or an error message string. | [validation](/docs/validation) |
+| `isValid` | Static boolean validity flag. Prefer `validate` for anything data-dependent. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
+| `validationError` | Called when an invalid step blocks navigation. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
+| `showErrorOnTab` | Shows the error style on the tab when invalid. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
+| `showErrorOnTabColor` | Error colour for the tab icon, title and progress border. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
 
-### v1 Schema Types
+## Step options (schema API)
 
-Schema mode introduces these exported helpers:
+Each entry in `schema.steps` accepts:
 
-- `WizardData`
-- `WizardConditionContext`
-- `WizardValidationContext`
-- `WizardCondition`
-- `WizardValidation`
-- `WizardStepSchema`
-- `FormWizardSchema`
+| Option | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | Stable step id. |
+| `title` | `string` | Step label. |
+| `icon` | `string \| ReactNode` | Icon class name or node. |
+| `content` | `ReactNode \| (ctx) => ReactNode` | Step body, or a function of the current data. |
+| `condition` | `(ctx) => boolean` | Hide the step when it returns `false`. |
+| `validate` | `(ctx) => true \| string \| false` | Block navigation; a string is the message shown. |
+| `showErrorOnTab` | `boolean` | Mark the step marker on failure. |
+| `showErrorOnTabColor` | `string` | Colour used to mark it. |
 
-For callback details, see [Events](/docs/event). For imperative methods, see [References](/docs/refrence).
+:::warning Keep validators pure
+
+`validate` runs on **every render**, so it must be synchronous and free of side
+effects — never `await`, never set state from it. For asynchronous checks, do
+the work in your own handler, write the result into wizard data, and have the
+validator read that. See the
+[async verification pattern](/docs/validation#asynchronous-checks).
+
+:::
+
+## Theme tokens
+
+`theme` accepts any subset of these; anything omitted falls back to the
+stylesheet default.
+
+| Token | CSS custom property |
+| --- | --- |
+| `primaryColor` | `--rfw-primary` |
+| `backgroundColor` | `--rfw-bg` |
+| `textColor` | `--rfw-text` |
+| `titleColor` | `--rfw-title` |
+| `subtitleColor` | `--rfw-subtitle` |
+| `tabColor` | `--rfw-tab` |
+| `tabIconColor` | `--rfw-tab-icon` |
+| `borderColor` | `--rfw-border` |
+| `buttonColor` | `--rfw-button` |
+| `buttonTextColor` | `--rfw-button-text` |
+| `finishButtonColor` | `--rfw-finish-button` |
+| `finishButtonTextColor` | `--rfw-finish-button-text` |
+| `errorColor` | `--rfw-error` |
+| `borderRadius` | `--rfw-radius` |
+
+## classNames keys
+
+`root`, `header`, `title`, `subtitle`, `navigation`, `stepList`, `step`,
+`stepActive`, `stepIcon`, `stepTitle`, `content`, `footer`, `backButton`,
+`nextButton`, `finishButton`.
+
+## Exported types
+
+```tsx
+import type {
+  FormWizardProps,
+  FormWizardMethods,
+  FormWizardSchema,
+  WizardStepSchema,
+  WizardData,
+  WizardTheme,
+  WizardClassNames,
+  WizardPersistOptions,
+  WizardUrlSyncOptions,
+  WizardStepChangeEvent,
+  WizardCondition,
+  WizardValidation,
+  WizardValidationResult,
+  WizardConditionContext,
+  WizardValidationContext,
+  UseWizardOptions,
+  UseWizardReturn,
+  TabContentProps,
+} from "react-form-wizard-component";
+```
+
+:::info Types were broken before v1.2.0
+
+Releases 1.0.0–1.1.1 pointed `types` at a file that was never generated, so
+TypeScript reported `TS7016: Could not find a declaration file`. That is fixed,
+and type resolution is now verified in CI under `bundler`, `node16` and
+`node10`.
+
+:::
+
+For callback details see [Events](/docs/event); for imperative methods see
+[References](/docs/refrence).

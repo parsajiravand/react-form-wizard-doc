@@ -1,7 +1,7 @@
 import React from "react";
 
 import FormWizard from "react-form-wizard-component";
-import "react-form-wizard-component/dist/style.css";
+import "react-form-wizard-component/styles.css";
 const customFooterButtons: React.FC = () => {
   const handleComplete = () => {
     console.log("Form completed!");
