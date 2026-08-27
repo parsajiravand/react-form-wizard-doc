@@ -1,0 +1,21 @@
+{
+  "title": "Schema API demos",
+  "defaultOpen": false,
+  "pages": [
+    "basic-children-api",
+    "complete-feature-showcase",
+    "conditional-steps-schema",
+    "custom-button-templates",
+    "custom-colors",
+    "custom-icons-react-elements",
+    "dark-mode",
+    "different-step-sizes",
+    "imperative-api",
+    "inline-steps",
+    "progress-bar-default",
+    "schema-api",
+    "square-shape",
+    "validation-with-error-display",
+    "vertical-layout"
+  ]
+}

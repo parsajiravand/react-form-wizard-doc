@@ -1,0 +1,166 @@
+---
+title: "Framework Setup"
+description: "Next.js, Vite, Remix, Create React App and testing setup."
+---
+
+# Framework Setup
+
+The package ships ESM, CommonJS and UMD builds with correct TypeScript types
+for every module-resolution mode, so most setups need no configuration at all.
+
+## Next.js — App Router
+
+The published bundles carry a `"use client"` directive, so importing from a
+**server component** works with no wrapper.
+
+```tsx title="app/layout.tsx"
+import "react-form-wizard-component/styles.css";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+```tsx title="app/signup/page.tsx"
+import FormWizard from "react-form-wizard-component";
+
+export default function Page() {
+  return (
+    <FormWizard title="Signup">
+      <FormWizard.TabContent title="Account">…</FormWizard.TabContent>
+      <FormWizard.TabContent title="Review">…</FormWizard.TabContent>
+    </FormWizard>
+  );
+}
+```
+
+:::tip You no longer need `"use client"`
+
+Before v1.2.0 the bundles carried no directive, so App Router users hit
+*"useState only works in Client Components"* and had to wrap the import. That
+directive now ships in the package.
+
+:::
+
+Your own step content is a different matter: a step containing `useState` or an
+event handler needs `"use client"` at the top of **that** file, as usual.
+
+## Next.js — Pages Router
+
+Import the stylesheet in `_app`:
+
+```tsx title="pages/_app.tsx"
+import "react-form-wizard-component/styles.css";
+
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />;
+}
+```
+
+The wizard renders on the server and hydrates normally — storage and URL access
+are guarded, so `persist` and `syncToUrl` are SSR-safe.
+
+## Vite
+
+Nothing to configure.
+
+```tsx title="src/main.tsx"
+import "react-form-wizard-component/styles.css";
+```
+
+## Remix / React Router
+
+Export the stylesheet from your route's `links`:
+
+```tsx title="app/root.tsx"
+import styles from "react-form-wizard-component/styles.css?url";
+
+export const links = () => [{ rel: "stylesheet", href: styles }];
+```
+
+## Create React App
+
+```tsx title="src/index.tsx"
+import "react-form-wizard-component/styles.css";
+```
+
+CRA 5 resolves the package's `exports` map correctly. On CRA 4 or older, use
+the long path instead:
+
+```tsx
+import "react-form-wizard-component/dist/style.css";
+```
+
+## Testing
+
+### Jest
+
+`react-form-wizard-component` is ESM-first but also ships CommonJS, so
+`require()` works in a default Jest setup. You only need to map the stylesheet:
+
+```js title="jest.config.js"
+export default {
+  testEnvironment: "jsdom",
+  moduleNameMapper: {
+    "\\.(css|less|scss)$": "identity-obj-proxy",
+  },
+};
+```
+
+:::info `require()` was broken before v1.2.0
+
+Older releases resolved the `require` condition to a file that exported
+nothing, so Jest received an empty object. Fixed — there is a real CommonJS
+build now.
+
+:::
+
+### Vitest
+
+```ts title="vitest.config.ts"
+export default defineConfig({
+  test: { environment: "jsdom", css: true },
+});
+```
+
+### Querying the wizard in tests
+
+The markup is accessible, so query by role rather than by class:
+
+```tsx
+render(<Signup />);
+
+expect(screen.getByRole("tablist")).toBeInTheDocument();
+await userEvent.click(screen.getByText("Next"));
+expect(screen.getByRole("status")).toHaveTextContent("Step 2 of 3");
+```
+
+## TypeScript
+
+Types ship with the package — no `@types/*` install. Resolution is verified in
+CI under `bundler`, `node16` and `node10`.
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true
+  }
+}
+```
+
+## Bundle size
+
+Roughly **5 kB** gzipped for the JavaScript and **2 kB** for the stylesheet,
+with React left external. The package is side-effect free apart from the CSS,
+so tree-shaking works: importing only `useWizard` pulls in neither the
+component nor the styles.

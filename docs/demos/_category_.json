@@ -1,9 +1,0 @@
-{
-  "label": "Legacy Demos (0.2.x)",
-  "position": 22,
-  "link": {
-    "type": "generated-index",
-    "slug": "/category/demos-old",
-    "description": "Older demos for the original children API. Still supported \u2014 kept for reference."
-  }
-}

@@ -1,0 +1,399 @@
+"use client";
+
+import React from "react";
+import FormWizard, {
+  composeValidators,
+  zodValidator,
+  type FormWizardMethods,
+  type FormWizardSchema,
+  type WizardData,
+} from "react-form-wizard-component";
+import "react-form-wizard-component/styles.css";
+import s from "./examples.module.css";
+
+/* ------------------------------------------------------------------ *
+ * Cart — in a real app this comes from your cart state or the server.
+ * ------------------------------------------------------------------ */
+
+const CART = [
+  { id: "kb", name: "Mechanical keyboard", qty: 1, price: 149 },
+  { id: "cable", name: "USB-C cable (2m)", qty: 2, price: 12 },
+];
+
+const SHIPPING = {
+  standard: { label: "Standard", meta: "4–6 business days", price: 0 },
+  express: { label: "Express", meta: "1–2 business days", price: 14 },
+} as const;
+
+type ShippingId = keyof typeof SHIPPING;
+
+const money = (n: number) => `$${n.toFixed(2)}`;
+
+/* ------------------------------------------------------------------ *
+ * Validation. Written as `safeParse` objects so this demo stays
+ * dependency-free — with zod installed these are `z.object({ ... })`
+ * and the wizard code below does not change at all.
+ * ------------------------------------------------------------------ */
+
+const issue = (message: string) =>
+  ({ success: false, error: { issues: [{ message }] } }) as const;
+const ok = { success: true } as const;
+
+const contactSchema = {
+  safeParse: (v: unknown) => {
+    const { email, phone } = (v ?? {}) as Record<string, unknown>;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email ?? "")))
+      return issue("Enter a valid email address");
+    if (String(phone ?? "").replace(/\D/g, "").length < 7)
+      return issue("Enter a phone number we can reach you on");
+    return ok;
+  },
+};
+
+const addressSchema = {
+  safeParse: (v: unknown) => {
+    const { street, city, postcode } = (v ?? {}) as Record<string, unknown>;
+    if (!String(street ?? "").trim()) return issue("Street address is required");
+    if (!String(city ?? "").trim()) return issue("City is required");
+    if (String(postcode ?? "").trim().length < 3)
+      return issue("Enter a valid postcode");
+    return ok;
+  },
+};
+
+/* ------------------------------------------------------------------ *
+ * Field — shows its error only once the field has been touched, so the
+ * form does not shout at someone who has not typed anything yet.
+ * ------------------------------------------------------------------ */
+
+type FieldProps = {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  error?: string;
+  touched?: boolean;
+  onBlur?: () => void;
+  type?: string;
+  placeholder?: string;
+  autoComplete?: string;
+  id: string;
+};
+
+function Field({
+  label,
+  value,
+  onChange,
+  error,
+  touched,
+  onBlur,
+  type = "text",
+  placeholder,
+  autoComplete,
+  id,
+}: FieldProps) {
+  const show = Boolean(touched && error);
+  return (
+    <div className={s.field}>
+      <label className={s.label} htmlFor={id}>
+        {label}
+      </label>
+      <input
+        id={id}
+        type={type}
+        className={show ? `${s.input} ${s.inputError}` : s.input}
+        value={value}
+        placeholder={placeholder}
+        autoComplete={autoComplete}
+        onChange={(e) => onChange(e.target.value)}
+        onBlur={onBlur}
+        aria-invalid={show || undefined}
+        aria-describedby={show ? `${id}-error` : undefined}
+      />
+      {show && (
+        <span className={s.error} id={`${id}-error`} role="alert">
+          {error}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function OrderSummary({ shipping }: { shipping: ShippingId }) {
+  const subtotal = CART.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const delivery = SHIPPING[shipping].price;
+  const tax = Math.round(subtotal * 0.2 * 100) / 100;
+
+  return (
+    <div className={s.summary}>
+      {CART.map((item) => (
+        <div className={s.summaryRow} key={item.id}>
+          <span>
+            {item.name}
+            {item.qty > 1 ? ` × ${item.qty}` : ""}
+          </span>
+          <span className={s.money}>{money(item.price * item.qty)}</span>
+        </div>
+      ))}
+      <div className={s.summaryRow}>
+        <span>{SHIPPING[shipping].label} delivery</span>
+        <span className={s.money}>
+          {delivery === 0 ? "Free" : money(delivery)}
+        </span>
+      </div>
+      <div className={s.summaryRow}>
+        <span>Tax (20%)</span>
+        <span className={s.money}>{money(tax)}</span>
+      </div>
+      <div className={`${s.summaryRow} ${s.summaryTotal}`}>
+        <span>Total</span>
+        <span className={s.money}>{money(subtotal + delivery + tax)}</span>
+      </div>
+    </div>
+  );
+}
+
+export default function CheckoutExample() {
+  const wizard = React.useRef<FormWizardMethods>(null);
+  const [touched, setTouched] = React.useState<Record<string, boolean>>({});
+  const [placed, setPlaced] = React.useState<WizardData | null>(null);
+
+  const set = (patch: WizardData) => wizard.current?.updateData(patch);
+  const touch = (name: string) =>
+    setTouched((t) => (t[name] ? t : { ...t, [name]: true }));
+
+  const str = (data: WizardData, key: string) => String(data[key] ?? "");
+
+  const schema: FormWizardSchema = {
+    initialData: {
+      email: "",
+      phone: "",
+      street: "",
+      city: "",
+      postcode: "",
+      shipping: "standard",
+      card: "",
+      name: "",
+    },
+    steps: [
+      {
+        id: "contact",
+        title: "Contact",
+        icon: "ti-user",
+        content: ({ data }) => (
+          <>
+            <h4 className={s.stepHeading}>How can we reach you?</h4>
+            <p className={s.stepIntro}>
+              We will send the receipt and delivery updates here.
+            </p>
+            <Field
+              id="co-email"
+              label="Email"
+              type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              value={str(data, "email")}
+              touched={touched.email}
+              onBlur={() => touch("email")}
+              onChange={(v) => set({ email: v })}
+              error={
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str(data, "email"))
+                  ? undefined
+                  : "Enter a valid email address"
+              }
+            />
+            <Field
+              id="co-phone"
+              label="Phone"
+              type="tel"
+              autoComplete="tel"
+              placeholder="+1 555 0100"
+              value={str(data, "phone")}
+              touched={touched.phone}
+              onBlur={() => touch("phone")}
+              onChange={(v) => set({ phone: v })}
+              error={
+                str(data, "phone").replace(/\D/g, "").length >= 7
+                  ? undefined
+                  : "Enter a phone number we can reach you on"
+              }
+            />
+          </>
+        ),
+        // The wizard gates navigation; the fields above only render messages.
+        validate: zodValidator(contactSchema, { pick: ["email", "phone"] }),
+      },
+
+      {
+        id: "delivery",
+        title: "Delivery",
+        icon: "ti-home",
+        content: ({ data }) => (
+          <>
+            <h4 className={s.stepHeading}>Where is it going?</h4>
+            <p className={s.stepIntro}>Delivery address and speed.</p>
+
+            <Field
+              id="co-street"
+              label="Street address"
+              autoComplete="street-address"
+              placeholder="12 Example Road"
+              value={str(data, "street")}
+              touched={touched.street}
+              onBlur={() => touch("street")}
+              onChange={(v) => set({ street: v })}
+              error={str(data, "street").trim() ? undefined : "Street address is required"}
+            />
+
+            <div className={s.row}>
+              <Field
+                id="co-city"
+                label="City"
+                autoComplete="address-level2"
+                placeholder="Bristol"
+                value={str(data, "city")}
+                touched={touched.city}
+                onBlur={() => touch("city")}
+                onChange={(v) => set({ city: v })}
+                error={str(data, "city").trim() ? undefined : "City is required"}
+              />
+              <Field
+                id="co-postcode"
+                label="Postcode"
+                autoComplete="postal-code"
+                placeholder="BS1 4DJ"
+                value={str(data, "postcode")}
+                touched={touched.postcode}
+                onBlur={() => touch("postcode")}
+                onChange={(v) => set({ postcode: v })}
+                error={
+                  str(data, "postcode").trim().length >= 3
+                    ? undefined
+                    : "Enter a valid postcode"
+                }
+              />
+            </div>
+
+            <div className={s.choices} role="radiogroup" aria-label="Delivery speed">
+              {(Object.keys(SHIPPING) as ShippingId[]).map((id) => {
+                const option = SHIPPING[id];
+                const selected = data.shipping === id;
+                return (
+                  <label
+                    key={id}
+                    className={selected ? `${s.choice} ${s.choiceSelected}` : s.choice}
+                  >
+                    <input
+                      type="radio"
+                      name="shipping"
+                      checked={selected}
+                      onChange={() => set({ shipping: id })}
+                    />
+                    <span className={s.choiceBody}>
+                      <span className={s.choiceTitle}>
+                        {option.label} —{" "}
+                        {option.price === 0 ? "Free" : money(option.price)}
+                      </span>
+                      <span className={s.choiceMeta}>{option.meta}</span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </>
+        ),
+        validate: zodValidator(addressSchema, {
+          pick: ["street", "city", "postcode"],
+        }),
+      },
+
+      {
+        id: "payment",
+        title: "Payment",
+        icon: "ti-credit-card",
+        content: ({ data }) => (
+          <>
+            <h4 className={s.stepHeading}>Payment</h4>
+            <p className={s.stepIntro}>
+              A demo — never send real card details to a page like this.
+            </p>
+
+            <OrderSummary shipping={(data.shipping as ShippingId) ?? "standard"} />
+
+            <Field
+              id="co-name"
+              label="Name on card"
+              autoComplete="cc-name"
+              placeholder="A. Lovelace"
+              value={str(data, "name")}
+              touched={touched.name}
+              onBlur={() => touch("name")}
+              onChange={(v) => set({ name: v })}
+              error={str(data, "name").trim() ? undefined : "Name on card is required"}
+            />
+            <Field
+              id="co-card"
+              label="Card number"
+              autoComplete="cc-number"
+              placeholder="4242 4242 4242 4242"
+              value={str(data, "card")}
+              touched={touched.card}
+              onBlur={() => touch("card")}
+              onChange={(v) => set({ card: v })}
+              error={
+                str(data, "card").replace(/\s/g, "").length === 16
+                  ? undefined
+                  : "Enter the 16 digits on the card"
+              }
+            />
+          </>
+        ),
+        // Two rules on one step: the schema-shaped check, then a bespoke one.
+        validate: composeValidators(
+          ({ data }) =>
+            String(data.name ?? "").trim() ? true : "Name on card is required",
+          ({ data }) =>
+            String(data.card ?? "").replace(/\s/g, "").length === 16
+              ? true
+              : "Enter the 16 digits on the card"
+        ),
+      },
+    ],
+  };
+
+  if (placed) {
+    return (
+      <div className={s.done}>
+        <div className={s.doneMark} aria-hidden="true">
+          ✓
+        </div>
+        <h4>Order placed</h4>
+        <p className={s.stepIntro}>
+          A receipt is on its way to <strong>{String(placed.email)}</strong>.
+        </p>
+        <button
+          className="btn btn-ghost btn-sm"
+          onClick={() => {
+            setPlaced(null);
+            setTouched({});
+          }}
+        >
+          Run the demo again
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <FormWizard
+      ref={wizard}
+      title="Checkout"
+      subtitle="Three steps, about a minute"
+      schema={schema}
+      shape="circle"
+      finishButtonText="Pay now"
+      ariaLabel="Checkout"
+      // onComplete only fires once the final step validates.
+      onComplete={(data) => setPlaced(data ?? {})}
+    />
+  );
+}

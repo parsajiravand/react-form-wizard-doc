@@ -1,12 +1,42 @@
 {
-  // Editor experience only — Docusaurus compiles with SWC, not tsc.
-  "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
-    "baseUrl": ".",
+    "target": "ES2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@site/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
-  "include": ["src/", "docusaurus.config.js", "sidebars.js"],
-  "exclude": ["build", ".docusaurus", "node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".migration"
+  ]
 }

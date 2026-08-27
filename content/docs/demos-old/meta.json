@@ -1,0 +1,20 @@
+{
+  "title": "Legacy demos (0.2.x)",
+  "defaultOpen": false,
+  "pages": [
+    "custom-footer-buttons",
+    "custom-icon",
+    "custom-title",
+    "custom-title-template",
+    "dark-mode",
+    "font-awsome-icon",
+    "inline-step",
+    "show-error-tab",
+    "simple",
+    "small-step-size",
+    "square-steps",
+    "step-index",
+    "validate-tab",
+    "without-background-tab"
+  ]
+}

@@ -1,0 +1,274 @@
+/*
+ * Shared styling for the real-world examples.
+ *
+ * Everything is expressed in Infima variables so the examples read correctly
+ * in both the light and dark Docusaurus themes rather than only the one they
+ * were authored in.
+ */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-fd-foreground);
+}
+
+.hint {
+  font-size: 0.8125rem;
+  color: var(--color-fd-muted-foreground);
+}
+
+.input,
+.select,
+.textarea {
+  font: inherit;
+  font-size: 0.9375rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-fd-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-fd-background);
+  color: var(--color-fd-foreground);
+  width: 100%;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-fd-primary);
+  box-shadow: 0 0 0 3px var(--color-fd-ring);
+}
+
+.inputError {
+  border-color: var(--color-danger);
+}
+
+.inputError:focus {
+  box-shadow: 0 0 0 3px var(--color-fd-ring);
+}
+
+.error {
+  font-size: 0.8125rem;
+  color: var(--color-danger);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1rem;
+}
+
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stepHeading {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+}
+
+.stepIntro {
+  margin: 0 0 1.25rem;
+  color: var(--color-fd-muted-foreground);
+  font-size: 0.9375rem;
+}
+
+/* ---------- order summary ---------- */
+
+.summary {
+  border: 1px solid var(--color-fd-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-fd-muted);
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.25rem;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.9375rem;
+  padding: 0.3rem 0;
+}
+
+.summaryTotal {
+  border-top: 1px solid var(--color-fd-border);
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  font-weight: 700;
+}
+
+.money {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- choice cards ---------- */
+
+.choices {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.choice {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  border: 1px solid var(--color-fd-border);
+  border-radius: var(--radius-lg);
+  padding: 0.8rem 0.9rem;
+  cursor: pointer;
+  background: var(--color-fd-background);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.choice:hover {
+  border-color: var(--color-fd-primary);
+}
+
+.choiceSelected {
+  border-color: var(--color-fd-primary);
+  background: var(--color-fd-accent);
+}
+
+.choiceBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.choiceTitle {
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.choiceMeta {
+  font-size: 0.8125rem;
+  color: var(--color-fd-muted-foreground);
+}
+
+/* ---------- status ---------- */
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+}
+
+.statusPending {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.statusOk {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.statusBad {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+/* ---------- review + done ---------- */
+
+.review {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.2rem;
+  font-size: 0.9375rem;
+  margin-bottom: 1rem;
+}
+
+.reviewKey {
+  color: var(--color-fd-muted-foreground);
+}
+
+.reviewValue {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.done {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.doneMark {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+/* ---------- headless survey ---------- */
+
+.surveyShell {
+  border: 1px solid var(--color-fd-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  background: var(--color-fd-card);
+}
+
+.progressTrack {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+}
+
+.progressSeg {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-fd-border);
+}
+
+.progressSegOn {
+  background: var(--color-fd-primary);
+}
+
+.meta {
+  font-size: 0.8125rem;
+  color: var(--color-fd-muted-foreground);
+  margin: 0 0 0.75rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.resetBar {
+  margin-top: 1rem;
+  font-size: 0.8125rem;
+  color: var(--color-fd-muted-foreground);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.log {
+  background: var(--color-fd-muted);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 0.9rem;
+  font-size: 0.8125rem;
+  margin: 0;
+  overflow-x: auto;
+}

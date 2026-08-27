@@ -1,0 +1,114 @@
+---
+title: "Branching Survey"
+---
+
+import BranchingSurvey from "@/components/demos/BranchingSurvey";
+
+`useWizardData` owns the answers and `useWizardCursor` owns the position, so the step list resizes as branches appear.
+
+<div className="demo">
+  <BranchingSurvey />
+</div>
+
+## Code
+
+```tsx title="BranchingSurvey.tsx"
+"use client";
+
+import React from "react";
+import {
+  useWizardCursor,
+  useWizardData,
+  type WizardData,
+} from "react-form-wizard-component";
+
+type Question = {
+  id: string;
+  prompt: string;
+  options: string[];
+  showIf?: (answers: WizardData) => boolean;
+};
+
+const QUESTIONS: Question[] = [
+  { id: "react", prompt: "Do you use React at work?", options: ["Yes", "No"] },
+  {
+    id: "version",
+    prompt: "Which major?",
+    options: ["17", "18", "19"],
+    showIf: (a) => a.react === "Yes",
+  },
+  {
+    id: "instead",
+    prompt: "What do you use instead?",
+    options: ["Vue", "Svelte", "Angular"],
+    showIf: (a) => a.react === "No",
+  },
+  { id: "forms", prompt: "How do you build forms?", options: ["By hand", "A library"] },
+];
+
+export default function BranchingSurvey() {
+  // Answers first: the visible question list is derived from them.
+  const answers = useWizardData({});
+
+  const visible = React.useMemo(
+    () => QUESTIONS.filter((q) => !q.showIf || q.showIf(answers.data)),
+    [answers.data]
+  );
+
+  // Then the cursor, sized by the questions that currently apply.
+  const cursor = useWizardCursor({ stepIds: visible.map((q) => q.id) });
+  const question = visible[cursor.currentStep];
+
+  if (!question) return <p>Thanks for taking part.</p>;
+
+  return (
+    <div className="bs">
+      <p className="bs-meta">
+        Question {cursor.currentStep + 1} of {cursor.totalSteps} — the list
+        resizes as you answer.
+      </p>
+
+      <h4 id="branch-q">{question.prompt}</h4>
+
+      <div role="radiogroup" aria-labelledby="branch-q">
+        {question.options.map((option) => (
+          <label key={option} className="bs-opt">
+            <input
+              type="radio"
+              name={question.id}
+              checked={answers.data[question.id] === option}
+              onChange={() => answers.updateData({ [question.id]: option })}
+            />
+            {option}
+          </label>
+        ))}
+      </div>
+
+      <div className="bs-actions">
+        <button onClick={cursor.previous} disabled={cursor.isFirstStep}>
+          Back
+        </button>
+        <button
+          onClick={cursor.next}
+          disabled={
+            cursor.isLastStep || answers.data[question.id] === undefined
+          }
+        >
+          Next
+        </button>
+      </div>
+
+      <pre className="bs-pre">{JSON.stringify(answers.data, null, 2)}</pre>
+
+      <style>{`
+        .bs { display: flex; flex-direction: column; gap: 12px; }
+        .bs-meta { margin: 0; color: #5c6968; font-size: 14px; }
+        .bs h4 { margin: 0; }
+        .bs-opt { display: flex; gap: 8px; align-items: center; }
+        .bs-actions { display: flex; gap: 10px; }
+        .bs-pre { background: #f5f7f7; padding: 12px; border-radius: 6px; font-size: 13px; }
+      `}</style>
+    </div>
+  );
+}
+```

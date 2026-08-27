@@ -1,9 +1,0 @@
-{
-  "label": "Schema API Demos",
-  "position": 21,
-  "link": {
-    "type": "generated-index",
-    "slug": "/category/demos-v1",
-    "description": "Demos built with the schema-first API introduced in v1.0."
-  }
-}

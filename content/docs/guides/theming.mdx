@@ -1,0 +1,152 @@
+---
+title: "Theming & Styling"
+description: "CSS custom properties, per-element class overrides, and fully unstyled mode."
+---
+
+import ThemeTokens from "@/components/demos/ThemeTokens";
+import UnstyledWizard from "@/components/demos/UnstyledWizard";
+
+# Theming & Styling
+
+There are three levels, from smallest change to largest:
+
+1. **`theme` tokens** — recolour the bundled look.
+2. **`classNames`** — add your own classes alongside the bundled ones.
+3. **`unstyled`** — drop the bundled look entirely and bring your own CSS.
+
+## Theme tokens
+
+<span className="tag-new">v1.2</span>
+
+The `theme` prop writes `--rfw-*` CSS custom properties onto the wizard root.
+The stylesheet reads them with fallbacks, so you can override **one** value
+without restating a palette.
+
+<div className="demo">
+  <ThemeTokens />
+</div>
+
+```tsx
+<FormWizard
+  theme={{
+    primaryColor: "#0e6f70",
+    backgroundColor: "#ffffff",
+    errorColor: "#c0392b",
+    borderRadius: "8px",
+  }}
+/>
+```
+
+Or set the same variables in your own stylesheet for a global default:
+
+```css
+.react-form-wizard {
+  --rfw-primary: #0e6f70;
+  --rfw-radius: 8px;
+}
+```
+
+### Tokens
+
+| Prop token | CSS custom property | Applies to |
+| --- | --- | --- |
+| `primaryColor` | `--rfw-primary` | Active tabs, progress, buttons |
+| `backgroundColor` | `--rfw-bg` | Step marker surface |
+| `textColor` | `--rfw-text` | Default and disabled text |
+| `titleColor` | `--rfw-title` | Wizard title |
+| `subtitleColor` | `--rfw-subtitle` | Subtitle / category line |
+| `tabColor` | `--rfw-tab` | Inactive tab hover surface |
+| `tabIconColor` | `--rfw-tab-icon` | Icon inside tab circles |
+| `borderColor` | `--rfw-border` | Navigation rail and marker borders |
+| `buttonColor` | `--rfw-button` | Back / Next background |
+| `buttonTextColor` | `--rfw-button-text` | Back / Next label |
+| `finishButtonColor` | `--rfw-finish-button` | Finish background |
+| `finishButtonTextColor` | `--rfw-finish-button-text` | Finish label |
+| `errorColor` | `--rfw-error` | Invalid step marker and message |
+| `borderRadius` | `--rfw-radius` | Buttons and square markers |
+
+:::tip Prefer `theme` over `customDarkModeColor`
+
+`customDarkModeColor` only applies when `darkMode` is on. Theme tokens apply in
+both light and dark, and are plain CSS variables — so media queries, a
+`data-theme` attribute, or a class toggle can all drive them.
+
+:::
+
+## Class overrides
+
+<span className="tag-new">v1.2</span>
+
+`classNames` adds your classes to the bundled ones:
+
+```tsx
+<FormWizard classNames={{ root: "my-wizard", nextButton: "my-cta" }} />
+```
+
+Keys: `root`, `header`, `title`, `subtitle`, `navigation`, `stepList`, `step`,
+`stepActive`, `stepIcon`, `stepTitle`, `content`, `footer`, `backButton`,
+`nextButton`, `finishButton`.
+
+## Unstyled mode
+
+<span className="tag-new">v1.2</span>
+
+`unstyled` drops every bundled class **and** every inline colour, so your
+classes are the only styling. Combine it with `classNames`:
+
+<div className="demo">
+  <UnstyledWizard />
+</div>
+
+```tsx
+<FormWizard
+  unstyled
+  classNames={{
+    root: "flex flex-col gap-6",
+    stepList: "flex gap-2",
+    step: "px-3 py-1 rounded text-slate-500",
+    stepActive: "bg-teal-700 text-white",
+    content: "rounded-lg border p-6",
+    footer: "mt-6 flex justify-between",
+    backButton: "rounded px-4 py-2 text-slate-600 hover:bg-slate-100",
+    nextButton: "rounded bg-teal-700 px-4 py-2 text-white",
+    finishButton: "rounded bg-teal-700 px-4 py-2 text-white",
+  }}
+/>
+```
+
+:::info No stylesheet needed
+
+In `unstyled` mode you can skip
+`import "react-form-wizard-component/styles.css"` entirely. Screen-reader-only
+text stays hidden without it, so accessibility is unaffected.
+
+:::
+
+### What `unstyled` keeps
+
+Structure and semantics only — the `tablist` / `tab` / `tabpanel` roles, ARIA
+wiring, live-region announcements, focus management and keyboard navigation all
+still work. It removes appearance, not behaviour.
+
+## Dark mode
+
+The bundled dark palette is still available:
+
+```tsx
+<FormWizard darkMode customDarkModeColor={{ title: "#fff", tab: "#1b2525" }} />
+```
+
+For new work, prefer driving theme tokens from your own dark-mode mechanism:
+
+```css
+@media (prefers-color-scheme: dark) {
+  .react-form-wizard {
+    --rfw-bg: #141c1c;
+    --rfw-title: #e7eeed;
+    --rfw-border: #263232;
+  }
+}
+```
+
+See also: [dark mode demo](/docs/demos-v1/dark-mode), [Props](/docs/api/form-wizard).

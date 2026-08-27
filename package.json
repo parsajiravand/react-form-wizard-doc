@@ -2,52 +2,31 @@
   "name": "react-form-wizard-doc",
   "version": "1.2.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "docusaurus": "docusaurus",
-    "start": "docusaurus start -p 3037",
-    "build": "docusaurus build",
-    "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy",
-    "clear": "docusaurus clear",
-    "serve": "docusaurus serve -p 3001",
-    "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "dev": "next dev -p 3037",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "postinstall": "fumadocs-mdx",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.10.2",
-    "@docusaurus/faster": "^3.10.2",
-    "@docusaurus/plugin-client-redirects": "^3.10.2",
-    "@docusaurus/preset-classic": "^3.10.2",
-    "@docusaurus/remark-plugin-npm2yarn": "^3.10.2",
-    "@docusaurus/tsconfig": "^3.10.2",
-    "@docusaurus/types": "^3.10.2",
-    "@mdx-js/react": "^3.1.1",
-    "clsx": "^2.1.1",
-    "prism-react-renderer": "^2.4.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "fumadocs-core": "^16.15.4",
+    "fumadocs-mdx": "^15.4.0",
+    "fumadocs-ui": "^16.15.4",
+    "next": "^16.3.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-form-wizard-component": "^1.2.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.10.2",
-    "@types/react": "^18.3.31",
-    "@types/react-dom": "^18.3.7",
-    "typescript": "~5.6"
-  },
-  "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "engines": {
-    "node": ">=16.14"
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.1.0",
+    "@tailwindcss/postcss": "^4.1.0",
+    "postcss": "^8.4.47",
+    "typescript": "^5.6.0"
   }
 }

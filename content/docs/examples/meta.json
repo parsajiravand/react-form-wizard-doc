@@ -1,0 +1,10 @@
+{
+  "title": "Examples",
+  "description": "Complete builds you can lift into a project.",
+  "pages": [
+    "checkout",
+    "onboarding",
+    "job-application",
+    "survey"
+  ]
+}
