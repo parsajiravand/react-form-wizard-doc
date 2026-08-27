@@ -10,6 +10,25 @@ npm run build
 npm run start    # http://localhost:3001
 ```
 
+## Deploying
+
+Netlify settings are in `netlify.toml`, not the dashboard — a framework change
+should not be able to break the deploy silently again.
+
+```toml
+command = "npm run build:static"
+publish = "out"
+```
+
+`build:static` writes `public/_redirects` from `redirects.mjs`, then runs
+`next build` with `output: "export"`. The site is fully static — every page is
+prerendered and the search index is generated at build time — so there is no
+serverless runtime involved.
+
+`redirects.mjs` is the single source of truth for legacy URLs: the dev server
+reads it through `next.config.mjs`, and the deploy reads the `_redirects` file
+generated from it. Adding a redirect in one place covers both.
+
 ## Layout
 
 ```

@@ -1,0 +1,14 @@
+# Deploy settings live here rather than only in the Netlify dashboard, so a
+# framework change cannot silently break the deploy again.
+
+[build]
+  command = "npm run build:static"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    cache-control = "public, max-age=31536000, immutable"

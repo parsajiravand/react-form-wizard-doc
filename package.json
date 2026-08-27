@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start -p 3001",
     "postinstall": "fumadocs-mdx",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:static": "node scripts/write-redirects.mjs && NEXT_OUTPUT=export next build"
   },
   "dependencies": {
     "fumadocs-core": "^16.15.4",

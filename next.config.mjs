@@ -1,36 +1,31 @@
 import { createMDX } from "fumadocs-mdx/next";
+import { redirects as legacyRoutes } from "./redirects.mjs";
 
 const withMDX = createMDX();
+
+// The site is entirely static — every page is prerendered and the search index
+// is generated at build time — so it exports to plain HTML. That keeps the
+// Netlify deploy a static upload with no serverless runtime.
+const isExport = process.env.NEXT_OUTPUT === "export";
 
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  // The docs were reorganised over two releases. Every previously published
-  // URL still resolves rather than 404ing.
-  async redirects() {
-    const map = {
-      "/docs/intro": "/docs",
-      "/docs/props": "/docs/api/form-wizard",
-      "/docs/event": "/docs/api/events",
-      "/docs/refrence": "/docs/api/methods",
-      "/docs/validation": "/docs/guides/validation",
-      "/docs/headless": "/docs/guides/headless",
-      "/docs/theming": "/docs/guides/theming",
-      "/docs/persistence": "/docs/guides/persistence",
-      "/docs/accessibility": "/docs/guides/accessibility",
-      "/docs/category/demos-v2": "/docs/demos",
-      "/docs/category/demos-v1": "/docs/demos",
-      "/docs/category/demos-old": "/docs/demos",
-      "/docs/category/real-world-examples": "/docs/examples/checkout",
-      "/docs/category/guides": "/docs/guides/validation",
-      "/docs/category/getting-started": "/docs/getting-started/installation",
-      "/docs/playground": "/docs/playground",
-    };
+  ...(isExport ? { output: "export", images: { unoptimized: true } } : {}),
 
-    return Object.entries(map)
-      .filter(([from, to]) => from !== to)
-      .map(([source, destination]) => ({ source, destination, permanent: true }));
-  },
+  // `redirects()` is unsupported in an export build; Netlify serves the same
+  // map from public/_redirects, written by scripts/write-redirects.mjs.
+  ...(isExport
+    ? {}
+    : {
+        async redirects() {
+          return Object.entries(legacyRoutes).map(([source, destination]) => ({
+            source,
+            destination,
+            permanent: true,
+          }));
+        },
+      }),
 };
 
 export default withMDX(config);

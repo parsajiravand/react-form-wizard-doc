@@ -21,3 +21,6 @@ next-env.d.ts
 
 # migration scratch
 .migration/
+
+# generated at build time
+public/_redirects
