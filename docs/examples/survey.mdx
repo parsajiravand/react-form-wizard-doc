@@ -1,0 +1,290 @@
+---
+sidebar_position: 4
+title: Branching Survey (headless)
+description: A questionnaire whose steps are data, built with the headless hooks and no bundled markup.
+---
+
+import SurveyExample from "@site/src/components/Examples/SurveyExample";
+
+# Branching Survey (headless)
+
+When the questions come from a CMS rather than your source code, the step list
+is **data**. This survey is built with `useWizardData` and `useWizardCursor`
+— no markup from the library at all, and no stylesheet import.
+
+Answer the first question either way to watch the branch — and the progress bar
+— change.
+
+<div className="demo">
+  <SurveyExample />
+</div>
+
+## Why headless here
+
+The styled `<FormWizard />` expects steps you can enumerate in JSX or a schema.
+When the questionnaire is fetched at runtime and branches on answers, it is
+simpler to own the markup:
+
+```tsx
+// Answers first — the visible question list is derived from them.
+const answers = useWizardData({ persist: { key: "survey" } });
+
+const visible = React.useMemo(
+  () => QUESTIONS.filter((q) => !q.showIf || q.showIf(answers.data)),
+  [answers.data]
+);
+
+// Then the cursor, sized by whichever questions currently apply.
+const cursor = useWizardCursor({ stepIds: visible.map((q) => q.id) });
+```
+
+Reading data **before** sizing the cursor is the whole trick. It is also why
+the two hooks are exported separately rather than only as `useWizard`.
+
+## What this shows
+
+| Technique | Where |
+| --- | --- |
+| Steps defined as data | the `QUESTIONS` array |
+| Branching on answers | each question’s `showIf` |
+| Split hooks | `useWizardData` + `useWizardCursor` |
+| Persistence without the component | `useWizardData({ persist })` |
+| Your own progress UI | the segmented bar |
+
+## Accessibility when you own the markup
+
+Going headless means the ARIA is yours. This example keeps:
+
+- `role="radiogroup"` with `aria-labelledby` pointing at the question
+- a real `<label>` around every option
+- `disabled` on Next until the question is answered, so the control never lies
+
+The styled component does all of this for you — see
+[Accessibility](/docs/guides/accessibility) for what you are taking on.
+
+## Notes for production
+
+- Send partial answers as you go if drop-off analysis matters; `onDataChange`
+  is the hook for that.
+- Server-render the first question for people on slow connections — the hooks
+  are SSR-safe.
+
+## Full source
+
+The demo above **is** this code — the page embeds the component file verbatim,
+so what you read is what is running.
+
+```tsx title="SurveyExample.tsx"
+import React from "react";
+import {
+  useWizardCursor,
+  useWizardData,
+  type WizardData,
+} from "react-form-wizard-component";
+// Headless: no markup from the library, so no stylesheet import either.
+import s from "./examples.module.css";
+
+type Question = {
+  id: string;
+  prompt: string;
+  help?: string;
+  options: string[];
+  showIf?: (answers: WizardData) => boolean;
+};
+
+/**
+ * The questionnaire is data, not code — which is the case for branching
+ * surveys backed by a CMS. That is what the headless API is for.
+ */
+const QUESTIONS: Question[] = [
+  {
+    id: "builds",
+    prompt: "Do you build forms in React?",
+    options: ["Yes, regularly", "Occasionally", "No"],
+  },
+  {
+    id: "library",
+    prompt: "What do you reach for today?",
+    help: "Only asked if you build forms in React.",
+    options: ["react-hook-form", "Formik", "Hand-rolled state", "Something else"],
+    showIf: (a) => a.builds !== "No" && a.builds !== undefined,
+  },
+  {
+    id: "pain",
+    prompt: "What is the most annoying part of multi-step forms?",
+    options: [
+      "Validating one step at a time",
+      "Keeping state across steps",
+      "Making it accessible",
+      "Styling it",
+    ],
+    showIf: (a) => a.builds !== "No" && a.builds !== undefined,
+  },
+  {
+    id: "why-not",
+    prompt: "What do you build instead?",
+    help: "Only asked if you do not build forms in React.",
+    options: ["Vue", "Svelte", "Angular", "Mostly backend"],
+    showIf: (a) => a.builds === "No",
+  },
+  {
+    id: "contact",
+    prompt: "Happy to be contacted about the results?",
+    options: ["Yes", "No thanks"],
+  },
+];
+
+const STORAGE_KEY = "rfw-docs-survey";
+
+export default function SurveyExample() {
+  // Answers first — the visible question list is derived from them.
+  const answers = useWizardData({ persist: { key: STORAGE_KEY } });
+
+  const visible = React.useMemo(
+    () => QUESTIONS.filter((q) => !q.showIf || q.showIf(answers.data)),
+    [answers.data]
+  );
+
+  // Then the cursor, sized by whichever questions currently apply. Branches
+  // appearing or disappearing resize it automatically.
+  const cursor = useWizardCursor({ stepIds: visible.map((q) => q.id) });
+
+  const [sent, setSent] = React.useState(false);
+  const question = visible[cursor.currentStep];
+  const answered = question ? answers.data[question.id] !== undefined : false;
+
+  if (sent) {
+    return (
+      <div className={s.surveyShell}>
+        <div className={s.done}>
+          <div className={s.doneMark} aria-hidden="true">
+            ✓
+          </div>
+          <h4>Thanks for taking part</h4>
+          <button
+            className="button button--secondary button--sm"
+            onClick={() => {
+              answers.clearPersisted();
+              answers.setData({});
+              cursor.reset();
+              setSent(false);
+            }}
+          >
+            Run the demo again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!question) {
+    return (
+      <div className={s.surveyShell}>
+        <p>No questions apply right now.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className={s.surveyShell}>
+      <div className={s.progressTrack} aria-hidden="true">
+        {visible.map((q, i) => (
+          <span
+            key={q.id}
+            className={
+              i <= cursor.currentStep
+                ? `${s.progressSeg} ${s.progressSegOn}`
+                : s.progressSeg
+            }
+          />
+        ))}
+      </div>
+
+      <p className={s.meta}>
+        Question {cursor.currentStep + 1} of {cursor.totalSteps}
+        {" · "}the list resizes as you answer
+      </p>
+
+      <h4 className={s.stepHeading} id="survey-q">
+        {question.prompt}
+      </h4>
+      {question.help && <p className={s.stepIntro}>{question.help}</p>}
+
+      <div className={s.choices} role="radiogroup" aria-labelledby="survey-q">
+        {question.options.map((option) => {
+          const selected = answers.data[question.id] === option;
+          return (
+            <label
+              key={option}
+              className={selected ? `${s.choice} ${s.choiceSelected}` : s.choice}
+            >
+              <input
+                type="radio"
+                name={question.id}
+                checked={selected}
+                onChange={() => answers.updateData({ [question.id]: option })}
+              />
+              <span className={s.choiceBody}>
+                <span className={s.choiceTitle}>{option}</span>
+              </span>
+            </label>
+          );
+        })}
+      </div>
+
+      <div className={s.actions}>
+        <button
+          className="button button--secondary"
+          onClick={cursor.previous}
+          disabled={cursor.isFirstStep}
+        >
+          Back
+        </button>
+
+        {cursor.isLastStep ? (
+          <button
+            className="button button--primary"
+            disabled={!answered}
+            onClick={() => {
+              answers.clearPersisted();
+              setSent(true);
+            }}
+          >
+            Submit
+          </button>
+        ) : (
+          <button
+            className="button button--primary"
+            onClick={cursor.next}
+            disabled={!answered}
+          >
+            Next
+          </button>
+        )}
+      </div>
+
+      <div className={s.resetBar}>
+        <span>Answers persist across a reload.</span>
+        <button
+          className="button button--secondary button--sm"
+          onClick={() => {
+            answers.clearPersisted();
+            answers.setData({});
+            cursor.reset();
+          }}
+        >
+          Start over
+        </button>
+      </div>
+
+      <details style={{ marginTop: "1rem" }}>
+        <summary className={s.meta}>Current answers</summary>
+        <pre className={s.log}>{JSON.stringify(answers.data, null, 2)}</pre>
+      </details>
+    </div>
+  );
+}
+```
+
+The shared `examples.module.css` only styles the form fields; the wizard
+chrome comes from `react-form-wizard-component/styles.css`.

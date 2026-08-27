@@ -7,6 +7,8 @@ authors: [parsa]
 
 ![React Form Wizard v1.0.0](../../static/img/undraw_docusaurus_react.svg)
 
+{/* truncate */}
+
 # 🚀 React Form Wizard v1.0.0 - Major Update Released!
 
 We're excited to announce the release of **React Form Wizard v1.0.0**! This major update brings significant improvements in performance, developer experience, and introduces powerful new features including **schema-based form wizards**.

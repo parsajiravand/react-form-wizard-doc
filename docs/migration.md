@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 30
 title: Migration
 description: Upgrading to v1.2.0 from 1.1.x or 0.2.x.
 ---
@@ -66,11 +66,11 @@ Two API changes carried over from 1.0.0:
 Everything else in the children API is unchanged. What you gain:
 
 - [Schema API](/docs/demos-v1/schema-api) with conditional steps
-- [Validation adapters](/docs/validation) for Zod and react-hook-form
-- [Headless `useWizard()`](/docs/headless)
-- [Theming](/docs/theming) and unstyled mode
-- [Persistence and URL sync](/docs/persistence)
-- [Accessibility](/docs/accessibility) — ARIA, live regions, keyboard
+- [Validation adapters](/docs/guides/validation) for Zod and react-hook-form
+- [Headless `useWizard()`](/docs/guides/headless)
+- [Theming](/docs/guides/theming) and unstyled mode
+- [Persistence and URL sync](/docs/guides/persistence)
+- [Accessibility](/docs/guides/accessibility) — ARIA, live regions, keyboard
 - Correct TypeScript types, working `require()`, and `"use client"`
 
 ## From 1.0.0 / 1.1.x on React 19

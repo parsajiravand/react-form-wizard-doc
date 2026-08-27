@@ -7,6 +7,8 @@ authors: [parsa]
 
 # React Form Wizard Component
 
+{/* truncate */}
+
 ![React Form Wizard](./react-form-wizard-icon.png)
 
 Are you looking for an easy way to implement a form wizard in your React application? Look no further! Introducing the **React Form Wizard Component** - a powerful and customizable form wizard component that simplifies tab wizard management without any external dependencies.

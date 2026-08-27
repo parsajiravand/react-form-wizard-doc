@@ -1,10 +1,10 @@
 ---
-sidebar_position: 5
+sidebar_position: 1
 title: Validation
 description: Per-step validation, including Zod and react-hook-form adapters.
 ---
 
-import ValidationAdapters from "../src/components/DemosV2/ValidationAdapters";
+import ValidationAdapters from "../../src/components/DemosV2/ValidationAdapters";
 
 # Validation
 
@@ -18,13 +18,13 @@ validate: ({ data }) => (data.accepted ? true : "Please accept the terms");
 
 Returning `false` blocks navigation without a message.
 
-<div class="demo">
+<div className="demo">
   <ValidationAdapters />
 </div>
 
 ## Zod
 
-<span class="badge badge--success">v1.2</span>
+<span className="badge badge--success">v1.2</span>
 
 ```tsx
 import { z } from "zod";
@@ -74,7 +74,7 @@ const emailSchema = {
 
 ## react-hook-form
 
-<span class="badge badge--success">v1.2</span>
+<span className="badge badge--success">v1.2</span>
 
 Per-step validation without splitting your form into several forms:
 
@@ -172,5 +172,5 @@ When a validator returns a string the step marker is highlighted, and the
 message is passed to `validationError` if the step defines one. Control the
 colour with `showErrorOnTabColor`, or the `errorColor` theme token.
 
-See also: [Props](/docs/props), [Events](/docs/event),
+See also: [Props](/docs/api/form-wizard), [Events](/docs/api/events),
 [validation demo](/docs/demos-v1/validation-with-error-display).

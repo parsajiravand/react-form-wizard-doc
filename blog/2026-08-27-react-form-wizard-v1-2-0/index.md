@@ -11,7 +11,7 @@ a headless API, validation adapters, theming and persistence.
 
 If you pinned `0.2.7` because v1 needed React 19 — you can upgrade now.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## The short version
 
@@ -108,7 +108,7 @@ wizard.updateData({ email: "hi@example.com" });
 ```
 
 `useWizardData` and `useWizardCursor` are exported separately, for when the
-step list itself is data. [Read more →](/docs/headless)
+step list itself is data. [Read more →](/docs/guides/headless)
 
 ### Validation adapters for Zod and react-hook-form
 
@@ -123,7 +123,7 @@ validate: hookFormValidator(form, { fields: ["street", "city"] });
 
 Neither library becomes a dependency — the adapters are typed *structurally*,
 so anything exposing `safeParse` works (Zod, Valibot, ArkType).
-[Read more →](/docs/validation)
+[Read more →](/docs/guides/validation)
 
 ### Theming and unstyled mode
 
@@ -133,7 +133,7 @@ so anything exposing `safeParse` works (Zod, Valibot, ArkType).
 
 Theme tokens become `--rfw-*` CSS custom properties, so overriding one value no
 longer means restating a palette. Or go fully `unstyled` and bring Tailwind,
-CSS modules, or your own system. [Read more →](/docs/theming)
+CSS modules, or your own system. [Read more →](/docs/guides/theming)
 
 ### Persistence and URL sync
 
@@ -142,7 +142,7 @@ CSS modules, or your own system. [Read more →](/docs/theming)
 ```
 
 A refresh mid-checkout no longer loses the form.
-[Read more →](/docs/persistence)
+[Read more →](/docs/guides/persistence)
 
 ### Accessibility, finished properly
 
@@ -154,7 +154,7 @@ A refresh mid-checkout no longer loses the form.
 
 Earlier releases claimed "full WCAG 2.1 AA compliance". That claim has been
 corrected to what is actually implemented and tested, rather than quietly kept.
-[Read more →](/docs/accessibility)
+[Read more →](/docs/guides/accessibility)
 
 ## How we know it works
 

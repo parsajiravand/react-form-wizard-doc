@@ -1,7 +1,7 @@
 ---
 title: Event Handling
 description: Callbacks fired by the FormWizard component.
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 # Event Handling
@@ -94,5 +94,5 @@ const wizard = useWizard({
 });
 ```
 
-See [Props](/docs/props) for full signatures, and
-[References](/docs/refrence) for the imperative methods.
+See [Props](/docs/api/form-wizard) for full signatures, and
+[References](/docs/api/methods) for the imperative methods.

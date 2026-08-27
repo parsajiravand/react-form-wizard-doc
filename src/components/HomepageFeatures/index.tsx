@@ -1,69 +1,96 @@
 import React from "react";
-import clsx from "clsx";
+import Link from "@docusaurus/Link";
 import styles from "./styles.module.css";
 
-type FeatureItem = {
+type Feature = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<"svg">>;
-  description: JSX.Element;
+  body: React.ReactNode;
+  to: string;
+  linkLabel: string;
 };
 
-const FeatureList: FeatureItem[] = [
+const FEATURES: Feature[] = [
   {
-    title: "Easy to Use",
-    Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
-    description: (
+    title: "Zero dependencies",
+    body: (
       <>
-        The react-form-wizard-component package is designed to be user-friendly,
-        allowing you to easily create and manage forms for your website.
+        Nothing enters your lockfile but this package. Roughly 5&nbsp;kB gzipped,
+        with React left external.
       </>
     ),
+    to: "/docs/getting-started/installation",
+    linkLabel: "Install it",
   },
   {
-    title: "Focus on What Matters",
-    Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
-    description: (
+    title: "Styled or headless",
+    body: (
       <>
-        With react-form-wizard-component, you can focus on the content of your
-        forms while the package takes care of the underlying form handling and
-        validation.
+        Ship the bundled look, recolour it with CSS variables, go fully
+        unstyled, or drop the markup entirely and use <code>useWizard()</code>.
       </>
     ),
+    to: "/docs/guides/headless",
+    linkLabel: "See the headless API",
   },
   {
-    title: "Powered by React",
-    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
-    description: (
+    title: "Real per-step validation",
+    body: (
       <>
-        Leverage the power of React to build dynamic and interactive forms using
-        the react-form-wizard-component. Customize the layout and components to
-        fit your needs.
+        First-class adapters for Zod and react-hook-form — validate one step’s
+        fields without splitting your form.
       </>
     ),
+    to: "/docs/guides/validation",
+    linkLabel: "Read the guide",
+  },
+  {
+    title: "Accessible by default",
+    body: (
+      <>
+        Tablist semantics, live-region step announcements, focus management and
+        full keyboard operation — nothing to switch on.
+      </>
+    ),
+    to: "/docs/guides/accessibility",
+    linkLabel: "What you get",
+  },
+  {
+    title: "React 17, 18 and 19",
+    body: (
+      <>
+        One package across three majors, each tested in CI against the real
+        published tarball.
+      </>
+    ),
+    to: "/docs/migration",
+    linkLabel: "Upgrade notes",
+  },
+  {
+    title: "Works everywhere",
+    body: (
+      <>
+        ESM, CommonJS and UMD, correct types in every resolution mode, and a{" "}
+        <code>"use client"</code> directive for the Next.js App Router.
+      </>
+    ),
+    to: "/docs/getting-started/frameworks",
+    linkLabel: "Framework setup",
   },
 ];
-
-function Feature({ title, Svg, description }: FeatureItem) {
-  return (
-    <div className={clsx("col col--4")}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <h3>{title}</h3>
-        <p>{description}</p>
-      </div>
-    </div>
-  );
-}
 
 export default function HomepageFeatures(): JSX.Element {
   return (
     <section className={styles.features}>
       <div className="container">
-        <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
+        <div className={styles.grid}>
+          {FEATURES.map((feature) => (
+            <div className={styles.card} key={feature.title}>
+              <h3 className={styles.cardTitle}>{feature.title}</h3>
+              <p className={styles.cardBody}>{feature.body}</p>
+              <Link className={styles.cardLink} to={feature.to}>
+                {feature.linkLabel} →
+              </Link>
+            </div>
           ))}
         </div>
       </div>

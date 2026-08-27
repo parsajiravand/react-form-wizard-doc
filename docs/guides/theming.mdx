@@ -1,11 +1,11 @@
 ---
-sidebar_position: 7
+sidebar_position: 3
 title: Theming & Styling
 description: CSS custom properties, per-element class overrides, and fully unstyled mode.
 ---
 
-import ThemeTokens from "../src/components/DemosV2/ThemeTokens";
-import UnstyledWizard from "../src/components/DemosV2/UnstyledWizard";
+import ThemeTokens from "../../src/components/DemosV2/ThemeTokens";
+import UnstyledWizard from "../../src/components/DemosV2/UnstyledWizard";
 
 # Theming & Styling
 
@@ -17,13 +17,13 @@ There are three levels, from smallest change to largest:
 
 ## Theme tokens
 
-<span class="badge badge--success">v1.2</span>
+<span className="badge badge--success">v1.2</span>
 
 The `theme` prop writes `--rfw-*` CSS custom properties onto the wizard root.
 The stylesheet reads them with fallbacks, so you can override **one** value
 without restating a palette.
 
-<div class="demo">
+<div className="demo">
   <ThemeTokens />
 </div>
 
@@ -76,7 +76,7 @@ both light and dark, and are plain CSS variables — so media queries, a
 
 ## Class overrides
 
-<span class="badge badge--success">v1.2</span>
+<span className="badge badge--success">v1.2</span>
 
 `classNames` adds your classes to the bundled ones:
 
@@ -90,12 +90,12 @@ Keys: `root`, `header`, `title`, `subtitle`, `navigation`, `stepList`, `step`,
 
 ## Unstyled mode
 
-<span class="badge badge--success">v1.2</span>
+<span className="badge badge--success">v1.2</span>
 
 `unstyled` drops every bundled class **and** every inline colour, so your
 classes are the only styling. Combine it with `classNames`:
 
-<div class="demo">
+<div className="demo">
   <UnstyledWizard />
 </div>
 
@@ -150,4 +150,4 @@ For new work, prefer driving theme tokens from your own dark-mode mechanism:
 }
 ```
 
-See also: [dark mode demo](/docs/demos-v1/dark-mode), [Props](/docs/props).
+See also: [dark mode demo](/docs/demos-v1/dark-mode), [Props](/docs/api/form-wizard).

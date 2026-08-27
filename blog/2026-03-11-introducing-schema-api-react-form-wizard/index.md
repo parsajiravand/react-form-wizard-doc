@@ -7,6 +7,8 @@ authors: [parsa]
 
 ![Schema API Banner](../../static/img/undraw_docusaurus_tree.svg)
 
+{/* truncate */}
+
 # 🎯 Introducing Schema API - The Future of React Form Wizards
 
 **React Form Wizard v1.0.0** introduces the **Schema API** - a powerful new way to define form wizards using configuration objects instead of JSX components.
@@ -110,7 +112,7 @@ const schema: FormWizardSchema = {
 - [Schema API Demo](/docs/demos-v1/schema-api)
 - [All v1 Demos](/docs/category/demos-v1)
 - [Playground](/docs/playground)
-- [Props Reference](/docs/props)
+- [Props Reference](/docs/api/form-wizard)
 
 ---
 

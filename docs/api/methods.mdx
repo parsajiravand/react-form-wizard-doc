@@ -1,10 +1,10 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 title: References
 hide_table_of_contents: true
 ---
 
-import Sample from "../src/components/Refrences/sample";
+import Sample from "../../src/components/Refrences/sample";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
@@ -23,13 +23,13 @@ React reference documentation: [https://react.dev/reference/react/useRef](https:
 | `goToTab(index)` | Navigate to a step by index. |
 | `goToTabById(id)` | Navigate to a step by id. |
 | `activeAll()` | Mark all tabs as visited/active. |
-| `reset()` | Reset to the configured start index, and clear any [persisted](/docs/persistence) data. |
+| `reset()` | Reset to the configured start index, and clear any [persisted](/docs/guides/persistence) data. |
 | `setData(data)` | Replace wizard data programmatically. |
 | `getData()` | Read the current wizard data. |
-| `updateData(patch)` <span class="badge badge--success">v1.2</span> | Merge a patch into wizard data, leaving other keys untouched. |
-| `getCurrentStep()` <span class="badge badge--success">v1.2</span> | Read the current zero-based step index. |
+| `updateData(patch)` <span className="badge badge--success">v1.2</span> | Merge a patch into wizard data, leaving other keys untouched. |
+| `getCurrentStep()` <span className="badge badge--success">v1.2</span> | Read the current zero-based step index. |
 
-<div class="demo">
+<div className="demo">
   <Sample />
 </div>
 
@@ -284,7 +284,7 @@ export default Sample;
 ## Headless alternative
 
 If you want programmatic control *and* your own markup, use
-[`useWizard()`](/docs/headless) instead of a ref — it returns the same
+[`useWizard()`](/docs/guides/headless) instead of a ref — it returns the same
 operations as plain functions:
 
 ```tsx
@@ -296,5 +296,5 @@ wizard.updateData({ email: "a@b.com" });
 wizard.reset();
 ```
 
-See also: [Props](/docs/props), [Event Handling](/docs/event) and
-[Headless](/docs/headless).
+See also: [Props](/docs/api/form-wizard), [Event Handling](/docs/api/events) and
+[Headless](/docs/guides/headless).

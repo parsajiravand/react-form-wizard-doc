@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 title: Props
 description: Full prop reference for the FormWizard component and FormWizard.TabContent.
 ---
@@ -24,9 +24,9 @@ description: Full prop reference for the FormWizard component and FormWizard.Tab
 | Prop | Description | Sample |
 | --- | --- | --- |
 | `color` | Main accent colour for tabs and progress visuals. | [v1 custom colors](/docs/demos-v1/custom-colors) |
-| `theme` <span class="badge badge--success">v1.2</span> | Theme tokens written as `--rfw-*` CSS custom properties on the root. Overrides one value without restating a palette. | [theming](/docs/theming) |
-| `unstyled` <span class="badge badge--success">v1.2</span> | Drops every bundled class and inline colour so only your own styles apply. Default: `false`. | [unstyled](/docs/theming#unstyled-mode) |
-| `classNames` <span class="badge badge--success">v1.2</span> | Per-element class overrides (`WizardClassNames`). Merged with the defaults, or replacing them when `unstyled`. | [unstyled](/docs/theming#unstyled-mode) |
+| `theme` <span className="badge badge--success">v1.2</span> | Theme tokens written as `--rfw-*` CSS custom properties on the root. Overrides one value without restating a palette. | [theming](/docs/guides/theming) |
+| `unstyled` <span className="badge badge--success">v1.2</span> | Drops every bundled class and inline colour so only your own styles apply. Default: `false`. | [unstyled](/docs/guides/theming#unstyled-mode) |
+| `classNames` <span className="badge badge--success">v1.2</span> | Per-element class overrides (`WizardClassNames`). Merged with the defaults, or replacing them when `unstyled`. | [unstyled](/docs/guides/theming#unstyled-mode) |
 | `shape` | Tab shape (`circle`, `square` or `tab`). | [v1 square shape](/docs/demos-v1/square-shape) |
 | `stepSize` | Step size: `xs`, `sm`, `md`, `lg`. Default: `md`. | [v1 step sizes](/docs/demos-v1/different-step-sizes) |
 | `layout` | Layout direction: `horizontal` or `vertical`. Default: `horizontal`. | [v1 vertical layout](/docs/demos-v1/vertical-layout) |
@@ -36,7 +36,7 @@ description: Full prop reference for the FormWizard component and FormWizard.Tab
 | `customDarkModeColor` | Custom dark-mode colour tokens object. Prefer `theme`, which works in both light and dark. | [v1 dark mode](/docs/demos-v1/dark-mode) |
 | `removeBackgroundTab` | Removes the default tab background fill. | [legacy remove tab bg](/docs/demos/without-background-tab) |
 | `removeBackgroundTabTransparentColor` | Background colour to apply under transparent tab icons. | [legacy remove tab bg](/docs/demos/without-background-tab) |
-| `style` <span class="badge badge--success">v1.2</span> | Extra inline styles for the root element. | — |
+| `style` <span className="badge badge--success">v1.2</span> | Extra inline styles for the root element. | — |
 
 ### Buttons
 
@@ -55,24 +55,24 @@ description: Full prop reference for the FormWizard component and FormWizard.Tab
 | --- | --- | --- |
 | `startIndex` | Initial active step index. Clamped into range on the first render. | [legacy step index](/docs/demos/step-index) |
 | `disableBackOnClickStep` | Prevents navigating by clicking step markers. | [v1 complete showcase](/docs/demos-v1/complete-feature-showcase) |
-| `persist` <span class="badge badge--success">v1.2</span> | `{ key, storage }` — keeps wizard data across reloads. `storage` is `"session"` (default) or `"local"`. | [persistence](/docs/persistence) |
-| `syncToUrl` <span class="badge badge--success">v1.2</span> | `true` or `{ param }` — mirrors the active step into a query parameter (1-based). Default param: `step`. | [persistence](/docs/persistence#url-sync) |
-| `keyboardNavigation` <span class="badge badge--success">v1.2</span> | Enable `←` `→` `Home` `End` navigation. Default: `true`. | [accessibility](/docs/accessibility) |
-| `swipeNavigation` <span class="badge badge--success">v1.2</span> | Enable horizontal swipe on touch devices. Default: `true`. | [accessibility](/docs/accessibility) |
+| `persist` <span className="badge badge--success">v1.2</span> | `{ key, storage }` — keeps wizard data across reloads. `storage` is `"session"` (default) or `"local"`. | [persistence](/docs/guides/persistence) |
+| `syncToUrl` <span className="badge badge--success">v1.2</span> | `true` or `{ param }` — mirrors the active step into a query parameter (1-based). Default param: `step`. | [persistence](/docs/guides/persistence#url-sync) |
+| `keyboardNavigation` <span className="badge badge--success">v1.2</span> | Enable `←` `→` `Home` `End` navigation. Default: `true`. | [accessibility](/docs/guides/accessibility) |
+| `swipeNavigation` <span className="badge badge--success">v1.2</span> | Enable horizontal swipe on touch devices. Default: `true`. | [accessibility](/docs/guides/accessibility) |
 
 ### Accessibility
 
 | Prop | Description | Sample |
 | --- | --- | --- |
-| `announceStepChanges` <span class="badge badge--success">v1.2</span> | Announce step changes through an `aria-live` region and move focus to the revealed panel. Default: `true`. | [accessibility](/docs/accessibility) |
-| `ariaLabel` <span class="badge badge--success">v1.2</span> | Accessible name for the wizard region. Default: `"Form Wizard"`. Give each wizard its own when a page has several. | [accessibility](/docs/accessibility) |
+| `announceStepChanges` <span className="badge badge--success">v1.2</span> | Announce step changes through an `aria-live` region and move focus to the revealed panel. Default: `true`. | [accessibility](/docs/guides/accessibility) |
+| `ariaLabel` <span className="badge badge--success">v1.2</span> | Accessible name for the wizard region. Default: `"Form Wizard"`. Give each wizard its own when a page has several. | [accessibility](/docs/guides/accessibility) |
 
 ### Events
 
 | Prop | Description | Sample |
 | --- | --- | --- |
 | `onComplete` | Called on finish, with the wizard data: `(data?: WizardData) => void`. | [v1 schema api](/docs/demos-v1/schema-api) |
-| `onTabChange` | Called when the active step changes with `{ prevIndex, nextIndex, stepId? }`. Does **not** fire on mount as of v1.2. | [events](/docs/event) |
+| `onTabChange` | Called when the active step changes with `{ prevIndex, nextIndex, stepId? }`. Does **not** fire on mount as of v1.2. | [events](/docs/api/events) |
 
 <br />
 
@@ -86,7 +86,7 @@ Used to define each step in the children API:
 | `title` | Tab title text. | [v1 basic](/docs/demos-v1/basic-children-api) |
 | `icon` | Tab icon (class-name string or React node). | [v1 custom react icons](/docs/demos-v1/custom-icons-react-elements) |
 | `condition` | Condition function deciding whether the step is visible. | [v1 conditional steps](/docs/demos-v1/conditional-steps-schema) |
-| `validate` | Validation function returning `true`, `false`, or an error message string. | [validation](/docs/validation) |
+| `validate` | Validation function returning `true`, `false`, or an error message string. | [validation](/docs/guides/validation) |
 | `isValid` | Static boolean validity flag. Prefer `validate` for anything data-dependent. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
 | `validationError` | Called when an invalid step blocks navigation. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
 | `showErrorOnTab` | Shows the error style on the tab when invalid. | [v1 validation](/docs/demos-v1/validation-with-error-display) |
@@ -113,7 +113,7 @@ Each entry in `schema.steps` accepts:
 effects — never `await`, never set state from it. For asynchronous checks, do
 the work in your own handler, write the result into wizard data, and have the
 validator read that. See the
-[async verification pattern](/docs/validation#asynchronous-checks).
+[async verification pattern](/docs/guides/validation#asynchronous-checks).
 
 :::
 
@@ -179,5 +179,5 @@ and type resolution is now verified in CI under `bundler`, `node16` and
 
 :::
 
-For callback details see [Events](/docs/event); for imperative methods see
-[References](/docs/refrence).
+For callback details see [Events](/docs/api/events); for imperative methods see
+[References](/docs/api/methods).

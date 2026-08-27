@@ -1,17 +1,17 @@
 ---
-sidebar_position: 9
+sidebar_position: 5
 title: Accessibility
 description: ARIA roles, live-region announcements, focus management and keyboard navigation.
 ---
 
-import AccessibleWizards from "../src/components/DemosV2/AccessibleWizards";
+import AccessibleWizards from "../../src/components/DemosV2/AccessibleWizards";
 
 # Accessibility
 
 The wizard is operable by keyboard and announces itself to assistive
 technology out of the box. Nothing below needs enabling.
 
-<div class="demo">
+<div className="demo">
   <AccessibleWizards />
 </div>
 
@@ -42,7 +42,7 @@ operable.
 
 ## Several wizards on one page
 
-<span class="badge badge--success">v1.2</span>
+<span className="badge badge--success">v1.2</span>
 
 Each wizard only reacts to keys when focus is inside **it**. Before v1.2.0 all
 wizards on a page responded to the same arrow key at once.
@@ -56,7 +56,7 @@ Give each one an `ariaLabel` so screen-reader users can tell them apart:
 
 ## Announcements and focus
 
-<span class="badge badge--success">v1.2</span>
+<span className="badge badge--success">v1.2</span>
 
 On every step change the wizard:
 

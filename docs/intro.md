@@ -12,9 +12,12 @@ hook from the same package.
 
 ## Install
 
-```bash
+```bash npm2yarn
 npm install react-form-wizard-component
 ```
+
+Full setup notes live in [Installation](/docs/getting-started/installation)
+and [Framework setup](/docs/getting-started/frameworks).
 
 ```bash
 yarn add react-form-wizard-component
@@ -125,11 +128,11 @@ Import the stylesheet once, anywhere in the tree — commonly `app/layout.tsx`.
 |  |  |
 | --- | --- |
 | [Schema API](/docs/demos-v1/schema-api) | Declarative steps with conditional visibility and per-step validation. |
-| [Validation adapters](/docs/validation) | Zod and react-hook-form integration, still zero dependencies. |
-| [Headless `useWizard()`](/docs/headless) | The same state machine with none of the markup. |
-| [Theming](/docs/theming) | CSS custom properties, or go fully unstyled with your own classes. |
-| [Persistence](/docs/persistence) | Survive a reload; mirror the active step into the URL. |
-| [Accessibility](/docs/accessibility) | ARIA roles, live-region announcements, focus management, full keyboard operation. |
+| [Validation adapters](/docs/guides/validation) | Zod and react-hook-form integration, still zero dependencies. |
+| [Headless `useWizard()`](/docs/guides/headless) | The same state machine with none of the markup. |
+| [Theming](/docs/guides/theming) | CSS custom properties, or go fully unstyled with your own classes. |
+| [Persistence](/docs/guides/persistence) | Survive a reload; mirror the active step into the URL. |
+| [Accessibility](/docs/guides/accessibility) | ARIA roles, live-region announcements, focus management, full keyboard operation. |
 
 ## Compatibility
 
@@ -151,16 +154,25 @@ Import the stylesheet once, anywhere in the tree — commonly `app/layout.tsx`.
 
 ## Props
 
-See [Props](/docs/props) for the full `FormWizard` reference, and
-[`FormWizard.TabContent`](/docs/props#formwizardtabcontent-component) for step
+See [Props](/docs/api/form-wizard) for the full `FormWizard` reference, and
+[`FormWizard.TabContent`](/docs/api/form-wizard#formwizardtabcontent-component) for step
 props.
 
 ## Examples
 
-- [Demos v2](/docs/category/demos-v2) — everything new in v1.2.0
-- [Demos v1](/docs/category/demos-v1) — the schema-first API
-- [Demos (old)](/docs/category/demos-old) — the 0.2.x children API
-- [Playground](/docs/playground) — try it live
+**Complete builds** you can lift straight into a project:
+
+- [Multi-step checkout](/docs/examples/checkout) — per-step validation, delivery options, live order total
+- [Resumable onboarding](/docs/examples/onboarding) — survives a reload, branches, deep-links the step
+- [Application with upload](/docs/examples/job-application) — asynchronous document check gating the step
+- [Branching survey](/docs/examples/survey) — headless, questions defined as data
+
+**Feature demos**, one capability at a time:
+
+- [Feature demos](/docs/category/demos-v2) — theming, unstyled, headless, persistence, accessibility
+- [Schema API demos](/docs/category/demos-v1) — the schema-first API
+- [Legacy demos](/docs/category/demos-old) — the original children API
+- [Playground](/docs/playground) — CodeSandbox embeds
 
 ## License
 

@@ -1,19 +1,19 @@
 ---
-sidebar_position: 8
+sidebar_position: 4
 title: Persistence & URL Sync
 description: Keep wizard data across reloads and mirror the active step into the URL.
 ---
 
-import PersistedWizard from "../src/components/DemosV2/PersistedWizard";
+import PersistedWizard from "../../src/components/DemosV2/PersistedWizard";
 
 # Persistence & URL Sync
 
-<span class="badge badge--success">v1.2</span>
+<span className="badge badge--success">v1.2</span>
 
 Long forms lose people when a refresh wipes their answers. `persist` keeps the
 data; `syncToUrl` keeps the position.
 
-<div class="demo">
+<div className="demo">
   <PersistedWizard />
 </div>
 
@@ -96,4 +96,4 @@ const wizard = useWizard({
 });
 ```
 
-See also: [Props](/docs/props), [Headless](/docs/headless).
+See also: [Props](/docs/api/form-wizard), [Headless](/docs/guides/headless).

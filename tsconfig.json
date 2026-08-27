@@ -1,9 +1,12 @@
 {
-  // This file is not used in compilation. It is here just for a nice editor experience.
-  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  // Editor experience only — Docusaurus compiles with SWC, not tsc.
+  "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "esnext",
-    "moduleResolution": "node"
-  }
+    "paths": {
+      "@site/*": ["./*"]
+    }
+  },
+  "include": ["src/", "docusaurus.config.js", "sidebars.js"],
+  "exclude": ["build", ".docusaurus", "node_modules"]
 }

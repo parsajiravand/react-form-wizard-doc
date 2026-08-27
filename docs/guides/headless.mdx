@@ -1,21 +1,21 @@
 ---
-sidebar_position: 6
+sidebar_position: 2
 title: Headless (useWizard)
 description: The same wizard state machine with none of the markup.
 ---
 
-import HeadlessWizard from "../src/components/DemosV2/HeadlessWizard";
-import BranchingSurvey from "../src/components/DemosV2/BranchingSurvey";
+import HeadlessWizard from "../../src/components/DemosV2/HeadlessWizard";
+import BranchingSurvey from "../../src/components/DemosV2/BranchingSurvey";
 
 # Headless — `useWizard()`
 
-<span class="badge badge--success">v1.2</span>
+<span className="badge badge--success">v1.2</span>
 
 `useWizard()` gives you the wizard state machine with no markup, no class names
 and no stylesheet. `<FormWizard />` is built on the same hooks, so the two APIs
 behave identically — you can move between them without relearning anything.
 
-<div class="demo">
+<div className="demo">
   <HeadlessWizard />
 </div>
 
@@ -61,7 +61,7 @@ function MyWizard() {
 | `data` | `WizardData` | Supply to control data from outside. |
 | `onDataChange` | `(data) => void` | Fires whenever data changes. |
 | `onStepChange` | `(event) => void` | `{ prevIndex, nextIndex, stepId }`. Does not fire on mount. |
-| `persist` | `{ key, storage }` | Keep data across reloads. See [Persistence](/docs/persistence). |
+| `persist` | `{ key, storage }` | Keep data across reloads. See [Persistence](/docs/guides/persistence). |
 | `syncToUrl` | `boolean \| { param }` | Mirror the step into the URL. |
 
 ## Returns
@@ -93,7 +93,7 @@ the step list itself is data:
 Reading data first and sizing the cursor from it is what lets branches appear
 and disappear as answers change:
 
-<div class="demo">
+<div className="demo">
   <BranchingSurvey />
 </div>
 
@@ -121,8 +121,8 @@ function Survey() {
 
 Reach for `<FormWizard />` when you want the bundled look, and `useWizard()`
 when the markup is yours. If you only want to restyle the bundled markup, you
-do **not** need the headless API — see [Theming](/docs/theming) and
-[unstyled mode](/docs/theming#unstyled-mode).
+do **not** need the headless API — see [Theming](/docs/guides/theming) and
+[unstyled mode](/docs/guides/theming#unstyled-mode).
 
 :::
 
