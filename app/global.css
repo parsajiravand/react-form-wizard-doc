@@ -5,6 +5,9 @@
 @source "../node_modules/fumadocs-ui/dist/**/*.js";
 @source "../components/**/*.tsx";
 @source "../content/**/*.mdx";
+/* The Tailwind preset's classes live in the package, so Tailwind has to be
+   pointed at it or the preset demo renders unstyled. */
+@source "../node_modules/react-form-wizard-component/dist/**/*.js";
 
 /*
  * ONE accent, with a complete ramp.

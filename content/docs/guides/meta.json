@@ -4,6 +4,7 @@
     "validation",
     "headless",
     "theming",
+    "tailwind",
     "persistence",
     "accessibility"
   ]
