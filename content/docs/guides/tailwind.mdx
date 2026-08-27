@@ -1,0 +1,184 @@
+---
+title: "Tailwind CSS"
+description: "Adopt your Tailwind theme with one import, or build the wizard entirely from utility classes."
+---
+
+import TailwindPresetDemo from "@/components/demos/TailwindPreset";
+
+There are two ways in, depending on how much control you want.
+
+## 1. Keep the skin, adopt your theme
+
+One import. The wizard's tokens map onto Tailwind's own theme variables, so it
+picks up your palette, radius and font without going `unstyled`:
+
+```css title="app.css"
+@import "tailwindcss";
+@import "react-form-wizard-component/styles.css";
+@import "react-form-wizard-component/tailwind.css";
+```
+
+```tsx
+<FormWizard schema={schema} />
+```
+
+Dark mode follows whichever strategy your app already uses — a `.dark` class or
+`[data-theme="dark"]`. Nothing else to configure.
+
+:::warn Tailwind v4 only
+
+The bridge reads the `--color-*` and `--radius-*` variables that v4 exposes
+from `@theme`. Those do not exist in v3, so set the tokens directly instead:
+
+```css
+.react-form-wizard {
+  --rfw-primary: theme('colors.blue.600');
+  --rfw-radius: theme('borderRadius.lg');
+}
+```
+:::
+
+Every mapping keeps a fallback, so a renamed or missing scale degrades to the
+wizard's own default rather than breaking.
+
+## 2. Build it from utility classes
+
+Go `unstyled` and let your classes do all the work. `tailwindPreset()` gives you
+a sensible starting point rather than a blank slate:
+
+```tsx
+import FormWizard, { tailwindPreset } from "react-form-wizard-component";
+
+const classNames = tailwindPreset();
+
+<FormWizard unstyled classNames={classNames} schema={schema} />;
+```
+
+<div className="demo">
+  <TailwindPresetDemo />
+</div>
+
+:::warn Tailwind must be told to scan the package
+
+Tailwind generates only the classes it can *see* in your source. The preset's
+classes live in `node_modules`, so without this they are never emitted and the
+wizard renders unstyled:
+
+```css title="v4"
+@source "../node_modules/react-form-wizard-component/dist/**/*.js";
+```
+
+```js title="v3 — tailwind.config.js"
+content: [
+  "./src/**/*.{ts,tsx}",
+  "./node_modules/react-form-wizard-component/dist/**/*.js",
+]
+```
+
+The **glob matters**. A bare directory —
+`@source "../node_modules/react-form-wizard-component/dist"` — silently scans
+nothing, because Tailwind applies your `.gitignore` to directory sources and
+`node_modules` is ignored. An explicit `/**/*.js` overrides that. The failure is
+quiet: the build succeeds and the wizard just renders unstyled.
+
+Would rather not? `tailwindPreset()` returns a plain object — copy it into your
+own file and skip this entirely.
+:::
+
+### Customising
+
+```tsx
+tailwindPreset({
+  dark: false,                    // drop the dark: variants
+  extend: {
+    content: "p-10",              // appended, so preset classes survive
+    nextButton: "rounded-full",
+  },
+})
+```
+
+`extend` appends rather than replaces, and Tailwind's later-wins ordering means
+your class takes effect. Keys the preset does not style are passed through
+untouched.
+
+### Recolouring
+
+The preset reads its accent from `--rfw-primary` through
+`bg-[var(--rfw-primary)]`, which is valid on both v3 and v4. So changing the
+accent is a CSS variable, not a rebuild:
+
+```css
+.react-form-wizard {
+  --rfw-primary: var(--color-violet-600);
+}
+```
+
+That is also why the preset does not take a colour name: a class built by
+concatenation — `` `bg-${colour}-600` `` — is invisible to Tailwind's scanner
+and would never be generated.
+
+## Which one?
+
+| | Token bridge | Utility preset |
+| --- | --- | --- |
+| Setup | one CSS import | `@source` line + `unstyled` |
+| Tailwind version | v4 | v3 and v4 |
+| Markup you control | none | all of it |
+| Ships CSS | 1.4 kB | none |
+| Good for | matching an existing design quickly | a bespoke look |
+
+## Class slots
+
+`unstyled` mode exposes every element:
+
+`root`, `header`, `title`, `subtitle`, `navigation`, `stepList`, `step`,
+`stepActive`, `stepComplete`, `stepInvalid`, `stepIcon`, `stepTitle`,
+`content`, `footer`, `backButton`, `nextButton`, `finishButton`.
+
+`stepComplete` and `stepInvalid` are new in v2 — before them only the active
+step could be styled differently.
+
+## Full source of the demo
+
+```tsx title="TailwindPreset.tsx"
+"use client";
+
+import FormWizard, { tailwindPreset } from "react-form-wizard-component";
+// unstyled mode needs no stylesheet from the package.
+
+// Built once at module scope — the preset returns a new object per call.
+const classNames = tailwindPreset({
+  extend: { content: "min-h-28" },
+});
+
+export default function TailwindPresetDemo() {
+  return (
+    <FormWizard
+      unstyled
+      classNames={classNames}
+      ariaLabel="Tailwind preset example"
+      onComplete={() => undefined}
+    >
+      <FormWizard.TabContent title="Account">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
+          Every class here comes from <code>tailwindPreset()</code> — the
+          package ships no CSS into this demo.
+        </p>
+      </FormWizard.TabContent>
+      <FormWizard.TabContent title="Profile">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
+          The accent is <code>bg-[var(--rfw-primary)]</code>, so recolouring is
+          a CSS variable away.
+        </p>
+      </FormWizard.TabContent>
+      <FormWizard.TabContent title="Review">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
+          Completed steps fill in; the current one keeps a ring.
+        </p>
+      </FormWizard.TabContent>
+    </FormWizard>
+  );
+}
+```
+
+See also: [Theming](/docs/guides/theming), [API reference](/docs/api/form-wizard).

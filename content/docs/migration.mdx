@@ -1,0 +1,147 @@
+---
+title: "Migration"
+description: "Upgrading to v2 from 1.2.x, and from the 1.x and 0.2.x lines."
+---
+
+# Migration
+
+## From 1.2.x → 2.0.0
+
+**The API did not change.** Every prop, method, hook and adapter behaves as it
+did in 1.2.x. What changed is how the wizard looks and how it applies colour.
+
+If you never styled the wizard, upgrade and you are done — you get the new look
+and dark mode that actually works.
+
+### Keeping the old appearance
+
+Two lines:
+
+```diff
+  import "react-form-wizard-component/styles.css";
++ import "react-form-wizard-component/legacy.css";
+
+- <FormWizard schema={schema} />
++ <FormWizard variant="legacy" schema={schema} />
+```
+
+The v1 stylesheet is shipped separately, so sites on the new default do not
+download it.
+
+### If you wrote CSS against the wizard
+
+v1 painted colours as **inline styles** on the markers, rail and footer, so any
+rule you wrote had to fight them — usually with `!important`. The modern skin
+paints nothing inline; styling flows from custom properties and state classes.
+
+That means your overrides may now apply *more* than you expect, and any
+`!important` you added to beat the old inline styles is probably no longer
+needed.
+
+```diff
+- .react-form-wizard .wizard-icon-circle { background: #111 !important; }
++ .react-form-wizard { --rfw-primary: #111; }
+```
+
+### Behaviour worth knowing
+
+- **Steps no longer turn red on load.** `showErrorOnTab` used to default to
+  `!isValid`, so any step with a validator rendered in the error colour before
+  the user had done anything. It now waits until they try to leave the step.
+  Pass `showErrorOnTab` explicitly for the old behaviour.
+- **Dark mode follows the page, not the OS.** An ancestor with `.dark` or
+  `[data-theme="dark"]`, or the `darkMode` prop. Add `colorScheme="system"` if
+  your app themes purely from `prefers-color-scheme`.
+- `color` still works, but it is an inline style and therefore beats your CSS.
+  Prefer `theme={{ primaryColor }}`, which sets `--rfw-primary`.
+
+### New in 2.0
+
+- `variant` — `"modern"` (default) or `"legacy"`
+- `colorScheme` — `"auto"` (default), `"system"`, `"light"`, `"dark"`
+- `classNames.stepComplete` and `classNames.stepInvalid`
+- [Tailwind integration](/docs/guides/tailwind): a token bridge and
+  `tailwindPreset()`
+
+## From 1.1.x → 1.2.0
+
+**No breaking changes.** The children API, the schema API and every existing
+prop behave as before. Upgrade and nothing needs touching.
+
+Optional cleanups:
+
+```diff
+- import "react-form-wizard-component/dist/style.css";
++ import "react-form-wizard-component/styles.css";
+```
+
+```diff
+  // Next.js App Router — the directive is now in the published bundle
+- "use client";
+  import FormWizard from "react-form-wizard-component";
+```
+
+### Things that were broken and now are not
+
+If you worked around any of these, you can remove the workaround:
+
+| Symptom | Cause | Status |
+| --- | --- | --- |
+| `TS7016: Could not find a declaration file` | `types` pointed at a file that was never generated | Fixed — types ship and are CI-verified |
+| `import { FormWizardSchema }` failed | Documented types were never exported from the entry | Fixed — all public types export from one barrel |
+| `require()` returned `{}` | The `require` condition resolved to a UMD file that exposed nothing | Fixed — real CJS build |
+| Crash on React 18 | React 19's JSX runtime was compiled into the bundle | Fixed — React is fully external |
+| `useState only works in Client Components` | No `"use client"` directive | Fixed — shipped in all bundles |
+| Two wizards both moved on one arrow key | Keyboard listener was page-wide | Fixed — scoped to the focused wizard |
+
+### Small behaviour changes
+
+- **`onTabChange` no longer fires on mount.** It previously reported a
+  `0 → 0` transition on the first render. If you relied on that to initialise
+  something, do it directly instead.
+- **An out-of-range `startIndex` is clamped on the first render** rather than
+  briefly rendering an empty panel.
+
+## From 0.2.7 → 1.2.0
+
+If you pinned `0.2.7` because v1 required React 19 — **you can upgrade now.**
+React 18 (and 17) support was restored in 1.2.0. The incompatibility was a
+build-configuration bug, not a limitation of the component.
+
+Two API changes carried over from 1.0.0:
+
+```diff
+- const handleComplete = () => {};
++ const handleComplete = (data?: WizardData) => {};
+```
+
+```diff
+- const handleTabChange = ({ prevIndex, nextIndex }) => {};
++ const handleTabChange = ({ prevIndex, nextIndex, stepId }) => {};
+```
+
+Everything else in the children API is unchanged. What you gain:
+
+- [Schema API](/docs/demos-v1/schema-api) with conditional steps
+- [Validation adapters](/docs/guides/validation) for Zod and react-hook-form
+- [Headless `useWizard()`](/docs/guides/headless)
+- [Theming](/docs/guides/theming) and unstyled mode
+- [Persistence and URL sync](/docs/guides/persistence)
+- [Accessibility](/docs/guides/accessibility) — ARIA, live regions, keyboard
+- Correct TypeScript types, working `require()`, and `"use client"`
+
+## From 1.0.0 / 1.1.x on React 19
+
+Nothing to do. React 19 remains fully supported and is covered by CI alongside
+17 and 18.
+
+## Checking your upgrade
+
+```bash
+npm install react-form-wizard-component@latest
+npx tsc --noEmit   # types now resolve — this used to fail
+```
+
+If something regressed, please
+[open an issue](https://github.com/parsajiravand/react-form-wizard/issues) with
+your React version and bundler.

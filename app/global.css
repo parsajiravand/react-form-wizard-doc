@@ -1,0 +1,285 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+@source "../node_modules/fumadocs-ui/dist/**/*.js";
+@source "../components/**/*.tsx";
+@source "../content/**/*.mdx";
+/* The Tailwind preset's classes live in the package, so Tailwind has to be
+   pointed at it or the preset demo renders unstyled. */
+@source "../node_modules/react-form-wizard-component/dist/**/*.js";
+
+/*
+ * ONE accent, with a complete ramp.
+ *
+ * The previous site set --ifm-color-primary to a violet but left its dark and
+ * light variants on Docusaurus's default green, so buttons were violet with
+ * green hover states. Every step below is generated from the same hue, so that
+ * cannot happen again.
+ *
+ * Hue: a deep, slightly desaturated blue. Restrained enough to sit under long
+ * prose, close enough to the component's own default accent that the docs and
+ * the product read as one thing. No gradients anywhere.
+ */
+:root {
+  --accent-50: #eef4fb;
+  --accent-100: #d8e6f6;
+  --accent-200: #b3cdec;
+  --accent-300: #83aade;
+  --accent-400: #5385cb;
+  --accent-500: #2f66b4;
+  --accent-600: #1f5098;
+  --accent-700: #1a417a;
+  --accent-800: #173562;
+  --accent-900: #152c50;
+
+  --fd-primary: var(--accent-600);
+}
+
+@theme {
+  --color-accent-50: var(--accent-50);
+  --color-accent-100: var(--accent-100);
+  --color-accent-200: var(--accent-200);
+  --color-accent-300: var(--accent-300);
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
+  --color-accent-800: var(--accent-800);
+  --color-accent-900: var(--accent-900);
+}
+
+:root {
+  --color-fd-primary: var(--accent-600);
+  --color-fd-ring: var(--accent-500);
+}
+
+.dark {
+  /* Not an inversion — re-picked so contrast holds on a dark ground. */
+  --color-fd-primary: var(--accent-300);
+  --color-fd-ring: var(--accent-400);
+}
+
+/* ------------------------------------------------------------------ *
+ * Typography — one type scale, generous measure, hairline rules.
+ * ------------------------------------------------------------------ */
+
+:root {
+  --fd-layout-width: 1400px;
+}
+
+body {
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+}
+
+.prose :where(h2) {
+  letter-spacing: -0.015em;
+  margin-top: 2.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-fd-border);
+}
+
+.prose :where(h2):first-of-type {
+  border-top: 0;
+  padding-top: 0;
+  margin-top: 1.5rem;
+}
+
+.prose :where(h3) {
+  letter-spacing: -0.01em;
+  margin-top: 2rem;
+}
+
+.prose :where(p, li) {
+  text-wrap: pretty;
+}
+
+/* Tables: hairlines only, no zebra striping, numbers aligned. */
+.prose :where(table) {
+  font-size: 0.9375rem;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+}
+
+.prose :where(th) {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-fd-muted-foreground);
+  border-bottom: 1px solid var(--color-fd-border);
+  padding: 0.5rem 1rem 0.5rem 0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.prose :where(td) {
+  border-bottom: 1px solid var(--color-fd-border);
+  padding: 0.65rem 1rem 0.65rem 0;
+  vertical-align: top;
+}
+
+.prose :where(tr:last-child td) {
+  border-bottom: 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Demo surface — where a live wizard sits inside the prose.
+ * ------------------------------------------------------------------ */
+
+.demo {
+  border: 1px solid var(--color-fd-border);
+  border-radius: 0.75rem;
+  padding: 1.75rem;
+  margin: 1.5rem 0;
+  background: var(--color-fd-card);
+  overflow-x: auto;
+}
+
+.demo :where(h4) {
+  margin-top: 0;
+}
+
+/* The wizard ships its own light and dark palettes and follows the `.dark`
+   class Fumadocs sets, so only the accent needs aligning with the site. */
+.demo .react-form-wizard {
+  --rfw-primary: var(--accent-600);
+  --rfw-radius: 0.5rem;
+}
+
+.dark .demo .react-form-wizard {
+  --rfw-primary: var(--accent-300);
+}
+
+/* ------------------------------------------------------------------ *
+ * Utilities used by the marketing page and callouts.
+ * ------------------------------------------------------------------ */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.78125rem;
+  color: var(--color-fd-muted-foreground);
+  white-space: nowrap;
+}
+
+.tag-new {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.25rem;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--accent-100);
+  color: var(--accent-800);
+  vertical-align: middle;
+}
+
+.dark .tag-new {
+  background: color-mix(in oklab, var(--accent-900) 70%, transparent);
+  color: var(--accent-200);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Buttons — two variants only. The old site had four button styles in
+ * three different hues; everything here derives from the one accent.
+ * ------------------------------------------------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8125rem;
+}
+
+.btn-primary {
+  background: var(--color-fd-primary);
+  color: var(--color-fd-primary-foreground);
+}
+
+.btn-primary:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--color-fd-border);
+  color: var(--color-fd-foreground);
+}
+
+.btn-ghost:not(:disabled):hover {
+  background: var(--color-fd-muted);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-fd-ring);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Status colours. Reserved for state, never reused as an accent, and
+ * always paired with text — never colour alone.
+ * ------------------------------------------------------------------ */
+
+:root {
+  --color-danger: #b4232a;
+  --color-danger-bg: #fdecea;
+  --color-success: #1c6b45;
+  --color-success-bg: #e7f3ec;
+  --color-warning: #8a5a00;
+  --color-warning-bg: #fbf1dd;
+}
+
+.dark {
+  --color-danger: #f0857c;
+  --color-danger-bg: #35201f;
+  --color-success: #6cc99a;
+  --color-success-bg: #16291f;
+  --color-warning: #d9a93f;
+  --color-warning-bg: #2e2513;
+}
+
+/* CodeSandbox embeds on the playground page. */
+.custom-iframe {
+  width: 100%;
+  height: 32rem;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--color-fd-card);
+  margin: 1.25rem 0;
+}

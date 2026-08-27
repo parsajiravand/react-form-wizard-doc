@@ -1,0 +1,20 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "index",
+    "---Getting Started---",
+    "getting-started",
+    "---Guides---",
+    "guides",
+    "---Real-world Examples---",
+    "examples",
+    "---Reference---",
+    "api",
+    "migration",
+    "---Demos---",
+    "demos",
+    "demos-v1",
+    "demos-old",
+    "playground"
+  ]
+}

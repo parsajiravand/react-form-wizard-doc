@@ -1,0 +1,11 @@
+{
+  "title": "Guides",
+  "pages": [
+    "validation",
+    "headless",
+    "theming",
+    "tailwind",
+    "persistence",
+    "accessibility"
+  ]
+}

@@ -1,0 +1,360 @@
+---
+title: "Application with Upload"
+description: "A job application with an asynchronous document check that gates the step."
+---
+
+import JobApplicationExample from "@/components/examples/JobApplicationExample";
+
+# Application with Upload
+
+The pattern people get wrong most often: a step that cannot advance until an
+**asynchronous** check succeeds.
+
+Upload anything to see it verified. Try a file over 2 MB, or a `.png`, to
+see the rejection path.
+
+<div className="demo">
+  <JobApplicationExample />
+</div>
+
+## The rule: validators stay synchronous
+
+`validate` runs on **every render**. An `await` or a `setState` inside it
+causes an update loop. So the async work lives in the handler, writes its
+result into wizard data, and the validator just reads it:
+
+```tsx
+async function handleFile(file: File) {
+  setStatus("uploading");
+  const { ok, reason } = await fakeUpload(file);
+  setStatus(ok ? "verified" : "rejected");
+  // The validator reads these, so the step unlocks itself.
+  wizard.current?.updateData({ cvVerified: ok, cvReason: reason ?? "" });
+}
+
+// …and in the step, pure and synchronous:
+validate: ({ data }) => {
+  if (data.cvVerified === true) return true;
+  if (status === "uploading") return "Still checking your document…";
+  if (status === "rejected") return String(data.cvReason);
+  return "Upload your CV to continue";
+};
+```
+
+That message is also what a blocked **Next** reports, so the user is never left
+guessing why the button did nothing.
+
+## What this shows
+
+| Technique | Where |
+| --- | --- |
+| Async work outside the validator | `handleFile` |
+| A step gated on a result | `data.cvVerified` |
+| Progressive status messaging | the three `role="status"` / `role="alert"` banners |
+| Mixed field types | text, `select`, `file`, `textarea` |
+| A review step | reads everything back out of `data` |
+
+## Notes for production
+
+- Validate file type and size **on the server** as well. Client checks are a
+  courtesy, not a control.
+- Upload to object storage directly with a pre-signed URL rather than through
+  your API.
+- Keep the file out of wizard data. Store the returned id or key — wizard data
+  may be persisted, and a `File` will not survive serialisation anyway.
+
+## Full source
+
+The demo above **is** this code — the page embeds the component file verbatim,
+so what you read is what is running.
+
+```tsx title="JobApplicationExample.tsx"
+"use client";
+
+import React from "react";
+import FormWizard, {
+  type FormWizardMethods,
+  type FormWizardSchema,
+  type WizardData,
+} from "react-form-wizard-component";
+import "react-form-wizard-component/styles.css";
+import s from "./examples.module.css";
+
+type UploadStatus = "idle" | "uploading" | "verified" | "rejected";
+
+/** Stands in for a real upload + virus/format check. */
+const fakeUpload = (file: File) =>
+  new Promise<{ ok: boolean; reason?: string }>((resolve) => {
+    setTimeout(() => {
+      if (file.size > 2 * 1024 * 1024) {
+        resolve({ ok: false, reason: "File is larger than 2 MB" });
+      } else if (!/\.(pdf|docx?)$/i.test(file.name)) {
+        resolve({ ok: false, reason: "Upload a PDF or Word document" });
+      } else {
+        resolve({ ok: true });
+      }
+    }, 1200);
+  });
+
+export default function JobApplicationExample() {
+  const wizard = React.useRef<FormWizardMethods>(null);
+  const [status, setStatus] = React.useState<UploadStatus>("idle");
+  const [submitted, setSubmitted] = React.useState(false);
+
+  const set = (patch: WizardData) => wizard.current?.updateData(patch);
+  const str = (data: WizardData, key: string) => String(data[key] ?? "");
+
+  async function handleFile(file: File) {
+    setStatus("uploading");
+    // Clear any previous verdict while the check runs.
+    set({ cvVerified: false, cvName: file.name, cvReason: "" });
+
+    const { ok, reason } = await fakeUpload(file);
+
+    setStatus(ok ? "verified" : "rejected");
+    // The validator reads these, so the step unlocks itself.
+    set({ cvVerified: ok, cvReason: reason ?? "" });
+  }
+
+  const schema: FormWizardSchema = {
+    initialData: {
+      fullName: "",
+      email: "",
+      role: "",
+      cvName: "",
+      cvVerified: false,
+      cvReason: "",
+      notice: "",
+      cover: "",
+    },
+    steps: [
+      {
+        id: "about",
+        title: "About you",
+        icon: "ti-user",
+        content: ({ data }) => (
+          <>
+            <h4 className={s.stepHeading}>About you</h4>
+            <p className={s.stepIntro}>How we should address you, and where to reply.</p>
+
+            <div className={s.field}>
+              <label className={s.label} htmlFor="ja-name">
+                Full name
+              </label>
+              <input
+                id="ja-name"
+                className={s.input}
+                autoComplete="name"
+                placeholder="Ada Lovelace"
+                value={str(data, "fullName")}
+                onChange={(e) => set({ fullName: e.target.value })}
+              />
+            </div>
+
+            <div className={s.field}>
+              <label className={s.label} htmlFor="ja-email">
+                Email
+              </label>
+              <input
+                id="ja-email"
+                type="email"
+                className={s.input}
+                autoComplete="email"
+                placeholder="ada@example.com"
+                value={str(data, "email")}
+                onChange={(e) => set({ email: e.target.value })}
+              />
+            </div>
+
+            <div className={s.field}>
+              <label className={s.label} htmlFor="ja-role">
+                Role you are applying for
+              </label>
+              <select
+                id="ja-role"
+                className={s.select}
+                value={str(data, "role")}
+                onChange={(e) => set({ role: e.target.value })}
+              >
+                <option value="">Choose a role…</option>
+                <option value="frontend">Frontend Engineer</option>
+                <option value="design">Product Designer</option>
+                <option value="pm">Product Manager</option>
+              </select>
+            </div>
+          </>
+        ),
+        validate: ({ data }) => {
+          if (!String(data.fullName ?? "").trim()) return "Your name is required";
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.email ?? "")))
+            return "Enter a valid email address";
+          if (!data.role) return "Choose the role you are applying for";
+          return true;
+        },
+      },
+
+      {
+        id: "cv",
+        title: "CV",
+        icon: "ti-file",
+        content: ({ data }) => (
+          <>
+            <h4 className={s.stepHeading}>Upload your CV</h4>
+            <p className={s.stepIntro}>
+              PDF or Word, up to 2 MB. Try a large or wrongly-typed file to see
+              the rejection path.
+            </p>
+
+            {status === "uploading" && (
+              <p className={`${s.status} ${s.statusPending}`} role="status">
+                <span aria-hidden="true">⏳</span> Checking {str(data, "cvName")}…
+              </p>
+            )}
+            {status === "verified" && (
+              <p className={`${s.status} ${s.statusOk}`} role="status">
+                <span aria-hidden="true">✓</span> {str(data, "cvName")} accepted
+              </p>
+            )}
+            {status === "rejected" && (
+              <p className={`${s.status} ${s.statusBad}`} role="alert">
+                <span aria-hidden="true">✕</span>{" "}
+                {str(data, "cvReason") || "That file was rejected"}
+              </p>
+            )}
+
+            <div className={s.field}>
+              <label className={s.label} htmlFor="ja-cv">
+                CV file
+              </label>
+              <input
+                id="ja-cv"
+                type="file"
+                className={s.input}
+                accept=".pdf,.doc,.docx"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void handleFile(file);
+                }}
+              />
+              <span className={s.hint}>
+                Nothing is uploaded anywhere — this demo runs entirely in your
+                browser.
+              </span>
+            </div>
+          </>
+        ),
+        // Synchronous and pure: it only reads what the upload handler wrote.
+        validate: ({ data }) => {
+          if (data.cvVerified === true) return true;
+          if (status === "uploading") return "Still checking your document…";
+          if (status === "rejected")
+            return String(data.cvReason || "That file was rejected");
+          return "Upload your CV to continue";
+        },
+      },
+
+      {
+        id: "details",
+        title: "Details",
+        icon: "ti-pencil",
+        content: ({ data }) => (
+          <>
+            <h4 className={s.stepHeading}>A little more</h4>
+            <p className={s.stepIntro}>Both optional.</p>
+
+            <div className={s.field}>
+              <label className={s.label} htmlFor="ja-notice">
+                Notice period
+              </label>
+              <select
+                id="ja-notice"
+                className={s.select}
+                value={str(data, "notice")}
+                onChange={(e) => set({ notice: e.target.value })}
+              >
+                <option value="">Prefer not to say</option>
+                <option value="immediate">Available immediately</option>
+                <option value="1m">1 month</option>
+                <option value="3m">3 months</option>
+              </select>
+            </div>
+
+            <div className={s.field}>
+              <label className={s.label} htmlFor="ja-cover">
+                Anything you would like to add
+              </label>
+              <textarea
+                id="ja-cover"
+                className={s.textarea}
+                rows={4}
+                placeholder="A short note…"
+                value={str(data, "cover")}
+                onChange={(e) => set({ cover: e.target.value })}
+              />
+            </div>
+          </>
+        ),
+      },
+
+      {
+        id: "review",
+        title: "Review",
+        icon: "ti-check",
+        content: ({ data }) => (
+          <>
+            <h4 className={s.stepHeading}>Check and send</h4>
+            <div className={s.review}>
+              <span className={s.reviewKey}>Name</span>
+              <span className={s.reviewValue}>{str(data, "fullName")}</span>
+              <span className={s.reviewKey}>Email</span>
+              <span className={s.reviewValue}>{str(data, "email")}</span>
+              <span className={s.reviewKey}>Role</span>
+              <span className={s.reviewValue}>{str(data, "role")}</span>
+              <span className={s.reviewKey}>CV</span>
+              <span className={s.reviewValue}>{str(data, "cvName")}</span>
+              <span className={s.reviewKey}>Notice</span>
+              <span className={s.reviewValue}>{str(data, "notice") || "—"}</span>
+            </div>
+          </>
+        ),
+      },
+    ],
+  };
+
+  if (submitted) {
+    return (
+      <div className={s.done}>
+        <div className={s.doneMark} aria-hidden="true">
+          ✓
+        </div>
+        <h4>Application sent</h4>
+        <p className={s.stepIntro}>We will be in touch.</p>
+        <button
+          className="btn btn-ghost btn-sm"
+          onClick={() => {
+            setSubmitted(false);
+            setStatus("idle");
+          }}
+        >
+          Run the demo again
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <FormWizard
+      ref={wizard}
+      title="Apply"
+      subtitle="Four steps"
+      schema={schema}
+      ariaLabel="Job application"
+      finishButtonText="Send application"
+      onComplete={() => setSubmitted(true)}
+    />
+  );
+}
+```
+
+The shared `examples.module.css` only styles the form fields; the wizard
+chrome comes from `react-form-wizard-component/styles.css`.

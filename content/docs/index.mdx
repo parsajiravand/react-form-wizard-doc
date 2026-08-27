@@ -1,0 +1,191 @@
+---
+title: "Quick Start"
+description: "Accessible multi-step form wizard for React 17, 18 and 19 \u2014 zero dependencies, styled or headless."
+---
+
+# Quick Start
+
+An accessible multi-step form wizard for React, with validation, a progress bar
+and **no runtime dependencies**. It ships a styled component and a headless
+hook from the same package.
+
+## Install
+
+```package-install
+react-form-wizard-component
+```
+
+Full setup notes live in [Installation](/docs/getting-started/installation)
+and [Framework setup](/docs/getting-started/frameworks).
+
+```bash
+yarn add react-form-wizard-component
+```
+
+Works with **React 17, 18 and 19**.
+
+:::tip Pinned to 0.2.7 because v1 needed React 19?
+
+You can upgrade now. React 18 support was restored in **v1.2.0** — the
+incompatibility was a build-configuration bug (React's JSX runtime was being
+compiled into the bundle), not a limitation of the component. See
+[Migration](/docs/migration).
+
+:::
+
+## Usage
+
+```tsx
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/styles.css";
+
+function App() {
+  const handleComplete = () => {
+    console.log("Form completed!");
+  };
+
+  const tabChanged = ({
+    prevIndex,
+    nextIndex,
+  }: {
+    prevIndex: number;
+    nextIndex: number;
+  }) => {
+    console.log("prevIndex", prevIndex);
+    console.log("nextIndex", nextIndex);
+  };
+
+  return (
+    <>
+      <FormWizard
+        shape="circle"
+        color="#e74c3c"
+        onComplete={handleComplete}
+        onTabChange={tabChanged}
+      >
+        <FormWizard.TabContent title="Personal details" icon="ti-user">
+          {/* Add your form inputs and components for the first step */}
+          <h1>First Tab</h1>
+          <p>Some content for the first tab</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Additional Info" icon="ti-settings">
+          <h1>Second Tab</h1>
+          <p>Some content for the second tab</p>
+        </FormWizard.TabContent>
+        <FormWizard.TabContent title="Last step" icon="ti-check">
+          <h1>Last Tab</h1>
+          <p>Some content for the last tab</p>
+        </FormWizard.TabContent>
+      </FormWizard>
+      {/* the icons above come from Themify */}
+      <style>{`
+        @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+      `}</style>
+    </>
+  );
+}
+
+export default App;
+```
+
+That is a working three-step wizard with a progress bar, keyboard navigation,
+swipe support and screen-reader announcements.
+
+:::info Stylesheet path
+
+`react-form-wizard-component/styles.css` was added in v1.2.0. The older
+`react-form-wizard-component/dist/style.css` still resolves, so existing
+imports keep working.
+
+:::
+
+## Next.js
+
+The published bundles carry a `"use client"` directive, so importing the
+component from a **server component** works with no wrapper. You no longer need
+to add `"use client"` yourself.
+
+```tsx
+// app/signup/page.tsx — a server component
+import FormWizard from "react-form-wizard-component";
+import "react-form-wizard-component/styles.css";
+
+export default function Page() {
+  return (
+    <FormWizard title="Signup">
+      <FormWizard.TabContent title="Account">…</FormWizard.TabContent>
+      <FormWizard.TabContent title="Review">…</FormWizard.TabContent>
+    </FormWizard>
+  );
+}
+```
+
+Import the stylesheet once, anywhere in the tree — commonly `app/layout.tsx`.
+
+## New in v2
+
+The default appearance was redesigned, and dark mode now works without
+configuration. The v1 look is still available:
+
+```tsx
+import "react-form-wizard-component/legacy.css";
+<FormWizard variant="legacy" />
+```
+
+Nothing else changed — see [Migration](/docs/migration#from-12x--200).
+
+## What else is in the box
+
+|  |  |
+| --- | --- |
+| [Schema API](/docs/demos-v1/schema-api) | Declarative steps with conditional visibility and per-step validation. |
+| [Validation adapters](/docs/guides/validation) | Zod and react-hook-form integration, still zero dependencies. |
+| [Headless `useWizard()`](/docs/guides/headless) | The same state machine with none of the markup. |
+| [Theming](/docs/guides/theming) | CSS custom properties, automatic dark mode, or go fully unstyled. |
+| [Tailwind](/docs/guides/tailwind) | Adopt your Tailwind theme with one import, or build it from utility classes. |
+| [Persistence](/docs/guides/persistence) | Survive a reload; mirror the active step into the URL. |
+| [Accessibility](/docs/guides/accessibility) | ARIA roles, live-region announcements, focus management, full keyboard operation. |
+
+## Compatibility
+
+| React | Supported | Notes |
+| --- | --- | --- |
+| 19.x | ✅ | |
+| 18.x | ✅ | |
+| 17.x | ✅ | Through any bundler (Vite, webpack, Next.js, CRA). Not loadable under **native Node ESM** — React 17 ships no `exports` field, so Node cannot resolve `react/jsx-runtime`. That is a React 17 limitation, not this package's. |
+| 16.x | ⚠️ | Untested. Requires `react/jsx-runtime`, so React 16.14+. |
+
+| Environment | Supported |
+| --- | --- |
+| ESM `import` | ✅ |
+| CommonJS `require()` | ✅ |
+| TypeScript — `bundler`, `node16`, `node10` | ✅ verified with [attw](https://github.com/arethetypeswrong/arethetypeswrong.github.io) |
+| Next.js App Router / RSC | ✅ `"use client"` included |
+| Server-side rendering | ✅ |
+| UMD via CDN | ✅ unpkg / jsDelivr |
+
+## Props
+
+See [Props](/docs/api/form-wizard) for the full `FormWizard` reference, and
+[`FormWizard.TabContent`](/docs/api/form-wizard#formwizardtabcontent-component) for step
+props.
+
+## Examples
+
+**Complete builds** you can lift straight into a project:
+
+- [Multi-step checkout](/docs/examples/checkout) — per-step validation, delivery options, live order total
+- [Resumable onboarding](/docs/examples/onboarding) — survives a reload, branches, deep-links the step
+- [Application with upload](/docs/examples/job-application) — asynchronous document check gating the step
+- [Branching survey](/docs/examples/survey) — headless, questions defined as data
+
+**Feature demos**, one capability at a time:
+
+- [Feature demos](/docs/category/demos-v2) — theming, unstyled, headless, persistence, accessibility
+- [Schema API demos](/docs/category/demos-v1) — the schema-first API
+- [Legacy demos](/docs/category/demos-old) — the original children API
+- [Playground](/docs/playground) — CodeSandbox embeds
+
+## License
+
+MIT. See [LICENSE](https://github.com/parsajiravand/react-form-wizard/blob/master/LICENSE).

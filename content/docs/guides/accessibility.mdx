@@ -1,0 +1,109 @@
+---
+title: "Accessibility"
+description: "ARIA roles, live-region announcements, focus management and keyboard navigation."
+---
+
+import AccessibleWizards from "@/components/demos/AccessibleWizards";
+
+# Accessibility
+
+The wizard is operable by keyboard and announces itself to assistive
+technology out of the box. Nothing below needs enabling.
+
+<div className="demo">
+  <AccessibleWizards />
+</div>
+
+## Semantics
+
+| Element | Role and attributes |
+| --- | --- |
+| Wizard root | `role="region"`, `aria-label` (configurable), `aria-describedby` |
+| Step list | `role="tablist"`, `aria-label="Form steps"` |
+| Step marker | `role="tab"`, `aria-selected`, `aria-controls`, `aria-disabled`, roving `tabIndex` |
+| Step body | `role="tabpanel"`, `aria-labelledby`, focusable via `tabIndex={-1}` |
+| Announcer | `role="status"`, `aria-live="polite"` |
+
+## Keyboard
+
+| Key | Action |
+| --- | --- |
+| <kbd>→</kbd> | Next step (respects validation) |
+| <kbd>←</kbd> | Previous step |
+| <kbd>Home</kbd> | First step |
+| <kbd>End</kbd> | Last step |
+| <kbd>Enter</kbd> / <kbd>Space</kbd> | Activate the focused tab |
+| <kbd>Tab</kbd> | Move through the tab list and panel content |
+
+Disable the wizard-level keys with `keyboardNavigation={false}` — tab
+activation with Enter and Space still works, since a `role="tab"` must remain
+operable.
+
+## Several wizards on one page
+
+<span className="tag-new">v1.2</span>
+
+Each wizard only reacts to keys when focus is inside **it**. Before v1.2.0 all
+wizards on a page responded to the same arrow key at once.
+
+Give each one an `ariaLabel` so screen-reader users can tell them apart:
+
+```tsx
+<FormWizard ariaLabel="Billing details">…</FormWizard>
+<FormWizard ariaLabel="Shipping details">…</FormWizard>
+```
+
+## Announcements and focus
+
+<span className="tag-new">v1.2</span>
+
+On every step change the wizard:
+
+1. Updates a polite live region with `Step 2 of 3: Address`, and
+2. moves focus to the freshly revealed panel — so keyboard and screen-reader
+   users land on the new content instead of a button that may have just been
+   replaced.
+
+Focus is **not** moved on first paint, so the wizard never steals focus when
+the page loads.
+
+Turn both off with `announceStepChanges={false}` if you are announcing step
+changes yourself.
+
+## Motion
+
+The stylesheet respects `prefers-reduced-motion`, so progress transitions are
+disabled for users who ask for that.
+
+## Writing accessible steps
+
+The wizard handles its own chrome; step content is yours. A few things worth
+keeping right:
+
+```tsx
+<FormWizard.TabContent title="Contact">
+  {/* Label every input */}
+  <label htmlFor="email">Email</label>
+  <input id="email" type="email" aria-describedby="email-error" />
+
+  {/* Announce errors, and point the input at them */}
+  <p id="email-error" role="alert">
+    Enter a valid email
+  </p>
+</FormWizard.TabContent>
+```
+
+- Give each step a meaningful `title` — it is the tab's accessible name.
+- Do not rely on the step marker's colour alone to signal an error; return a
+  message string from `validate` so the reason is available as text.
+- Keep one `<h_>` hierarchy across steps; the panel does not add a heading.
+
+## Current status
+
+Keyboard navigation, ARIA wiring, focus management and live-region
+announcements are implemented and covered by tests. A full **WCAG 2.1 AA audit
+has not yet been published** — earlier releases claimed compliance, and that
+claim has been corrected rather than quietly kept.
+
+If you run an audit and find a gap,
+[open an issue](https://github.com/parsajiravand/react-form-wizard/issues).
