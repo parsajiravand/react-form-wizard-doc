@@ -133,14 +133,29 @@ still work. It removes appearance, not behaviour.
 
 <span className="tag-new">v2</span>
 
-The wizard ships a real dark palette and picks it up on its own. Three sources
-are consulted, in increasing priority:
+The wizard ships a real dark palette and picks it up on its own — but it
+follows **the page**, not the operating system.
 
-1. **The operating system**, via `prefers-color-scheme`.
-2. **Your app's own switch** — an ancestor carrying `[data-theme="dark"]` or a
+By default (`colorScheme="auto"`) it reacts to:
+
+1. **Your app's own switch** — an ancestor carrying `[data-theme="dark"]` or a
    `.dark` class. That covers Tailwind, next-themes, Docusaurus and Fumadocs
    without configuration.
-3. **The `darkMode` prop**, which pins it explicitly.
+2. **The `darkMode` prop**, which pins it explicitly.
+
+:::warn Why not `prefers-color-scheme`?
+
+Because a component embedded in someone else's layout cannot assume the OS
+preference describes the surface behind it. A light page on a dark-mode machine
+would get a dark wizard on a white background — which is exactly what an early
+v2 build did.
+
+If your page *does* drive its theme purely from the media query, opt in:
+
+```tsx
+<FormWizard colorScheme="system" />
+```
+:::
 
 Usually there is nothing to do:
 
@@ -167,10 +182,40 @@ To adjust the dark palette, override the tokens under your own selector:
 
 :::info Why this changed
 
-Through v1 the stylesheet contained no `prefers-color-scheme` rules at all.
-Dark mode existed only as inline styles you had to enumerate through
-`customDarkModeColor`, and because they were inline they overrode any CSS you
-wrote. `customDarkModeColor` still works, but theme tokens are the better tool.
+Through v1 the stylesheet had no dark rules at all. Dark mode existed only as
+inline styles you enumerated through `customDarkModeColor`, and because they
+were inline they overrode any CSS you wrote. `customDarkModeColor` still works,
+but theme tokens are the better tool.
+
+:::
+
+## State classes
+
+The modern skin puts a class on each step so your own CSS can target state
+without reaching for `unstyled`:
+
+| Class | On |
+| --- | --- |
+| `active` | the step the user is on |
+| `rfw-done` | steps already completed |
+| `rfw-invalid` | a step that failed validation after an attempt to leave it |
+
+```css
+.react-form-wizard li.rfw-done .wizard-icon-circle {
+  background: var(--rfw-success);
+  border-color: var(--rfw-success);
+}
+```
+
+In `unstyled` mode the equivalents are the `stepActive`, `stepComplete` and
+`stepInvalid` keys of [`classNames`](#class-overrides).
+
+:::info Errors wait for an attempt
+
+`rfw-invalid` is applied only once the user has actually tried to leave the
+step. Through v1 any step carrying a validator rendered red on first paint,
+which made a required first question look like a broken form. Pass
+`showErrorOnTab` explicitly if you want the old, immediate behaviour.
 
 :::
 

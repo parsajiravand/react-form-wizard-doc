@@ -1,9 +1,67 @@
 ---
 title: "Migration"
-description: "Upgrading to v1.2.0 from 1.1.x or 0.2.x."
+description: "Upgrading to v2 from 1.2.x, and from the 1.x and 0.2.x lines."
 ---
 
 # Migration
+
+## From 1.2.x → 2.0.0
+
+**The API did not change.** Every prop, method, hook and adapter behaves as it
+did in 1.2.x. What changed is how the wizard looks and how it applies colour.
+
+If you never styled the wizard, upgrade and you are done — you get the new look
+and dark mode that actually works.
+
+### Keeping the old appearance
+
+Two lines:
+
+```diff
+  import "react-form-wizard-component/styles.css";
++ import "react-form-wizard-component/legacy.css";
+
+- <FormWizard schema={schema} />
++ <FormWizard variant="legacy" schema={schema} />
+```
+
+The v1 stylesheet is shipped separately, so sites on the new default do not
+download it.
+
+### If you wrote CSS against the wizard
+
+v1 painted colours as **inline styles** on the markers, rail and footer, so any
+rule you wrote had to fight them — usually with `!important`. The modern skin
+paints nothing inline; styling flows from custom properties and state classes.
+
+That means your overrides may now apply *more* than you expect, and any
+`!important` you added to beat the old inline styles is probably no longer
+needed.
+
+```diff
+- .react-form-wizard .wizard-icon-circle { background: #111 !important; }
++ .react-form-wizard { --rfw-primary: #111; }
+```
+
+### Behaviour worth knowing
+
+- **Steps no longer turn red on load.** `showErrorOnTab` used to default to
+  `!isValid`, so any step with a validator rendered in the error colour before
+  the user had done anything. It now waits until they try to leave the step.
+  Pass `showErrorOnTab` explicitly for the old behaviour.
+- **Dark mode follows the page, not the OS.** An ancestor with `.dark` or
+  `[data-theme="dark"]`, or the `darkMode` prop. Add `colorScheme="system"` if
+  your app themes purely from `prefers-color-scheme`.
+- `color` still works, but it is an inline style and therefore beats your CSS.
+  Prefer `theme={{ primaryColor }}`, which sets `--rfw-primary`.
+
+### New in 2.0
+
+- `variant` — `"modern"` (default) or `"legacy"`
+- `colorScheme` — `"auto"` (default), `"system"`, `"light"`, `"dark"`
+- `classNames.stepComplete` and `classNames.stepInvalid`
+- [Tailwind integration](/docs/guides/tailwind): a token bridge and
+  `tailwindPreset()`
 
 ## From 1.1.x → 1.2.0
 

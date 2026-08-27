@@ -122,6 +122,18 @@ export default function Page() {
 
 Import the stylesheet once, anywhere in the tree — commonly `app/layout.tsx`.
 
+## New in v2
+
+The default appearance was redesigned, and dark mode now works without
+configuration. The v1 look is still available:
+
+```tsx
+import "react-form-wizard-component/legacy.css";
+<FormWizard variant="legacy" />
+```
+
+Nothing else changed — see [Migration](/docs/migration#from-12x--200).
+
 ## What else is in the box
 
 |  |  |
@@ -129,7 +141,8 @@ Import the stylesheet once, anywhere in the tree — commonly `app/layout.tsx`.
 | [Schema API](/docs/demos-v1/schema-api) | Declarative steps with conditional visibility and per-step validation. |
 | [Validation adapters](/docs/guides/validation) | Zod and react-hook-form integration, still zero dependencies. |
 | [Headless `useWizard()`](/docs/guides/headless) | The same state machine with none of the markup. |
-| [Theming](/docs/guides/theming) | CSS custom properties, or go fully unstyled with your own classes. |
+| [Theming](/docs/guides/theming) | CSS custom properties, automatic dark mode, or go fully unstyled. |
+| [Tailwind](/docs/guides/tailwind) | Adopt your Tailwind theme with one import, or build it from utility classes. |
 | [Persistence](/docs/guides/persistence) | Survive a reload; mirror the active step into the URL. |
 | [Accessibility](/docs/guides/accessibility) | ARIA roles, live-region announcements, focus management, full keyboard operation. |
 
