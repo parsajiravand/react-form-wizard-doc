@@ -1,0 +1,41 @@
+---
+title: "Modern vs Legacy"
+description: "Compare the v2 default appearance with the v1 skin."
+---
+
+import SkinComparison from "@/components/demos/SkinComparison";
+
+v2 changed the default look. The old one is still available as an opt-in, so
+sites that styled around it are not forced to move.
+
+<div className="demo">
+  <SkinComparison />
+</div>
+
+Both wizards above are the same component with the same props — only `variant`
+differs. Switch your site's colour scheme while this page is open: the modern
+skin follows it, the legacy skin does not.
+
+## Opting back in
+
+```tsx
+import "react-form-wizard-component/styles.css";
+import "react-form-wizard-component/legacy.css";
+
+<FormWizard variant="legacy" schema={schema} />;
+```
+
+The legacy stylesheet is a separate file, so the default build does not carry
+it.
+
+## What actually differs
+
+| | Modern (default) | Legacy (v1) |
+| --- | --- | --- |
+| Step markers | 36 px, hairline border, filled once complete | 70 px filled circles |
+| Colour applied via | CSS custom properties and state classes | inline styles |
+| Dark mode | automatic | only via `darkMode` + `customDarkModeColor` |
+| Overridable from your CSS | yes | needs `!important` |
+| Error state | appears after a blocked attempt | appeared on first paint |
+
+See [Theming](/docs/guides/theming#legacy-skin) for the full comparison.

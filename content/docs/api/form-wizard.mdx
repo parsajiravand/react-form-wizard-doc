@@ -22,7 +22,9 @@ description: "Full prop reference for the FormWizard component and FormWizard.Ta
 
 | Prop | Description | Sample |
 | --- | --- | --- |
-| `color` | Main accent colour for tabs and progress visuals. | [v1 custom colors](/docs/demos-v1/custom-colors) |
+| `variant` <span className="tag-new">v2</span> | Visual skin: `"modern"` (default) or `"legacy"` for the v1 appearance. | [theming](/docs/guides/theming#legacy-skin) |
+| `colorScheme` <span className="tag-new">v2</span> | `"auto"` (default), `"light"` or `"dark"`. Pins the scheme instead of following the OS or your `.dark` class. | [dark mode](/docs/guides/theming#dark-mode) |
+| `color` | Main accent colour. Prefer `theme.primaryColor` — `color` is an inline style and cannot be overridden by CSS. | [v1 custom colors](/docs/demos-v1/custom-colors) |
 | `theme` <span className="tag-new">v1.2</span> | Theme tokens written as `--rfw-*` CSS custom properties on the root. Overrides one value without restating a palette. | [theming](/docs/guides/theming) |
 | `unstyled` <span className="tag-new">v1.2</span> | Drops every bundled class and inline colour so only your own styles apply. Default: `false`. | [unstyled](/docs/guides/theming#unstyled-mode) |
 | `classNames` <span className="tag-new">v1.2</span> | Per-element class overrides (`WizardClassNames`). Merged with the defaults, or replacing them when `unstyled`. | [unstyled](/docs/guides/theming#unstyled-mode) |
@@ -124,6 +126,7 @@ stylesheet default.
 | Token | CSS custom property |
 | --- | --- |
 | `primaryColor` | `--rfw-primary` |
+| `backgroundColor` | `--rfw-bg` |
 | `backgroundColor` | `--rfw-bg` |
 | `textColor` | `--rfw-text` |
 | `titleColor` | `--rfw-title` |

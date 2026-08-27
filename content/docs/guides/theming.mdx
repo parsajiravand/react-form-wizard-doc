@@ -131,22 +131,80 @@ still work. It removes appearance, not behaviour.
 
 ## Dark mode
 
-The bundled dark palette is still available:
+<span className="tag-new">v2</span>
+
+The wizard ships a real dark palette and picks it up on its own. Three sources
+are consulted, in increasing priority:
+
+1. **The operating system**, via `prefers-color-scheme`.
+2. **Your app's own switch** — an ancestor carrying `[data-theme="dark"]` or a
+   `.dark` class. That covers Tailwind, next-themes, Docusaurus and Fumadocs
+   without configuration.
+3. **The `darkMode` prop**, which pins it explicitly.
+
+Usually there is nothing to do:
 
 ```tsx
-<FormWizard darkMode customDarkModeColor={{ title: "#fff", tab: "#1b2525" }} />
+<FormWizard schema={schema} />
 ```
 
-For new work, prefer driving theme tokens from your own dark-mode mechanism:
+Pin it when you need to:
+
+```tsx
+<FormWizard colorScheme="dark" />   {/* always dark */}
+<FormWizard colorScheme="light" />  {/* opt out of the OS preference */}
+<FormWizard colorScheme="auto" />   {/* the default */}
+```
+
+To adjust the dark palette, override the tokens under your own selector:
 
 ```css
-@media (prefers-color-scheme: dark) {
-  .react-form-wizard {
-    --rfw-bg: #141c1c;
-    --rfw-title: #e7eeed;
-    --rfw-border: #263232;
-  }
+.dark .react-form-wizard {
+  --rfw-primary: #7dd3fc;
+  --rfw-surface: #0b1220;
 }
 ```
+
+:::info Why this changed
+
+Through v1 the stylesheet contained no `prefers-color-scheme` rules at all.
+Dark mode existed only as inline styles you had to enumerate through
+`customDarkModeColor`, and because they were inline they overrode any CSS you
+wrote. `customDarkModeColor` still works, but theme tokens are the better tool.
+
+:::
+
+## Legacy skin
+
+<span className="tag-new">v2</span>
+
+v2 changed the default appearance. If you styled around the old look — or
+simply prefer it — it is one import and one prop away:
+
+```tsx
+import "react-form-wizard-component/styles.css";
+import "react-form-wizard-component/legacy.css";
+
+<FormWizard variant="legacy" schema={schema} />;
+```
+
+The legacy stylesheet is shipped separately so sites on the modern skin do not
+download CSS they never use.
+
+| | Modern (default) | Legacy |
+| --- | --- | --- |
+| Step markers | 36 px, hairline border, filled when complete | 70 px filled circles |
+| Colour applied via | CSS custom properties and state classes | inline styles |
+| Dark mode | automatic | `darkMode` + `customDarkModeColor` only |
+| Your CSS can override it | yes | only with `!important` |
+| Stylesheet | 1.4 kB brotli | +1.8 kB brotli |
+
+:::warning Inline styles beat your CSS
+
+The legacy skin paints colours inline, so a rule in your own stylesheet will
+lose to it unless you use `!important`. That is the main reason the modern skin
+exists — and why `theme` is more reliable than the `color` prop.
+
+:::
 
 See also: [dark mode demo](/docs/demos-v1/dark-mode), [Props](/docs/api/form-wizard).

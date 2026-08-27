@@ -139,21 +139,15 @@ body {
   margin-top: 0;
 }
 
-/* The wizard defaults to its own blue; align it with the one site accent so a
-   page never shows two competing colours. */
+/* The wizard ships its own light and dark palettes and follows the `.dark`
+   class Fumadocs sets, so only the accent needs aligning with the site. */
 .demo .react-form-wizard {
   --rfw-primary: var(--accent-600);
-  --rfw-error: #b4232a;
   --rfw-radius: 0.5rem;
 }
 
 .dark .demo .react-form-wizard {
-  --rfw-primary: var(--accent-400);
-  --rfw-bg: var(--color-fd-card);
-  --rfw-title: var(--color-fd-foreground);
-  --rfw-subtitle: var(--color-fd-muted-foreground);
-  --rfw-border: var(--color-fd-border);
-  --rfw-error: #f0857c;
+  --rfw-primary: var(--accent-300);
 }
 
 /* ------------------------------------------------------------------ *
